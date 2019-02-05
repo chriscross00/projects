@@ -324,6 +324,31 @@ importance(store_rf)
 ```
 
 
+Item_Fat_Content, no difference
+```{r}
+ggplot(data, aes(Item_Fat_Content, Item_Outlet_Sales)) +
+    geom_boxplot()
+```
+
+
+Best stores (sum sales for each outlet id)
+```{r}
+stores <- data %>%
+    group_by(Outlet_Identifier) %>%
+    summarise(Sales = sum(Item_Outlet_Sales))
+
+
+ggplot(stores, aes(Outlet_Identifier, Sales)) +
+    geom_bar(stat='identity')
+```
+
+
+To do:
+
+Rerun with important features.
+Graph features against each other:
+Years vs outlet
+Types of stores
 
 
 

@@ -31,11 +31,12 @@ test <- mutate(test, Item_Outlet_Sales = 0)
 
 data <- rbind(train, test)
 
-str(data)
 summary(data)
 ```
 
 Because our response variable is not normally distributed, it is skewed highly right skewed, a key assumption of linear regression is violated, that the response variable is normally distributed. In the context of a grocery store a highly right skewed Item_Outlet_Sales distribution makes sense: people aren't all buying one product, instead a variety of products are being sold at relatively low quantities.
+
+Instead of a lienar model we'll run a random forest model which doesn't carry all the assumptions of linear regression.
 
 
 Items that are less than 2,500 represent []% of the total sales.
@@ -50,6 +51,8 @@ Stores:
 Stores X and Y need more work
 Stores that are X years old tend to do better
 X types of stores work better
+
+The reasons why certain stores do better than others is beyond the scope of this dataset, we simply do not have the data to investigate. That being said, finding the reasons why certain stores preform better than others would be a strong first step in increasing sales across all stores. 
 ```{r}
 ggplot(data, aes(Item_Outlet_Sales)) + 
     geom_density()
