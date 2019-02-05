@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, warning=FALSE, message=FALSE}
 library(tidyverse)
 library(glmnet)
+library(randomForest)
 ```
 
 ## 1. Read and clean data
@@ -139,6 +140,7 @@ Possible to condense the Item_Type down into 3 categories; FD-Food, NC-Non-Consu
 ```{r}
 data <- data %>%
     separate(Item_Identifier, c('Item_Category', 'Item_Identifier'), sep=2)
+data$Item_Category = as.factor(data$Item_Category)
 ```
 
 
@@ -250,7 +252,7 @@ convert factors to dummy variables
 ```{r}
 store_lasso <- glmnet(train_reg, train_y, lambda=grid)
 
-plot(store_lasso)
+# plot(store_lasso, x=)
 ```
 
 ```{r}
@@ -310,8 +312,16 @@ lm to some extent fitlers out highly correlated predictors. If I ran years_open 
 
 
 
+```{r}
+store_rf <- randomForest(Item_Outlet_Sales~., train, mtry=8, importance=T)
+store_rf
+```
 
-
+```{r}
+pred_rf <- predict(store_rf, newdata=test)
+mse(pred_rf, test[,12])
+importance(store_rf)
+```
 
 
 

@@ -14,15 +14,88 @@ library(tidyverse)
 library(glmnet)
 ```
 
+BigMart is a fictional chain of grocery stores that sells a variety of products, from household supplies to alcohol. Like many other fields BigMart wants to predict the sale of an product. The matter is more pressing because many products have a short shelf life, meaning that the company can potential lose thousands of dollars if they buy the wrong produt. Therefore our goal is to use data about the products and about each store to predict the future sale of a product.
 
 
 ## 1. Read and clean data
+
+```{r}
+train <- read.csv('Train.csv')
+test <- read.csv('Test.csv')
+
+head(train)
+```
+
+```{r}
+test <- mutate(test, Item_Outlet_Sales = 0)
+
+data <- rbind(train, test)
+
+str(data)
+summary(data)
+```
+
+Because our response variable is not normally distributed, it is skewed highly right skewed, a key assumption of linear regression is violated, that the response variable is normally distributed. In the context of a grocery store a highly right skewed Item_Outlet_Sales distribution makes sense: people aren't all buying one product, instead a variety of products are being sold at relatively low quantities.
+
+
+Items that are less than 2,500 represent []% of the total sales.
+Strategies going forward:
+
+Items:
+Item_Fat_Content has __ effect
+Unsuprisingly, one of the biggest factors for a person to buy a product is price, MRP. 
+sell more of X
+
+Stores:
+Stores X and Y need more work
+Stores that are X years old tend to do better
+X types of stores work better
+```{r}
+ggplot(data, aes(Item_Outlet_Sales)) + 
+    geom_density()
+```
+
+```{r}
+head(data)
+```
+
 ## 2. Feature Engineering/Cleaning
+
+```{r}
+sapply(data[,2:ncol(data)], levels)
+```
+
+```{r}
+sapply(data, function(x) sum(is.na(x)))
+sapply(data, function(x) sum(x == ''))
+```
+
+
+```{r}
+item_type_na <- data %>%
+    group_by(Item_Type) %>%
+    filter(is.na(Item_Weight)) %>%
+    count()
+
+ggplot(item_type_na, aes(Item_Type, n)) +
+    geom_bar(stat = 'identity') +
+    theme(axis.text.x = element_text(angle=75, vjust=0.7))
+
+b <- data %>%
+    group_by(Item_Type) %>%
+    summarise_at(vars(Item_Weight), funs(mean(., na.rm=T)))
+```
+
 ## 3. EDA
-## 4. Model
+## 4. Model Use the RF model
 ```{r mse, echo=FALSE, results='hide'}
 mse <- function(x, y) {
     mean((x - y)^2)
 }
 ```
 
+Outlet_Identifier and Item_MRP are highest 
+
+
+Things I learned:
+lm to some extent fitlers out highly correlated predictors. If I ran years_open and Outlet_Estblishment_year at the same time, Years_Open would become NA because signularities.
