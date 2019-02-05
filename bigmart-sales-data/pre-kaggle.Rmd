@@ -14,7 +14,7 @@ library(tidyverse)
 library(glmnet)
 ```
 
-## 1 Read and clean data
+## 1. Read and clean data
 
 Reading in the data. Reading in the data with read.csv set the categorical variables correctly as factors, while read_csv set them to char.
 ```{r}
@@ -142,7 +142,7 @@ data <- data %>%
 ```
 
 
-## 3 EDA
+## 3. EDA
 ```{r}
 sapply(data, function(x) n_distinct(x))
 summary(data)

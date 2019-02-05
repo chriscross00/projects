@@ -1,0 +1,28 @@
+---
+title: "BigMart Sales Regression"
+author: "Christoper Chan"
+date: "February 4, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(glmnet)
+```
+
+
+
+## 1. Read and clean data
+## 2. Feature Engineering/Cleaning
+## 3. EDA
+## 4. Model
+```{r mse, echo=FALSE, results='hide'}
+mse <- function(x, y) {
+    mean((x - y)^2)
+}
+```
+
