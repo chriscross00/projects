@@ -1,0 +1,319 @@
+---
+title: "big_mart"
+author: "Christoper Chan"
+date: "January 26, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(glmnet)
+```
+
+## 1 Read and clean data
+
+Reading in the data. Reading in the data with read.csv set the categorical variables correctly as factors, while read_csv set them to char.
+```{r}
+train <- read.csv('Train.csv')
+test <- read.csv('Test.csv')
+
+head(train)
+```
+
+Creating a combined df so that I can clean/eda on all the available data.
+```{r}
+test <- mutate(test, Item_Outlet_Sales = 0)
+
+
+data <- rbind(train, test)
+
+str(data)
+```
+
+A quick glance at the data to get a general sense of it, what the data looks like and what I need to clean.
+```{r}
+summary(data)
+```
+
+
+## 2. Feature Engineering/Cleaning
+I want to see if we have redundant levels for categorical variables. In this case we do, in Item_Fat_Content we have 3 types of low fat and 2 types of regular. I'll standardize it to 'Low Fat' and 'Regular'
+```{r}
+sapply(data[,2:ncol(data)], levels)
+```
+
+Finding missing values. Item weight has 2439 NA. Outlet_Size has 4106 blank instances. Every other variable does not have any missing values. In the grand scheme of things I don't think these variables will have much predictive power so I won't bother to fill them in.
+```{r}
+sapply(data, function(x) sum(is.na(x)))
+sapply(data, function(x) sum(x == ''))
+```
+
+
+Now we have to address the NA in Item_Weight. Looking at the distribution of the NA among Item_Types there seems to be some Item_Types that have a larger amount of NA. Note: these values are not normalized so very little inferences can be drawn from this histogram. Instead I'll take the mean of each Item_Type and replace the NA for that type with the mean.
+```{r}
+item_type_na <- data %>%
+    group_by(Item_Type) %>%
+    filter(is.na(Item_Weight)) %>%
+    count()
+
+ggplot(item_type_na, aes(Item_Type, n)) +
+    geom_bar(stat = 'identity') +
+    theme(axis.text.x = element_text(angle=75, vjust=0.7))
+
+b <- data %>%
+    group_by(Item_Type) %>%
+    summarise_at(vars(Item_Weight), funs(mean(., na.rm=T)))
+```
+
+Oh my, so after hours of trying to figure out how to replace all the NAs with the means for that group I came across the answer. 
+```{r}
+impute_mean <- function(x) replace(x, is.na(x), mean(x, na.rm = T))
+
+data <- data %>%
+    group_by(Item_Type) %>%
+    mutate(Item_Weight = impute_mean(Item_Weight))
+```
+
+
+Fixing some inconsistencies with the factors for Item_Fat_Content.
+```{r, message=FALSE}
+data <- data %>%
+    mutate(Item_Fat_Content = replace(Item_Fat_Content, Item_Fat_Content == 'LF', 'Low Fat')) %>%
+    mutate(Item_Fat_Content = replace(Item_Fat_Content, Item_Fat_Content == 'low fat', 'Low Fat')) %>%
+    mutate(Item_Fat_Content = replace(Item_Fat_Content, Item_Fat_Content == 'reg', 'Regular')) %>%
+    droplevels()
+```
+
+
+```{r}
+ggplot(data, aes(Item_Visibility, Item_Outlet_Sales)) + 
+    geom_point(size = 0.75)
+```
+
+
+Having an item with zero Item_Visibility that has sales makes little sense. I'm going to make the assumption that people aren't buying items that are stored in the back of the store. Running with Item_Outlet_Sales == 0 yields 0 results, so all the cases of Item_Visibility are beening bought. We'll set the Item_Visibilty for equal to the mean of Item_Visibility.
+
+```{r}
+data <- data %>%
+    group_by(Item_Type) %>%
+    mutate(Item_Visibility = replace(Item_Visibility, Item_Visibility == 0, mean(Item_Visibility))) %>%
+    mutate(Item_Visibility = as.double(Item_Visibility))
+
+summary(data)
+```
+
+Changing year to years since started.
+```{r}
+data <- data %>%
+    mutate(Years_Open = 2013 -Outlet_Establishment_Year)
+data <- data[, c(1,2,3,4,5,6,7,13,9,10,11,12)]
+```
+
+Figuring out what to do with the missing values for the Outlet_Size is tricky. It represents a pretty large chunk of the instances. Breaking the data down into levels for each predictor gives us a much clear picture of what's going on. You can use Baye's theorem here, but intuition will be enough here.
+```{r}
+data %>%
+    group_by(Outlet_Location_Type, Outlet_Type, Outlet_Size) %>%
+    count()
+```
+
+A visualization of Outlet_Type and Outlet_Size. It looks like blank Outlet_Size that are Outlet_Location_Type = Tier 2 are going to be small, with further evidence from that both are Supermarket Type1.
+```{r}
+ggplot(data, aes(Outlet_Size, Outlet_Location_Type, color=Outlet_Type)) +
+    geom_point()
+```
+
+Fixing the blank Outlet_Size. Output verifies that it worked, we no longer have any blank values.
+```{r}
+data <- data %>%
+    mutate(Outlet_Size = replace(Outlet_Size, Outlet_Size == '' & Outlet_Location_Type == 'Tier 2', 'Small')) %>%
+    mutate(Outlet_Size = replace(Outlet_Size, Outlet_Size == '' & Outlet_Location_Type == 'Tier 3', 'Medium'))
+
+sapply(data, function(x) sum(x == ''))
+```
+
+Possible to condense the Item_Type down into 3 categories; FD-Food, NC-Non-Consumable, DR:Drink. However I'll hold off on this and see how well the model does. I'm not quite sure how necessary this is.
+```{r}
+data <- data %>%
+    separate(Item_Identifier, c('Item_Category', 'Item_Identifier'), sep=2)
+```
+
+
+## 3 EDA
+```{r}
+sapply(data, function(x) n_distinct(x))
+summary(data)
+```
+
+
+```{r}
+ggplot(data, aes(Item_Type, Item_Outlet_Sales)) +
+    geom_bar(stat='identity') +
+    theme(axis.text.x = element_text(angle=60, vjust=0.75))
+```
+
+Are certain Item_Type given more visibilty than others? No clear connection
+```{r}
+ggplot(data, aes(Item_Type, Item_Visibility)) +
+    geom_boxplot() +
+    theme(axis.text.x = element_text(angle=90, vjust=0.8))
+```
+
+```{r}
+ggplot(train, aes(Item_Visibility, Item_Outlet_Sales, color = Item_Type)) + 
+    geom_point(size = 0.75)
+```
+
+
+## 4. Model
+```{r}
+mse <- function(x, y) {
+    mean((x - y)^2)
+}
+```
+
+
+Creating the train/test split again
+```{r}
+set.seed(1)
+train <- data[1:8523,]
+train_reg <- train
+
+train_samp <- sample(1:nrow(train), nrow(train)*0.7)
+
+
+test <- train[-train_samp,]
+test <- test[,-c(2)]
+
+train <- train[train_samp,]
+train <- train[,-c(2)]
+
+real_test <- data[8524:nrow(data),]
+```
+
+Baseline model
+```{r}
+mean_sales <- mean(train$Item_Outlet_Sales)
+
+base1 <- tibble(test$Outlet_Identifier, 'Item_Outlet_Sales' = mean_sales)
+
+mse_base1 <- mse(base1[,2], test[,12])
+cat('MSE of baseline model:', mse_base1)
+```
+
+
+Baseline linear model
+```{r}
+store_lm <- lm(Item_Outlet_Sales~., train)
+
+summary(store_lm)
+
+plot(store_lm)
+```
+
+The linear model preforms far worse than the baseline model, meaning that it's identifying the incorrect parameters.
+```{r}
+lm_pred <- predict(store_lm, newx=test)
+
+mse_lm <- mse(lm_pred, test[,12])
+cat('Linear model MSE: ', mse_lm)
+```
+
+
+```{r}
+cor_df <- data %>%
+    select_if(is.numeric)
+cor_df <- cor_df[-1]
+
+head(cor_df)
+cor(cor_df)
+```
+
+Creating lambdas which we'll run lasso regression over. Prepparing the data for lasso regression
+```{r}
+train_reg <- data[1:8523,]
+grid <- 10^seq(10, -2, length=100)
+
+mod_mat <- model.matrix(Item_Outlet_Sales~.-Item_Identifier,  train_reg)
+
+train_reg <- mod_mat[train_samp,]
+train_y <- train$Item_Outlet_Sales
+test_reg <- mod_mat[-train_samp,]
+test_y <- test$Item_Outlet_Sales
+```
+
+
+convert factors to dummy variables
+```{r}
+store_lasso <- glmnet(train_reg, train_y, lambda=grid)
+
+plot(store_lasso)
+```
+
+```{r}
+store_lasso_cv <- cv.glmnet(train_reg, train_y)
+plot(store_lasso_cv)
+```
+
+Running the lasso regression with the best lambda picked by cross validation. The lasso regression preforms far better than the linear model and the bettter than the baseline model.
+```{r}
+best_lam <- store_lasso_cv$lambda.min
+cat('Best lambda is:', best_lam)
+
+cvlasso_pred <- predict(store_lasso, s=best_lam, newx=test_reg)
+
+cat('\nLasso regularizaion MSE:', mse(cvlasso_pred, test_y))
+```
+
+
+```{r}
+cv_lasso_coef <- predict(store_lasso, type='coefficients', s=best_lam)
+cv_lasso_coef
+```
+
+```{r}
+cv_coef_mat <- summary(cv_lasso_coef)
+cv_coef_df <- tibble(Factor = rownames(cv_lasso_coef)[cv_coef_mat$i],
+       Coefficient = cv_coef_mat$x) %>%
+    mutate(Factor = fct_reorder(Factor, Coefficient))
+ggplot(cv_coef_df, aes(Factor, Coefficient)) +
+    geom_bar(stat='identity') +
+    theme(axis.text.x = element_text(angle=90, vjust=0.75))
+```
+
+Log transformation of the coefficients. Note that positive and negative values are plotted on the same axis and are color coordinated. 
+```{r}
+neg <- cv_coef_df %>%
+    filter(Coefficient < 0) %>%
+    mutate(Coefficient = -1*Coefficient) %>%
+    mutate(Sign = as.factor('-'))
+
+pos <- cv_coef_df %>%
+    filter(Coefficient > 0) %>%
+    mutate(Sign = as.factor('+'))
+
+log_variable <- rbind(neg, pos) %>%
+    mutate(Factor = fct_reorder(Factor, Coefficient))
+
+ggplot(log_variable, aes(Factor, Coefficient, fill=Sign)) +
+    geom_bar(stat='identity') +
+    scale_y_continuous(trans='log10') +
+    ylab('log(coefficient)') + 
+    theme(axis.text.x = element_text(angle=90, vjust=0.75))
+```
+
+Things I learned:
+lm to some extent fitlers out highly correlated predictors. If I ran years_open and Outlet_Estblishment_year at the same time, Years_Open would become NA because signularities.
+
+
+
+
+
+
+
+
+
+
