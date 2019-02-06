@@ -19,15 +19,24 @@ library(randomForest)
 
 BigMart is a fictional chain of grocery stores that sells a variety of products, from household supplies to alcohol. Like many other fields BigMart wants to predict the sale of a product. The matter is more pressing because many products have a short shelf life, meaning that the company can potential lose thousands of dollars if they buy the wrong produt. Therefore, our goal is to use data about the products and about each store to predict the future sale of a product.
 
+Conclusions:
 
-
+- Item_MRP (price) is by far the strongest predictor of Item_Outlet_Sales (sales). It predicts sales
+- The next best predictors of sales are all related to the outlet. Outlet_Type, Outlet_Identifier, and Years_Open all predict sales responibly well.  
+- The reasons why certain stores do better than others is beyond the scope of this dataset, we simply do not have the data to investigate. That being said, finding the reasons why certain stores preform better than others would be a strong first step in increasing sales across all stores.
 
 We'll go through a 5 step process:
+
 - Processing the data
 - Feature engineering
 - Exploratory data analysis
 - Model building
 - Analysis
+
+
+```{r}
+# ggplot(data, aes())
+```
 
 
 ## 1. Read and clean data
@@ -77,7 +86,7 @@ data <- data %>%
 data$Item_Category = as.factor(data$Item_Category)
 ```
 
-```{r}
+```{r weight, message=FALSE, warning=FALSE}
 impute_mean <- function(x) replace(x, is.na(x), mean(x, na.rm = T))
 
 data <- data %>%
@@ -115,9 +124,12 @@ data <- data %>%
 Some highlights of the data processing:
 
 - Items with missing weights were replaced with their respective Item_Type's mean.
-- 
+- Item_Fat_Content was standardized.
+- Items with zero Item_Visibility made no sense, how could customers buy something they don't know exist in the store. Item_Visibility was set to the mean Item_Visbility of that Item_Type because in theory Item_Types are grouped together in store, ie all the peanut butter is paced next to each other yielding relatively similar Item_Visbility.
 
 ## 3. EDA
+
+For the full EDA please see the linked full code. The graphs presented below are the most interesting.
 ```{r}
 sapply(data, function(x) n_distinct(x))
 summary(data)
@@ -175,24 +187,16 @@ mse_base1 <- mse(base1[,2], test[,12])
 cat('MSE of baseline model:', mse_base1)
 ```
 
-
+Finally, we ran a random forest model. It preforms far better than the baseline model and the lasso regression.
 ```{r}
 store_rf <- randomForest(Item_Outlet_Sales~., train, mtry=3, importance=T)
 store_rf
-```
 
-```{r}
-plot(store_rf)
-```
-
-
-```{r}
 pred_rf <- predict(store_rf, newdata=test)
 cat('MSE of the random forest model:', mse(pred_rf, test[,12]))
 ```
 
-
-
+The graph of relative feature importance tells us what features are the best predictors of Item_Outlet_Sales. Item_MRP is by far the greatest predictor of sales while Outlet_Type, Outlet_Identifier, and Years_Open are also good predictors.
 ```{r}
 feat_imp <- store_rf %>%
     importance(type=1) %>%
@@ -210,10 +214,6 @@ ggplot(feat_imp, aes(Feature, relative_imp)) +
     ylab('Relative importance') +
     ggtitle('Relative importance of features from Random Forest model')
 ```
-
-
-
-Outlet_Identifier and Item_MRP are highest
 
 
 Things I learned:
