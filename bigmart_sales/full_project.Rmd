@@ -14,16 +14,16 @@ library(tidyverse)
 library(glmnet)
 library(randomForest)
 library(scales)
+library(here)
 ```
 
 ## 1 Read and clean data
 
 Reading in the data. Reading in the data with read.csv set the categorical variables correctly as factors, while read_csv set them to char.
-```{r}
-train <- read.csv('Train.csv')
-test <- read.csv('Test.csv')
-
-head(train)
+```{r, results='hide'}
+here('bigmart_sales')
+train <- read.csv('data/Train.csv')
+test <- read.csv('data/Test.csv')
 ```
 
 Creating a combined df so that I can clean/eda on all the available data.

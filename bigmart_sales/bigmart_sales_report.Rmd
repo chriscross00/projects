@@ -43,20 +43,19 @@ We'll go through a 5 step process:
 ## 1 Read and clean data
 
 Because the dataset is relatively small we can read it all into the R. We combined both the training and test dataset to ensure we got a complete picture of the data.
-```{r}
-here('')
-train <- read.csv('Train.csv')
-test <- read.csv('Test.csv')
+```{r, message=FALSE, results='hide'}
+here('bigmart_sales')
+train <- read.csv('data/Train.csv')
+test <- read.csv('data/Test.csv')
+```
 
+The summary function gives us a quick look at the type of data we are working with and where we need to clean.
+```{r}
 head(train)
 
 test <- mutate(test, Item_Outlet_Sales = 0)
 
 data <- rbind(train, test)
-```
-
-The summary function gives us a quick look at the type of data we are working with and where we need to clean.
-```{r}
 summary(data)
 ```
 

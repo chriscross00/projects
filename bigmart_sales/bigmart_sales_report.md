@@ -8,6 +8,7 @@ library(tidyverse)
 library(glmnet)
 library(randomForest)
 library(scales)
+library(here)
 ```
 
 To see all the code of this project go to: [Full](https://github.com/chriscross00/projects/blob/master/bigmart-sales-data/pre-kaggle.md)
@@ -35,9 +36,14 @@ We'll go through a 5 step process:
 Because the dataset is relatively small we can read it all into the R. We combined both the training and test dataset to ensure we got a complete picture of the data.
 
 ``` r
-train <- read.csv('Train.csv')
-test <- read.csv('Test.csv')
+here('bigmart_sales')
+train <- read.csv('data/Train.csv')
+test <- read.csv('data/Test.csv')
+```
 
+The summary function gives us a quick look at the type of data we are working with and where we need to clean.
+
+``` r
 head(train)
 ```
 
@@ -74,11 +80,6 @@ head(train)
 test <- mutate(test, Item_Outlet_Sales = 0)
 
 data <- rbind(train, test)
-```
-
-The summary function gives us a quick look at the type of data we are working with and where we need to clean.
-
-``` r
 summary(data)
 ```
 

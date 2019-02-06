@@ -8,6 +8,7 @@ library(tidyverse)
 library(glmnet)
 library(randomForest)
 library(scales)
+library(here)
 ```
 
 1 Read and clean data
@@ -16,40 +17,10 @@ library(scales)
 Reading in the data. Reading in the data with read.csv set the categorical variables correctly as factors, while read\_csv set them to char.
 
 ``` r
-train <- read.csv('Train.csv')
-test <- read.csv('Test.csv')
-
-head(train)
+here('bigmart_sales')
+train <- read.csv('data/Train.csv')
+test <- read.csv('data/Test.csv')
 ```
-
-    ##   Item_Identifier Item_Weight Item_Fat_Content Item_Visibility
-    ## 1           FDA15       9.300          Low Fat      0.01604730
-    ## 2           DRC01       5.920          Regular      0.01927822
-    ## 3           FDN15      17.500          Low Fat      0.01676007
-    ## 4           FDX07      19.200          Regular      0.00000000
-    ## 5           NCD19       8.930          Low Fat      0.00000000
-    ## 6           FDP36      10.395          Regular      0.00000000
-    ##               Item_Type Item_MRP Outlet_Identifier
-    ## 1                 Dairy 249.8092            OUT049
-    ## 2           Soft Drinks  48.2692            OUT018
-    ## 3                  Meat 141.6180            OUT049
-    ## 4 Fruits and Vegetables 182.0950            OUT010
-    ## 5             Household  53.8614            OUT013
-    ## 6          Baking Goods  51.4008            OUT018
-    ##   Outlet_Establishment_Year Outlet_Size Outlet_Location_Type
-    ## 1                      1999      Medium               Tier 1
-    ## 2                      2009      Medium               Tier 3
-    ## 3                      1999      Medium               Tier 1
-    ## 4                      1998                           Tier 3
-    ## 5                      1987        High               Tier 3
-    ## 6                      2009      Medium               Tier 3
-    ##         Outlet_Type Item_Outlet_Sales
-    ## 1 Supermarket Type1         3735.1380
-    ## 2 Supermarket Type2          443.4228
-    ## 3 Supermarket Type1         2097.2700
-    ## 4     Grocery Store          732.3800
-    ## 5 Supermarket Type1          994.7052
-    ## 6 Supermarket Type2          556.6088
 
 Creating a combined df so that I can clean/eda on all the available data.
 
@@ -215,7 +186,7 @@ ggplot(item_type_na, aes(Item_Type, n)) +
     theme(axis.text.x = element_text(angle=75, vjust=0.7))
 ```
 
-![](pre-kaggle_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 Oh my, so after hours of trying to figure out how to replace all the NAs with the means for that group I came across the answer.
 
@@ -242,7 +213,7 @@ ggplot(data, aes(Item_Visibility, Item_Outlet_Sales)) +
     geom_point(size = 0.75)
 ```
 
-![](pre-kaggle_files/figure-markdown_github/unnamed-chunk-10-1.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 Having an item with zero Item\_Visibility that has sales makes little sense. I'm going to make the assumption that people aren't buying items that are stored in the back of the store. Running with Item\_Outlet\_Sales == 0 yields 0 results, so all the cases of Item\_Visibility are beening bought. We'll set the Item\_Visibilty for equal to the mean of Item\_Visibility.
 
@@ -325,7 +296,7 @@ ggplot(data, aes(Outlet_Size, Outlet_Location_Type, color=Outlet_Type)) +
     geom_point()
 ```
 
-![](pre-kaggle_files/figure-markdown_github/unnamed-chunk-14-1.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-14-1.png)
 
 Fixing the blank Outlet\_Size. Output verifies that it worked, we no longer have any blank values.
 
@@ -415,7 +386,7 @@ ggplot(data, aes(Item_Type, Item_Outlet_Sales)) +
     theme(axis.text.x = element_text(angle=60, vjust=0.75))
 ```
 
-![](pre-kaggle_files/figure-markdown_github/unnamed-chunk-18-1.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-18-1.png)
 
 Are certain Item\_Type given more visibilty than others? No clear connection
 
@@ -425,14 +396,14 @@ ggplot(data, aes(Item_Type, Item_Visibility)) +
     theme(axis.text.x = element_text(angle=90, vjust=0.8))
 ```
 
-![](pre-kaggle_files/figure-markdown_github/unnamed-chunk-19-1.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-19-1.png)
 
 ``` r
 ggplot(train, aes(Item_Visibility, Item_Outlet_Sales, color = Item_Type)) + 
     geom_point(size = 0.75)
 ```
 
-![](pre-kaggle_files/figure-markdown_github/unnamed-chunk-20-1.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-20-1.png)
 
 4. Model
 --------
@@ -543,7 +514,7 @@ summary(store_lm)
 plot(store_lm)
 ```
 
-![](pre-kaggle_files/figure-markdown_github/unnamed-chunk-24-1.png)![](pre-kaggle_files/figure-markdown_github/unnamed-chunk-24-2.png)![](pre-kaggle_files/figure-markdown_github/unnamed-chunk-24-3.png)![](pre-kaggle_files/figure-markdown_github/unnamed-chunk-24-4.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-24-1.png)![](full_project_files/figure-markdown_github/unnamed-chunk-24-2.png)![](full_project_files/figure-markdown_github/unnamed-chunk-24-3.png)![](full_project_files/figure-markdown_github/unnamed-chunk-24-4.png)
 
 The linear model preforms far worse than the baseline model, meaning that it's identifying the incorrect parameters.
 
@@ -634,7 +605,7 @@ m1 <- tuneRF(
     ## mtry = 6     OOB error = 1277679 
     ## -0.0332107 0.01
 
-![](pre-kaggle_files/figure-markdown_github/unnamed-chunk-29-1.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-29-1.png)
 
 ``` r
 feat_imp <- store_rf %>%
@@ -654,7 +625,7 @@ ggplot(feat_imp, aes(Feature, relative_imp)) +
     ggtitle('Relative importance of features from Random Forest model')
 ```
 
-![](pre-kaggle_files/figure-markdown_github/unnamed-chunk-30-1.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-30-1.png)
 
 ``` r
 total_sales <- data %>%
@@ -672,7 +643,7 @@ ggplot(total_sales, aes(Outlet_Identifier, Total_Sales)) +
     theme(panel.grid.major = element_line(color = 'gray85'))
 ```
 
-![](pre-kaggle_files/figure-markdown_github/unnamed-chunk-31-1.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-31-1.png)
 
 Item\_Fat\_Content, no difference
 
@@ -681,7 +652,7 @@ ggplot(data, aes(Item_Fat_Content, Item_Outlet_Sales)) +
     geom_boxplot()
 ```
 
-![](pre-kaggle_files/figure-markdown_github/unnamed-chunk-32-1.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-32-1.png)
 
 ``` r
 total <- train_reg %>% group_by(Outlet_Type) %>%
