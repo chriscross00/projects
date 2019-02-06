@@ -15,6 +15,7 @@ library(tidyverse)
 library(glmnet)
 library(randomForest)
 library(scales)
+library(here)
 ```
 
 To see all the code of this project go to: [Full](https://github.com/chriscross00/projects/blob/master/bigmart-sales-data/pre-kaggle.md)
@@ -43,6 +44,7 @@ We'll go through a 5 step process:
 
 Because the dataset is relatively small we can read it all into the R. We combined both the training and test dataset to ensure we got a complete picture of the data.
 ```{r}
+here('')
 train <- read.csv('Train.csv')
 test <- read.csv('Test.csv')
 
