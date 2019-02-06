@@ -2,7 +2,9 @@
 title: "BigMart Sales Regression"
 author: "Christoper Chan"
 date: "February 4, 2019"
-output: html_document
+output: 
+    html_document:
+        code_folding: hide
 ---
 
 ```{r setup, include=FALSE}
@@ -12,9 +14,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(glmnet)
+library(randomForest)
 ```
 
-BigMart is a fictional chain of grocery stores that sells a variety of products, from household supplies to alcohol. Like many other fields BigMart wants to predict the sale of an product. The matter is more pressing because many products have a short shelf life, meaning that the company can potential lose thousands of dollars if they buy the wrong produt. Therefore our goal is to use data about the products and about each store to predict the future sale of a product.
+BigMart is a fictional chain of grocery stores that sells a variety of products, from household supplies to alcohol. Like many other fields BigMart wants to predict the sale of a product. The matter is more pressing because many products have a short shelf life, meaning that the company can potential lose thousands of dollars if they buy the wrong produt. Therefore, our goal is to use data about the products and about each store to predict the future sale of a product.
 
 
 ## 1. Read and clean data
@@ -36,7 +39,7 @@ summary(data)
 
 Because our response variable is not normally distributed, it is skewed highly right skewed, a key assumption of linear regression is violated, that the response variable is normally distributed. In the context of a grocery store a highly right skewed Item_Outlet_Sales distribution makes sense: people aren't all buying one product, instead a variety of products are being sold at relatively low quantities.
 
-Instead of a lienar model we'll run a random forest model which doesn't carry all the assumptions of linear regression.
+Instead of a linear model we'll run a random forest model which doesn't carry all the assumptions of linear regression.
 
 
 Items that are less than 2,500 represent []% of the total sales.
@@ -75,27 +78,139 @@ sapply(data, function(x) sum(x == ''))
 
 
 ```{r}
-item_type_na <- data %>%
-    group_by(Item_Type) %>%
-    filter(is.na(Item_Weight)) %>%
-    count()
+impute_mean <- function(x) replace(x, is.na(x), mean(x, na.rm = T))
 
-ggplot(item_type_na, aes(Item_Type, n)) +
-    geom_bar(stat = 'identity') +
-    theme(axis.text.x = element_text(angle=75, vjust=0.7))
-
-b <- data %>%
+data <- data %>%
     group_by(Item_Type) %>%
-    summarise_at(vars(Item_Weight), funs(mean(., na.rm=T)))
+    mutate(Item_Weight = impute_mean(Item_Weight))
 ```
 
+```{r fat, message=FALSE}
+data <- data %>%
+    mutate(Item_Fat_Content = replace(Item_Fat_Content, Item_Fat_Content == 'LF', 'Low Fat')) %>%
+    mutate(Item_Fat_Content = replace(Item_Fat_Content, Item_Fat_Content == 'low fat', 'Low Fat')) %>%
+    mutate(Item_Fat_Content = replace(Item_Fat_Content, Item_Fat_Content == 'reg', 'Regular')) %>%
+    droplevels()
+```
+
+```{r vis}
+data <- data %>%
+    group_by(Item_Type) %>%
+    mutate(Item_Visibility = replace(Item_Visibility, Item_Visibility == 0, mean(Item_Visibility))) %>%
+    mutate(Item_Visibility = as.double(Item_Visibility))
+```
+
+```{r year}
+data <- data %>%
+    mutate(Years_Open = 2013 -Outlet_Establishment_Year)
+data <- data[, c(1,2,3,4,5,6,7,13,9,10,11,12)]
+```
+
+```{r outlet}
+data <- data %>%
+    mutate(Outlet_Size = replace(Outlet_Size, Outlet_Size == '' & Outlet_Location_Type == 'Tier 2', 'Small')) %>%
+    mutate(Outlet_Size = replace(Outlet_Size, Outlet_Size == '' & Outlet_Location_Type == 'Tier 3', 'Medium'))
+```
+
+```{r item}
+data <- data %>%
+    separate(Item_Identifier, c('Item_Category', 'Item_Identifier'), sep=2)
+data$Item_Category = as.factor(data$Item_Category)
+```
+
+
 ## 3. EDA
+```{r}
+sapply(data, function(x) n_distinct(x))
+summary(data)
+```
+
 ## 4. Model Use the RF model
 ```{r mse, echo=FALSE, results='hide'}
+
 mse <- function(x, y) {
     mean((x - y)^2)
 }
 ```
+
+
+```{r, echo=FALSE}
+set.seed(1)
+train <- data[1:8523,]
+train_reg <- train
+
+train_samp <- sample(1:nrow(train), nrow(train)*0.7)
+
+
+test <- train[-train_samp,]
+test <- test[,-c(2)]
+
+train <- train[train_samp,]
+train <- train[,-c(2)]
+
+real_test <- data[8524:nrow(data),]
+```
+
+We constructed a baseline model to see if the more advanced models we create are worth the effort. The baseline model takes the mean of the Item_Outlet_Sales as the predicted sales of each item.
+```{r}
+mean_sales <- mean(train$Item_Outlet_Sales)
+
+base1 <- tibble(test$Outlet_Identifier, 'Item_Outlet_Sales' = mean_sales)
+
+mse_base1 <- mse(base1[,2], test[,12])
+cat('MSE of baseline model:', mse_base1)
+```
+
+mtry8: 1278600
+```{r}
+store_rf <- randomForest(Item_Outlet_Sales~., train, mtry=3, importance=T)
+store_rf
+```
+
+```{r}
+plot(store_rf)
+```
+```{r}
+m1 <- tuneRF(
+    x = x1,
+    y = train$Item_Outlet_Sales,
+    ntreeTry = 250,
+    mtryStart = 4,
+    stepFactor = 1.5,
+    improve = 0.01
+)
+```
+
+
+```{r}
+pred_rf <- predict(store_rf, newdata=test)
+mse(pred_rf, test[,12])
+
+a <- rownames(importance(store_rf))
+
+
+```
+
+
+
+```{r}
+feat_imp <- store_rf %>%
+    importance(type=1) %>%
+    as.tibble() %>%
+    rename(Inc_MSE= '%IncMSE') %>%
+    mutate(Feature = rownames(importance(store_rf))) %>%
+    select(Feature, Inc_MSE) %>%
+    mutate(relative_imp = Inc_MSE/sum(Inc_MSE)) %>%
+    mutate(Feature = factor(Feature, levels=Feature[order(Inc_MSE)]))
+
+
+ggplot(feat_imp, aes(Feature, relative_imp)) +
+    geom_bar(stat='identity') +
+    coord_flip()
+
+```
+
+
 
 Outlet_Identifier and Item_MRP are highest 
 

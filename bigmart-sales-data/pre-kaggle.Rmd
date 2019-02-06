@@ -64,10 +64,6 @@ item_type_na <- data %>%
 ggplot(item_type_na, aes(Item_Type, n)) +
     geom_bar(stat = 'identity') +
     theme(axis.text.x = element_text(angle=75, vjust=0.7))
-
-b <- data %>%
-    group_by(Item_Type) %>%
-    summarise_at(vars(Item_Weight), funs(mean(., na.rm=T)))
 ```
 
 Oh my, so after hours of trying to figure out how to replace all the NAs with the means for that group I came across the answer. 
@@ -321,6 +317,45 @@ store_rf
 pred_rf <- predict(store_rf, newdata=test)
 mse(pred_rf, test[,12])
 importance(store_rf)
+```
+
+```{r}
+which.min(store_rf$mse)
+
+sqrt(store_rf$mse[which.min(store_rf$mse)])
+```
+
+
+
+Tuning RF for the mtry parameter. Results are that 3 is the best and the process stops at mtry=6, meaning the more complex trees preform worse than less complex trees.
+```{r}
+x1 <- train[,-12]
+
+m1 <- tuneRF(
+    x = x1,
+    y = train$Item_Outlet_Sales,
+    ntreeTry = 250,
+    mtryStart = 4,
+    stepFactor = 1.5,
+    improve = 0.01
+)
+```
+
+
+```{r}
+feat_imp <- store_rf %>%
+    importance(type=1) %>%
+    as.tibble() %>%
+    rename(Inc_MSE= '%IncMSE') %>%
+    mutate(Feature = rownames(importance(store_rf))) %>%
+    select(Feature, Inc_MSE) %>%
+    mutate(relative_imp = Inc_MSE/sum(Inc_MSE)) %>%
+    mutate(Feature = factor(Feature, levels=Feature[order(Inc_MSE)]))
+
+
+ggplot(feat_imp, aes(Feature, relative_imp)) +
+    geom_bar(stat='identity') +
+    coord_flip()
 ```
 
 
