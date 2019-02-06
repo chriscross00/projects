@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(glmnet)
 library(randomForest)
+library(scales)
 ```
 
 BigMart is a fictional chain of grocery stores that sells a variety of products, from household supplies to alcohol. Like many other fields BigMart wants to predict the sale of a product. The matter is more pressing because many products have a short shelf life, meaning that the company can potential lose thousands of dollars if they buy the wrong produt. Therefore, our goal is to use data about the products and about each store to predict the future sale of a product.
@@ -33,9 +34,24 @@ We'll go through a 5 step process:
 - Model building
 - Analysis
 
+Years vs outlet
+Types of stores
+    
 
 ```{r}
-# ggplot(data, aes())
+total_sales <- data %>%
+    group_by(Outlet_Identifier) %>%
+    summarise(Total_Sales = sum(Item_Outlet_Sales))
+
+ggplot(total_sales, aes(Outlet_Identifier, Total_Sales)) +
+    geom_point(size=3, color='#56B4E9') +
+    scale_y_continuous(labels=dollar, limits=c(0, 4000000)) +
+    theme(panel.grid.major.y = element_line(color = 'gray30'))
+```
+
+```{r}
+ggplot(data, aes(Outlet_Identifier, Item_Outlet_Sales)) +
+    geom_boxplot(stat='identity')
 ```
 
 
