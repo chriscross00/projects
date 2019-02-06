@@ -20,26 +20,36 @@ library(randomForest)
 BigMart is a fictional chain of grocery stores that sells a variety of products, from household supplies to alcohol. Like many other fields BigMart wants to predict the sale of a product. The matter is more pressing because many products have a short shelf life, meaning that the company can potential lose thousands of dollars if they buy the wrong produt. Therefore, our goal is to use data about the products and about each store to predict the future sale of a product.
 
 
+
+
+We'll go through a 5 step process:
+- Processing the data
+- Feature engineering
+- Exploratory data analysis
+- Model building
+- Analysis
+
+
 ## 1. Read and clean data
 
+Because the dataset is relatively small we can read it all into the R. We combined both the training and test dataset to ensure we got a complete picture of the data.
 ```{r}
 train <- read.csv('Train.csv')
 test <- read.csv('Test.csv')
 
 head(train)
-```
 
-```{r}
 test <- mutate(test, Item_Outlet_Sales = 0)
 
 data <- rbind(train, test)
+```
 
+The summary function gives us a quick look at the type of data we are working with and where we need to clean.
+```{r}
 summary(data)
 ```
 
-Because our response variable is not normally distributed, it is skewed highly right skewed, a key assumption of linear regression is violated, that the response variable is normally distributed. In the context of a grocery store a highly right skewed Item_Outlet_Sales distribution makes sense: people aren't all buying one product, instead a variety of products are being sold at relatively low quantities.
 
-Instead of a linear model we'll run a random forest model which doesn't carry all the assumptions of linear regression.
 
 
 Items that are less than 2,500 represent []% of the total sales.
@@ -56,26 +66,16 @@ Stores that are X years old tend to do better
 X types of stores work better
 
 The reasons why certain stores do better than others is beyond the scope of this dataset, we simply do not have the data to investigate. That being said, finding the reasons why certain stores preform better than others would be a strong first step in increasing sales across all stores. 
-```{r}
-ggplot(data, aes(Item_Outlet_Sales)) + 
-    geom_density()
-```
 
-```{r}
-head(data)
-```
 
 ## 2. Feature Engineering/Cleaning
 
-```{r}
-sapply(data[,2:ncol(data)], levels)
+Almost all of the features had to be engineered or cleaned in some capacity. Each chunk of code is a seperate feature being altered, this breaks the feature engineering up and keeps the code modular. Features are cleaned in order, from left to right.
+```{r item}
+data <- data %>%
+    separate(Item_Identifier, c('Item_Category', 'Item_Identifier'), sep=2)
+data$Item_Category = as.factor(data$Item_Category)
 ```
-
-```{r}
-sapply(data, function(x) sum(is.na(x)))
-sapply(data, function(x) sum(x == ''))
-```
-
 
 ```{r}
 impute_mean <- function(x) replace(x, is.na(x), mean(x, na.rm = T))
@@ -103,7 +103,7 @@ data <- data %>%
 ```{r year}
 data <- data %>%
     mutate(Years_Open = 2013 -Outlet_Establishment_Year)
-data <- data[, c(1,2,3,4,5,6,7,13,9,10,11,12)]
+data <- data[, c(1,2,3,4,5,6,7,14,8,10,11,12,13)]
 ```
 
 ```{r outlet}
@@ -112,12 +112,10 @@ data <- data %>%
     mutate(Outlet_Size = replace(Outlet_Size, Outlet_Size == '' & Outlet_Location_Type == 'Tier 3', 'Medium'))
 ```
 
-```{r item}
-data <- data %>%
-    separate(Item_Identifier, c('Item_Category', 'Item_Identifier'), sep=2)
-data$Item_Category = as.factor(data$Item_Category)
-```
+Some highlights of the data processing:
 
+- Items with missing weights were replaced with their respective Item_Type's mean.
+- 
 
 ## 3. EDA
 ```{r}
@@ -125,7 +123,18 @@ sapply(data, function(x) n_distinct(x))
 summary(data)
 ```
 
-## 4. Model Use the RF model
+Because our response variable is not normally distributed, it is skewed highly right skewed, a key assumption of linear regression is violated, that the response variable is normally distributed. In the context of a grocery store a highly right skewed Item_Outlet_Sales distribution makes sense: people aren't all buying one product, instead a variety of products are being sold at relatively low quantities.
+
+Instead of a linear model we'll run a random forest model which doesn't carry all the assumptions of linear regression.
+
+```{r}
+ggplot(data, aes(Item_Outlet_Sales)) + 
+    geom_density(fill='#56B4E9') +
+    ggtitle('Distribution of the sales')
+```
+
+
+## 4. Model building
 ```{r mse, echo=FALSE, results='hide'}
 
 mse <- function(x, y) {
@@ -151,6 +160,11 @@ train <- train[,-c(2)]
 real_test <- data[8524:nrow(data),]
 ```
 
+
+```{r}
+summary(test)
+```
+
 We constructed a baseline model to see if the more advanced models we create are worth the effort. The baseline model takes the mean of the Item_Outlet_Sales as the predicted sales of each item.
 ```{r}
 mean_sales <- mean(train$Item_Outlet_Sales)
@@ -161,7 +175,7 @@ mse_base1 <- mse(base1[,2], test[,12])
 cat('MSE of baseline model:', mse_base1)
 ```
 
-mtry8: 1278600
+
 ```{r}
 store_rf <- randomForest(Item_Outlet_Sales~., train, mtry=3, importance=T)
 store_rf
@@ -170,25 +184,11 @@ store_rf
 ```{r}
 plot(store_rf)
 ```
-```{r}
-m1 <- tuneRF(
-    x = x1,
-    y = train$Item_Outlet_Sales,
-    ntreeTry = 250,
-    mtryStart = 4,
-    stepFactor = 1.5,
-    improve = 0.01
-)
-```
 
 
 ```{r}
 pred_rf <- predict(store_rf, newdata=test)
-mse(pred_rf, test[,12])
-
-a <- rownames(importance(store_rf))
-
-
+cat('MSE of the random forest model:', mse(pred_rf, test[,12]))
 ```
 
 
@@ -205,14 +205,15 @@ feat_imp <- store_rf %>%
 
 
 ggplot(feat_imp, aes(Feature, relative_imp)) +
-    geom_bar(stat='identity') +
-    coord_flip()
-
+    geom_bar(stat='identity', fill='#56B4E9') +
+    coord_flip() +
+    ylab('Relative importance') +
+    ggtitle('Relative importance of features from Random Forest model')
 ```
 
 
 
-Outlet_Identifier and Item_MRP are highest 
+Outlet_Identifier and Item_MRP are highest
 
 
 Things I learned:

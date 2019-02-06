@@ -354,8 +354,10 @@ feat_imp <- store_rf %>%
 
 
 ggplot(feat_imp, aes(Feature, relative_imp)) +
-    geom_bar(stat='identity') +
-    coord_flip()
+    geom_bar(stat='identity', fill='#56B4E9') +
+    coord_flip() +
+    ylab('Relative importance') +
+    ggtitle('Relative importance of features from Random Forest model')
 ```
 
 
