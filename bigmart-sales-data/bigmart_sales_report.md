@@ -10,7 +10,7 @@ library(randomForest)
 library(scales)
 ```
 
-Clicking on the Code button will show the code behind each figure. To see the full version of this project go to:
+To see all the code of this project go to: [Full](https://github.com/chriscross00/projects/blob/master/bigmart-sales-data/pre-kaggle.md)
 
 BigMart is a fictional chain of grocery stores that sells a variety of products, from household supplies to alcohol. Like many other fields BigMart wants to predict the sale of a product. The matter is more pressing because many products have a short shelf life, meaning that the company can potential lose thousands of dollars if they buy the wrong produt. Therefore, our goal is to use data about the products and about each store to predict the future sale of a product.
 
@@ -29,8 +29,8 @@ We'll go through a 5 step process:
 -   Model building
 -   Analysis
 
-1. Read and clean data
-----------------------
+1 Read and clean data
+---------------------
 
 Because the dataset is relatively small we can read it all into the R. We combined both the training and test dataset to ensure we got a complete picture of the data.
 
@@ -115,8 +115,8 @@ summary(data)
     ##                           Max.   :13087.0  
     ## 
 
-2. Feature Engineering/Cleaning
--------------------------------
+2 Feature Engineering/Cleaning
+------------------------------
 
 Almost all of the features had to be engineered or cleaned in some capacity. Each chunk of code is a seperate feature being altered, this breaks the feature engineering up and keeps the code modular. Features are cleaned in order, from left to right.
 
@@ -167,8 +167,8 @@ Some highlights of the data processing:
 -   Item\_Fat\_Content was standardized.
 -   Items with zero Item\_Visibility made no sense, how could customers buy something they don't know exist in the store. Item\_Visibility was set to the mean Item\_Visbility of that Item\_Type because in theory Item\_Types are grouped together in store, ie all the peanut butter is paced next to each other yielding relatively similar Item\_Visbility.
 
-3. EDA
-------
+3 EDA
+-----
 
 For the full EDA please see the linked full code. The graphs presented below are the most interesting.
 
@@ -236,8 +236,8 @@ ggplot(data, aes(Item_Outlet_Sales)) +
 
 ![](bigmart_sales_report_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
-4. Model building
------------------
+4 Model building
+----------------
 
 We constructed a baseline model to see if the more advanced models we create are worth the effort. The baseline model takes the mean of the Item\_Outlet\_Sales as the predicted sales of each item.
 
@@ -296,7 +296,7 @@ ggplot(feat_imp, aes(Feature, relative_imp)) +
     ggtitle('Relative importance of features from Random Forest model')
 ```
 
-![](bigmart_sales_report_files/figure-markdown_github/unnamed-chunk-9-1.png) \#\# 5. Analysis
+![](bigmart_sales_report_files/figure-markdown_github/unnamed-chunk-9-1.png) \#\# 5 Analysis
 
 Some outlets do much better than other outlets. The maximum sales and minimum sales are labelled below. Most of the outlets have a total sales of around $2,000,000.
 

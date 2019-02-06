@@ -17,9 +17,7 @@ library(randomForest)
 library(scales)
 ```
 
-Clicking on the Code button will show the code behind each figure.
-To see the full version of this project go to: 
-
+To see all the code of this project go to: [Full](https://github.com/chriscross00/projects/blob/master/bigmart-sales-data/pre-kaggle.md)
 
 
 
@@ -61,7 +59,7 @@ summary(data)
 ```
 
 
-## 2. Feature Engineering/Cleaning
+## 2 Feature Engineering/Cleaning
 
 Almost all of the features had to be engineered or cleaned in some capacity. Each chunk of code is a seperate feature being altered, this breaks the feature engineering up and keeps the code modular. Features are cleaned in order, from left to right.
 ```{r item}
@@ -111,7 +109,7 @@ Some highlights of the data processing:
 - Item_Fat_Content was standardized.
 - Items with zero Item_Visibility made no sense, how could customers buy something they don't know exist in the store. Item_Visibility was set to the mean Item_Visbility of that Item_Type because in theory Item_Types are grouped together in store, ie all the peanut butter is paced next to each other yielding relatively similar Item_Visbility.
 
-## 3. EDA
+## 3 EDA
 
 For the full EDA please see the linked full code. The graphs presented below are the most interesting.
 ```{r}
@@ -130,7 +128,7 @@ ggplot(data, aes(Item_Outlet_Sales)) +
 ```
 
 
-## 4. Model building
+## 4 Model building
 ```{r mse, echo=FALSE, results='hide'}
 
 mse <- function(x, y) {
@@ -194,7 +192,7 @@ ggplot(feat_imp, aes(Feature, relative_imp)) +
     ylab('Relative importance') +
     ggtitle('Relative importance of features from Random Forest model')
 ```
-## 5. Analysis
+## 5 Analysis
 
 Some outlets do much better than other outlets. The maximum sales and minimum sales are labelled below. Most of the outlets have a total sales of around $2,000,000.
 ```{r}
