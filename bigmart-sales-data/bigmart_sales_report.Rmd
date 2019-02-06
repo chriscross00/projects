@@ -18,13 +18,20 @@ library(randomForest)
 library(scales)
 ```
 
+Clicking on the Code button will show the code behind each figure.
+To see the full version of this project go to: 
+
+
+
+
 BigMart is a fictional chain of grocery stores that sells a variety of products, from household supplies to alcohol. Like many other fields BigMart wants to predict the sale of a product. The matter is more pressing because many products have a short shelf life, meaning that the company can potential lose thousands of dollars if they buy the wrong produt. Therefore, our goal is to use data about the products and about each store to predict the future sale of a product.
 
 Conclusions:
 
-- Item_MRP (price) is by far the strongest predictor of Item_Outlet_Sales (sales). It predicts sales
-- The next best predictors of sales are all related to the outlet. Outlet_Type, Outlet_Identifier, and Years_Open all predict sales responibly well.  
-- The reasons why certain stores do better than others is beyond the scope of this dataset, we simply do not have the data to investigate. That being said, finding the reasons why certain stores preform better than others would be a strong first step in increasing sales across all stores.
+- Item_MRP (price) is by far the strongest predictor of Item_Outlet_Sales (sales).
+- The next best predictors of sales are all related to the outlet. Outlet_Type (with major caveats), Outlet_Identifier, and Years_Open all predict sales reasonably well.
+- Fruits and Vegetables and Snack Foods have the highest sales at $5,552,846 and represent 30% of the total sales. Item_Types such as Breakfast and Seafood have the worst total sales and account for only 2% of our total profits.
+- The reasons why certain stores do better than others is beyond the scope of this dataset, we simply do not have the data to investigate. 
 
 We'll go through a 5 step process:
 
@@ -33,26 +40,6 @@ We'll go through a 5 step process:
 - Exploratory data analysis
 - Model building
 - Analysis
-
-Years vs outlet
-Types of stores
-    
-
-```{r}
-total_sales <- data %>%
-    group_by(Outlet_Identifier) %>%
-    summarise(Total_Sales = sum(Item_Outlet_Sales))
-
-ggplot(total_sales, aes(Outlet_Identifier, Total_Sales)) +
-    geom_point(size=3, color='#56B4E9') +
-    scale_y_continuous(labels=dollar, limits=c(0, 4000000)) +
-    theme(panel.grid.major.y = element_line(color = 'gray30'))
-```
-
-```{r}
-ggplot(data, aes(Outlet_Identifier, Item_Outlet_Sales)) +
-    geom_boxplot(stat='identity')
-```
 
 
 ## 1. Read and clean data
@@ -73,24 +60,6 @@ The summary function gives us a quick look at the type of data we are working wi
 ```{r}
 summary(data)
 ```
-
-
-
-
-Items that are less than 2,500 represent []% of the total sales.
-Strategies going forward:
-
-Items:
-Item_Fat_Content has __ effect
-Unsuprisingly, one of the biggest factors for a person to buy a product is price, MRP. 
-sell more of X
-
-Stores:
-Stores X and Y need more work
-Stores that are X years old tend to do better
-X types of stores work better
-
-The reasons why certain stores do better than others is beyond the scope of this dataset, we simply do not have the data to investigate. That being said, finding the reasons why certain stores preform better than others would be a strong first step in increasing sales across all stores. 
 
 
 ## 2. Feature Engineering/Cleaning
@@ -189,10 +158,6 @@ real_test <- data[8524:nrow(data),]
 ```
 
 
-```{r}
-summary(test)
-```
-
 We constructed a baseline model to see if the more advanced models we create are worth the effort. The baseline model takes the mean of the Item_Outlet_Sales as the predicted sales of each item.
 ```{r}
 mean_sales <- mean(train$Item_Outlet_Sales)
@@ -203,7 +168,7 @@ mse_base1 <- mse(base1[,2], test[,12])
 cat('MSE of baseline model:', mse_base1)
 ```
 
-Finally, we ran a random forest model. It preforms far better than the baseline model and the lasso regression.
+Finally, we ran a random forest model. It preforms far better than the baseline model.
 ```{r}
 store_rf <- randomForest(Item_Outlet_Sales~., train, mtry=3, importance=T)
 store_rf
@@ -230,7 +195,84 @@ ggplot(feat_imp, aes(Feature, relative_imp)) +
     ylab('Relative importance') +
     ggtitle('Relative importance of features from Random Forest model')
 ```
+## 5. Analysis
+
+Some outlets do much better than other outlets. The maximum sales and minimum sales are labelled below. Most of the outlets have a total sales of around $2,000,000.
+```{r}
+total_sales <- data %>%
+    group_by(Outlet_Identifier, Years_Open) %>%
+    summarise(Total_Sales = sum(Item_Outlet_Sales))
+
+ggplot(total_sales, aes(Outlet_Identifier, Total_Sales)) +
+    geom_bar(stat='identity', fill='#56B4E9') +
+    ggtitle('Total sales per outlet') +
+    ylab('Total sales ($)') +
+    xlab('Outlet identifier') +
+    geom_text(aes(label=ifelse(Total_Sales==max(Total_Sales), as.integer(Total_Sales), '')), hjust=0.5, vjust=-0.25) +
+    geom_text(aes(label=ifelse(Total_Sales==min(Total_Sales), as.integer(Total_Sales), '')), hjust=0.5, vjust=-0.25) +
+    scale_y_continuous(labels=dollar, limits=c(0, 4000000)) +
+    theme(panel.grid.major = element_line(color = 'gray85'))
+```
+
+While Outlet_Type is the second strongest predictor of price, the results may be skewed. We don't have a even distribution of Outlet_Types, we have 2 Grocery Stores, 6 Type1, 1 Type2 and 1 Type3 Supermarkets. We don't know if these sales numbers are accurate across the board for each Outlet_Type or if the Grocery Store, Typ2 and Type3 Supermarkets represent a outlier. Therefore, Outlet_Type should be used with caution as a predictor of sales. A much better predictor is Outlet_Identifier, though it lacks some of the generalization power.
+```{r}
+data %>% 
+    group_by(Outlet_Type, Outlet_Identifier) %>%
+    tally()
+```
+
+```{r}
+total <- train_reg %>% group_by(Outlet_Type) %>%
+    summarise(total_sales = sum(Item_Outlet_Sales))
+
+avg <- train_reg %>% group_by(Outlet_Type) %>%
+    summarise(avg_sales = mean(Item_Outlet_Sales))
+
+num <- train_reg %>% group_by(Outlet_Type) %>%
+    tally()
+
+store_normalizer <- c(2,6,1,1)
+outlet_sales <- merge(total, avg, by='Outlet_Type') %>%
+    merge(num, by='Outlet_Type') %>%
+    mutate(avg_sales = avg_sales/store_normalizer) %>%
+    mutate(n = n/store_normalizer)
+outlet_sales
+```
+
+Looking at the items, Fruits and Vegetables and Snack Foods have the highest sales. Together just those two item types bring in $5,552,846 and represent 30% of the total sales across all stores. Item_Types such as Breakfast and Seafood have the worst total sales and account for only 2% of our total profits.
+
+With two types of items, Fruits and Vegetables and Snack Foods, accounting for 30% of the total sales it is essential that we at least maintain those numbers. In particular, because Fruits and Vegetables have a short shelf life, they should be closely watched over time to look for consumer trends so that we do not stock too much at once.
+The Breakfast Item_Type has lot's of potential room for improvement. It represents 1.25% of our total sales. Yet, most people eat 3 meals a day. This represents a large part of the market that we are missing. 
+```{r}
+type <- data %>%
+    group_by(Item_Type) %>%
+    summarise(Type_Sales = sum(Item_Outlet_Sales)) %>%
+    mutate(Item_Type = factor(Item_Type, levels=Item_Type[order(Type_Sales)])) %>%
+    mutate(relative_imp = Type_Sales/sum(Type_Sales))
+
+ggplot(type, aes(Item_Type, Type_Sales)) +
+    geom_bar(stat='identity', fill='#56B4E9') +
+    ggtitle('Total sales per item type') +
+    ylab('Total sales ($)') +
+    xlab('Item Type') +
+    scale_y_continuous(labels=dollar) +
+    coord_flip() +
+    theme(panel.grid.major = element_line(color = 'gray85'), panel.grid.minor.x = element_line(color = 'gray90'))
+```
 
 
-Things I learned:
-lm to some extent fitlers out highly correlated predictors. If I ran years_open and Outlet_Estblishment_year at the same time, Years_Open would become NA because signularities.
+- Grocery Stores sell far less items and by far have the lowest average sales. They sell far more low priced items than compared to Supermarket Type1.
+
+## Next Steps
+The reasons why certain stores do better than others is beyond the scope of this dataset, we simply do not have the data to investigate. That being said, finding the reasons why certain stores preform better than others would be a strong first step in increasing sales across all stores. Once we answer that we can answer the following questions with certainty: 
+
+- Stores X and Y need more work
+- Stores that are X years old tend to do better
+- X types of stores work better
+
+
+## Things I learned:
+
+- lm to some extent fitlers out highly correlated predictors. If I ran years_open and Outlet_Estblishment_year at the same time, Years_Open would become NA because signularities.
+- Feature engineering is one of the most important steps you can do to increase the accuracy of your model.
+

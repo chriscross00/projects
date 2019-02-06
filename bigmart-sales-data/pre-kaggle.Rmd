@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(glmnet)
 library(randomForest)
+library(scales)
 ```
 
 ## 1. Read and clean data
@@ -221,95 +222,13 @@ cat('Linear model MSE: ', mse_lm)
 ```
 
 
-```{r}
-cor_df <- data %>%
-    select_if(is.numeric)
-cor_df <- cor_df[-1]
-
-head(cor_df)
-cor(cor_df)
-```
-
-Creating lambdas which we'll run lasso regression over. Prepparing the data for lasso regression
-```{r}
-train_reg <- data[1:8523,]
-grid <- 10^seq(10, -2, length=100)
-
-mod_mat <- model.matrix(Item_Outlet_Sales~.-Item_Identifier,  train_reg)
-
-train_reg <- mod_mat[train_samp,]
-train_y <- train$Item_Outlet_Sales
-test_reg <- mod_mat[-train_samp,]
-test_y <- test$Item_Outlet_Sales
-```
-
-
-convert factors to dummy variables
-```{r}
-store_lasso <- glmnet(train_reg, train_y, lambda=grid)
-
-# plot(store_lasso, x=)
-```
-
-```{r}
-store_lasso_cv <- cv.glmnet(train_reg, train_y)
-plot(store_lasso_cv)
-```
-
-Running the lasso regression with the best lambda picked by cross validation. The lasso regression preforms far better than the linear model and the bettter than the baseline model.
-```{r}
-best_lam <- store_lasso_cv$lambda.min
-cat('Best lambda is:', best_lam)
-
-cvlasso_pred <- predict(store_lasso, s=best_lam, newx=test_reg)
-
-cat('\nLasso regularizaion MSE:', mse(cvlasso_pred, test_y))
-```
-
-
-```{r}
-cv_lasso_coef <- predict(store_lasso, type='coefficients', s=best_lam)
-cv_lasso_coef
-```
-
-```{r}
-cv_coef_mat <- summary(cv_lasso_coef)
-cv_coef_df <- tibble(Factor = rownames(cv_lasso_coef)[cv_coef_mat$i],
-       Coefficient = cv_coef_mat$x) %>%
-    mutate(Factor = fct_reorder(Factor, Coefficient))
-ggplot(cv_coef_df, aes(Factor, Coefficient)) +
-    geom_bar(stat='identity') +
-    theme(axis.text.x = element_text(angle=90, vjust=0.75))
-```
-
-Log transformation of the coefficients. Note that positive and negative values are plotted on the same axis and are color coordinated. 
-```{r}
-neg <- cv_coef_df %>%
-    filter(Coefficient < 0) %>%
-    mutate(Coefficient = -1*Coefficient) %>%
-    mutate(Sign = as.factor('-'))
-
-pos <- cv_coef_df %>%
-    filter(Coefficient > 0) %>%
-    mutate(Sign = as.factor('+'))
-
-log_variable <- rbind(neg, pos) %>%
-    mutate(Factor = fct_reorder(Factor, Coefficient))
-
-ggplot(log_variable, aes(Factor, Coefficient, fill=Sign)) +
-    geom_bar(stat='identity') +
-    scale_y_continuous(trans='log10') +
-    ylab('log(coefficient)') + 
-    theme(axis.text.x = element_text(angle=90, vjust=0.75))
-```
-
 Things I learned:
 lm to some extent fitlers out highly correlated predictors. If I ran years_open and Outlet_Estblishment_year at the same time, Years_Open would become NA because signularities.
 
 
 
 ```{r}
-store_rf <- randomForest(Item_Outlet_Sales~., train, mtry=8, importance=T)
+store_rf <- randomForest(Item_Outlet_Sales~., train, mtry=3, importance=T)
 store_rf
 ```
 
@@ -360,6 +279,21 @@ ggplot(feat_imp, aes(Feature, relative_imp)) +
     ggtitle('Relative importance of features from Random Forest model')
 ```
 
+```{r}
+total_sales <- data %>%
+    group_by(Outlet_Identifier) %>%
+    summarise(Total_Sales = sum(Item_Outlet_Sales))
+
+ggplot(total_sales, aes(Outlet_Identifier, Total_Sales)) +
+    geom_bar(stat='identity', fill='#56B4E9') +
+    ggtitle('Total sales per outlet') +
+    ylab('Total sales ($)') +
+    xlab('Outlet identifier') +
+    geom_text(aes(label=ifelse(Total_Sales==max(Total_Sales), as.integer(Total_Sales), '')), hjust=0.5, vjust=-0.25) +
+    geom_text(aes(label=ifelse(Total_Sales==min(Total_Sales), as.integer(Total_Sales), '')), hjust=0.5, vjust=-0.25) +
+    scale_y_continuous(labels=dollar, limits=c(0, 4000000)) +
+    theme(panel.grid.major = element_line(color = 'gray85'))
+```
 
 Item_Fat_Content, no difference
 ```{r}
@@ -368,16 +302,28 @@ ggplot(data, aes(Item_Fat_Content, Item_Outlet_Sales)) +
 ```
 
 
-Best stores (sum sales for each outlet id)
 ```{r}
-stores <- data %>%
-    group_by(Outlet_Identifier) %>%
-    summarise(Sales = sum(Item_Outlet_Sales))
+total <- train_reg %>% group_by(Outlet_Type) %>%
+    summarise(total_sales = sum(Item_Outlet_Sales))
 
+avg <- train_reg %>% group_by(Outlet_Type) %>%
+    summarise(avg_sales = mean(Item_Outlet_Sales))
 
-ggplot(stores, aes(Outlet_Identifier, Sales)) +
-    geom_bar(stat='identity')
+num <- train_reg %>% group_by(Outlet_Type) %>%
+    tally()
+
+store_normalizer <- c(2,6,1,1)
+outlet_sales <- merge(total, avg, by='Outlet_Type') %>%
+    merge(num, by='Outlet_Type') %>%
+    mutate(avg_sales = avg_sales/store_normalizer) %>%
+    mutate(n = n/store_normalizer)
+outlet_sales
 ```
+
+
+
+Best stores (sum sales for each outlet id)
+
 
 
 To do:
