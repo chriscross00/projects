@@ -2,7 +2,7 @@
 title: "big_mart"
 author: "Christoper Chan"
 date: "January 26, 2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -16,7 +16,7 @@ library(randomForest)
 library(scales)
 ```
 
-## 1. Read and clean data
+## 1 Read and clean data
 
 Reading in the data. Reading in the data with read.csv set the categorical variables correctly as factors, while read_csv set them to char.
 ```{r}

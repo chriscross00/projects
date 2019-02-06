@@ -41,7 +41,7 @@ We'll go through a 5 step process:
 - Analysis
 
 
-## 1. Read and clean data
+## 1 Read and clean data
 
 Because the dataset is relatively small we can read it all into the R. We combined both the training and test dataset to ensure we got a complete picture of the data.
 ```{r}
