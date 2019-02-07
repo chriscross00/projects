@@ -141,7 +141,7 @@ data$Item_Category = as.factor(data$Item_Category)
 ```
 
 
-## 3. EDA
+## 3 EDA
 ```{r}
 sapply(data, function(x) n_distinct(x))
 summary(data)
@@ -167,7 +167,7 @@ ggplot(train, aes(Item_Visibility, Item_Outlet_Sales, color = Item_Type)) +
 ```
 
 
-## 4. Model
+## 4 Model
 ```{r}
 mse <- function(x, y) {
     mean((x - y)^2)
@@ -221,12 +221,84 @@ mse_lm <- mse(lm_pred, test[,12])
 cat('Linear model MSE: ', mse_lm)
 ```
 
+Lasso regression
 
-Things I learned:
-lm to some extent fitlers out highly correlated predictors. If I ran years_open and Outlet_Estblishment_year at the same time, Years_Open would become NA because signularities.
+Creating lambdas which we'll run lasso regression over. Prepparing the data for lasso regression.
+```{r}
+train_reg <- data[1:8523,]
+grid <- 10^seq(10, -2, length=100)
 
+mod_mat <- model.matrix(Item_Outlet_Sales~.-Item_Identifier,  train_reg)
 
+train_reg <- mod_mat[train_samp,]
+train_y <- train$Item_Outlet_Sales
+test_reg <- mod_mat[-train_samp,]
+test_y <- test$Item_Outlet_Sales
+```
 
+Running normal lasso regression
+```{r}
+store_lasso <- glmnet(train_reg, train_y, lambda=grid)
+
+plot(store_lasso)
+```
+
+Running with cv
+```{r}
+store_lasso_cv <- cv.glmnet(train_reg, train_y)
+
+plot(store_lasso_cv)
+```
+
+```{r}
+best_lam <- store_lasso_cv$lambda.min
+cat('Best lambda is:', best_lam)
+
+cvlasso_pred <- predict(store_lasso, s=best_lam, newx=test_reg)
+
+cat('\nLasso regularizaion MSE:', mse(cvlasso_pred, test_y))
+```
+
+Looking at the predictors that lasso regression used. 
+```{r}
+cv_lasso_coef <- predict(store_lasso, type='coefficients', s=best_lam)
+cv_lasso_coef
+```
+
+Visualization of coefficient.
+```{r}
+cv_coef_mat <- summary(cv_lasso_coef)
+cv_coef_df <- tibble(Factor = rownames(cv_lasso_coef)[cv_coef_mat$i],
+       Coefficient = cv_coef_mat$x) %>%
+    mutate(Factor = fct_reorder(Factor, Coefficient))
+
+ggplot(cv_coef_df, aes(Factor, Coefficient)) +
+    geom_bar(stat='identity') +
+    theme(axis.text.x = element_text(angle=90, vjust=0.75))
+```
+
+Log transformation of the coefficients. Note that positive and negative values are plotted on the same axis and are color coordinated. 
+```{r}
+neg <- cv_coef_df %>%
+    filter(Coefficient < 0) %>%
+    mutate(Coefficient = -1*Coefficient) %>%
+    mutate(Sign = as.factor('-'))
+
+pos <- cv_coef_df %>%
+    filter(Coefficient > 0) %>%
+    mutate(Sign = as.factor('+'))
+
+log_variable <- rbind(neg, pos) %>%
+    mutate(Factor = fct_reorder(Factor, Coefficient))
+
+ggplot(log_variable, aes(Factor, Coefficient, fill=Sign)) +
+    geom_bar(stat='identity') +
+    scale_y_continuous(trans='log10') +
+    ylab('log(coefficient)') + 
+    theme(axis.text.x = element_text(angle=90, vjust=0.75))
+```
+
+Random forest model.
 ```{r}
 store_rf <- randomForest(Item_Outlet_Sales~., train, mtry=3, importance=T)
 store_rf
@@ -302,7 +374,8 @@ ggplot(data, aes(Item_Fat_Content, Item_Outlet_Sales)) +
 ```
 
 
-```{r}
+
+train_reg <- data[1:8523,]
 total <- train_reg %>% group_by(Outlet_Type) %>%
     summarise(total_sales = sum(Item_Outlet_Sales))
 
@@ -318,7 +391,7 @@ outlet_sales <- merge(total, avg, by='Outlet_Type') %>%
     mutate(avg_sales = avg_sales/store_normalizer) %>%
     mutate(n = n/store_normalizer)
 outlet_sales
-```
+
 
 
 

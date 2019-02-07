@@ -527,7 +527,149 @@ cat('Linear model MSE: ', mse_lm)
 
     ## Linear model MSE:  4551549
 
-Things I learned: lm to some extent fitlers out highly correlated predictors. If I ran years\_open and Outlet\_Estblishment\_year at the same time, Years\_Open would become NA because signularities.
+Lasso regression
+
+Creating lambdas which we'll run lasso regression over. Prepparing the data for lasso regression.
+
+``` r
+train_reg <- data[1:8523,]
+grid <- 10^seq(10, -2, length=100)
+
+mod_mat <- model.matrix(Item_Outlet_Sales~.-Item_Identifier,  train_reg)
+
+train_reg <- mod_mat[train_samp,]
+train_y <- train$Item_Outlet_Sales
+test_reg <- mod_mat[-train_samp,]
+test_y <- test$Item_Outlet_Sales
+```
+
+Running normal lasso regression
+
+``` r
+store_lasso <- glmnet(train_reg, train_y, lambda=grid)
+
+plot(store_lasso)
+```
+
+![](full_project_files/figure-markdown_github/unnamed-chunk-27-1.png)
+
+Running with cv
+
+``` r
+store_lasso_cv <- cv.glmnet(train_reg, train_y)
+
+plot(store_lasso_cv)
+```
+
+![](full_project_files/figure-markdown_github/unnamed-chunk-28-1.png)
+
+``` r
+best_lam <- store_lasso_cv$lambda.min
+cat('Best lambda is:', best_lam)
+```
+
+    ## Best lambda is: 7.65596
+
+``` r
+cvlasso_pred <- predict(store_lasso, s=best_lam, newx=test_reg)
+
+cat('\nLasso regularizaion MSE:', mse(cvlasso_pred, test_y))
+```
+
+    ## 
+    ## Lasso regularizaion MSE: 1302613
+
+Looking at the predictors that lasso regression used.
+
+``` r
+cv_lasso_coef <- predict(store_lasso, type='coefficients', s=best_lam)
+cv_lasso_coef
+```
+
+    ## 41 x 1 sparse Matrix of class "dgCMatrix"
+    ##                                           1
+    ## (Intercept)                    -1673.170714
+    ## (Intercept)                        .       
+    ## Item_CategoryFD                   10.621056
+    ## Item_CategoryNC                   -5.789907
+    ## Item_Weight                        .       
+    ## Item_Fat_ContentRegular            4.167956
+    ## Item_Visibility                 -243.739431
+    ## Item_TypeBreads                    .       
+    ## Item_TypeBreakfast                 2.913935
+    ## Item_TypeCanned                   30.711275
+    ## Item_TypeDairy                   -12.209535
+    ## Item_TypeFrozen Foods              .       
+    ## Item_TypeFruits and Vegetables    40.785705
+    ## Item_TypeHard Drinks              27.903572
+    ## Item_TypeHealth and Hygiene        .       
+    ## Item_TypeHousehold                -9.348369
+    ## Item_TypeMeat                      .       
+    ## Item_TypeOthers                  -29.213263
+    ## Item_TypeSeafood                  43.856193
+    ## Item_TypeSnack Foods               .       
+    ## Item_TypeSoft Drinks               .       
+    ## Item_TypeStarchy Foods             .       
+    ## Item_MRP                          15.397873
+    ## Outlet_IdentifierOUT013            .       
+    ## Outlet_IdentifierOUT017           51.406103
+    ## Outlet_IdentifierOUT018         1366.825240
+    ## Outlet_IdentifierOUT019         -155.473079
+    ## Outlet_IdentifierOUT027         3108.824665
+    ## Outlet_IdentifierOUT035          100.132813
+    ## Outlet_IdentifierOUT045          -55.576206
+    ## Outlet_IdentifierOUT046            .       
+    ## Outlet_IdentifierOUT049           33.078236
+    ## Years_Open                         .       
+    ## Outlet_SizeHigh                    .       
+    ## Outlet_SizeMedium                  .       
+    ## Outlet_SizeSmall                   .       
+    ## Outlet_Location_TypeTier 2         .       
+    ## Outlet_Location_TypeTier 3         .       
+    ## Outlet_TypeSupermarket Type1    1776.153081
+    ## Outlet_TypeSupermarket Type2      45.352989
+    ## Outlet_TypeSupermarket Type3      57.823516
+
+Visualization of coefficient.
+
+``` r
+cv_coef_mat <- summary(cv_lasso_coef)
+cv_coef_df <- tibble(Factor = rownames(cv_lasso_coef)[cv_coef_mat$i],
+       Coefficient = cv_coef_mat$x) %>%
+    mutate(Factor = fct_reorder(Factor, Coefficient))
+
+ggplot(cv_coef_df, aes(Factor, Coefficient)) +
+    geom_bar(stat='identity') +
+    theme(axis.text.x = element_text(angle=90, vjust=0.75))
+```
+
+![](full_project_files/figure-markdown_github/unnamed-chunk-31-1.png)
+
+Log transformation of the coefficients. Note that positive and negative values are plotted on the same axis and are color coordinated.
+
+``` r
+neg <- cv_coef_df %>%
+    filter(Coefficient < 0) %>%
+    mutate(Coefficient = -1*Coefficient) %>%
+    mutate(Sign = as.factor('-'))
+
+pos <- cv_coef_df %>%
+    filter(Coefficient > 0) %>%
+    mutate(Sign = as.factor('+'))
+
+log_variable <- rbind(neg, pos) %>%
+    mutate(Factor = fct_reorder(Factor, Coefficient))
+
+ggplot(log_variable, aes(Factor, Coefficient, fill=Sign)) +
+    geom_bar(stat='identity') +
+    scale_y_continuous(trans='log10') +
+    ylab('log(coefficient)') + 
+    theme(axis.text.x = element_text(angle=90, vjust=0.75))
+```
+
+![](full_project_files/figure-markdown_github/unnamed-chunk-32-1.png)
+
+Random forest model.
 
 ``` r
 store_rf <- randomForest(Item_Outlet_Sales~., train, mtry=3, importance=T)
@@ -541,44 +683,44 @@ store_rf
     ##                      Number of trees: 500
     ## No. of variables tried at each split: 3
     ## 
-    ##           Mean of squared residuals: 1225125
-    ##                     % Var explained: 57.45
+    ##           Mean of squared residuals: 1230041
+    ##                     % Var explained: 57.28
 
 ``` r
 pred_rf <- predict(store_rf, newdata=test)
 mse(pred_rf, test[,12])
 ```
 
-    ## [1] 1230869
+    ## [1] 1232113
 
 ``` r
 importance(store_rf)
 ```
 
     ##                         %IncMSE IncNodePurity
-    ## Item_Category          1.830013     127718938
-    ## Item_Weight           11.391186     935413180
-    ## Item_Fat_Content       5.762569     132131128
-    ## Item_Visibility        6.611735    1197894656
-    ## Item_Type              2.341819     866681678
-    ## Item_MRP             181.718939    6519740741
-    ## Outlet_Identifier     25.831271    1966613921
-    ## Years_Open            18.019061     674360661
-    ## Outlet_Size            7.960769     160913867
-    ## Outlet_Location_Type  10.116172     159368782
-    ## Outlet_Type           26.634317    1697783780
+    ## Item_Category          2.550916     126699942
+    ## Item_Weight            9.665074     922556176
+    ## Item_Fat_Content       3.229428     129927940
+    ## Item_Visibility        7.291584    1186627225
+    ## Item_Type              2.332960     874554172
+    ## Item_MRP             172.157215    6516956422
+    ## Outlet_Identifier     26.378179    1994537322
+    ## Years_Open            20.450822     656717064
+    ## Outlet_Size            8.140769     166741028
+    ## Outlet_Location_Type   9.283235     152832558
+    ## Outlet_Type           26.761058    1679088929
 
 ``` r
 which.min(store_rf$mse)
 ```
 
-    ## [1] 500
+    ## [1] 338
 
 ``` r
 sqrt(store_rf$mse[which.min(store_rf$mse)])
 ```
 
-    ## [1] 1106.854
+    ## [1] 1108.542
 
 Tuning RF for the mtry parameter. Results are that 3 is the best and the process stops at mtry=6, meaning the more complex trees preform worse than less complex trees.
 
@@ -595,17 +737,17 @@ m1 <- tuneRF(
 )
 ```
 
-    ## mtry = 4  OOB error = 1253486 
+    ## mtry = 4  OOB error = 1247117 
     ## Searching left ...
-    ## mtry = 3     OOB error = 1236610 
-    ## 0.01346329 0.01 
-    ## mtry = 2     OOB error = 1286457 
-    ## -0.04030933 0.01 
+    ## mtry = 3     OOB error = 1234009 
+    ## 0.01051097 0.01 
+    ## mtry = 2     OOB error = 1283833 
+    ## -0.04037632 0.01 
     ## Searching right ...
-    ## mtry = 6     OOB error = 1277679 
-    ## -0.0332107 0.01
+    ## mtry = 6     OOB error = 1266084 
+    ## -0.02599243 0.01
 
-![](full_project_files/figure-markdown_github/unnamed-chunk-29-1.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-36-1.png)
 
 ``` r
 feat_imp <- store_rf %>%
@@ -625,7 +767,7 @@ ggplot(feat_imp, aes(Feature, relative_imp)) +
     ggtitle('Relative importance of features from Random Forest model')
 ```
 
-![](full_project_files/figure-markdown_github/unnamed-chunk-30-1.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-37-1.png)
 
 ``` r
 total_sales <- data %>%
@@ -643,7 +785,7 @@ ggplot(total_sales, aes(Outlet_Identifier, Total_Sales)) +
     theme(panel.grid.major = element_line(color = 'gray85'))
 ```
 
-![](full_project_files/figure-markdown_github/unnamed-chunk-31-1.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-38-1.png)
 
 Item\_Fat\_Content, no difference
 
@@ -652,31 +794,15 @@ ggplot(data, aes(Item_Fat_Content, Item_Outlet_Sales)) +
     geom_boxplot()
 ```
 
-![](full_project_files/figure-markdown_github/unnamed-chunk-32-1.png)
+![](full_project_files/figure-markdown_github/unnamed-chunk-39-1.png)
 
-``` r
-total <- train_reg %>% group_by(Outlet_Type) %>%
-    summarise(total_sales = sum(Item_Outlet_Sales))
+train\_reg &lt;- data\[1:8523,\] total &lt;- train\_reg %&gt;% group\_by(Outlet\_Type) %&gt;% summarise(total\_sales = sum(Item\_Outlet\_Sales))
 
-avg <- train_reg %>% group_by(Outlet_Type) %>%
-    summarise(avg_sales = mean(Item_Outlet_Sales))
+avg &lt;- train\_reg %&gt;% group\_by(Outlet\_Type) %&gt;% summarise(avg\_sales = mean(Item\_Outlet\_Sales))
 
-num <- train_reg %>% group_by(Outlet_Type) %>%
-    tally()
+num &lt;- train\_reg %&gt;% group\_by(Outlet\_Type) %&gt;% tally()
 
-store_normalizer <- c(2,6,1,1)
-outlet_sales <- merge(total, avg, by='Outlet_Type') %>%
-    merge(num, by='Outlet_Type') %>%
-    mutate(avg_sales = avg_sales/store_normalizer) %>%
-    mutate(n = n/store_normalizer)
-outlet_sales
-```
-
-    ##         Outlet_Type total_sales avg_sales     n
-    ## 1     Grocery Store    368034.3  169.9143 541.5
-    ## 2 Supermarket Type1  12917342.3  386.0302 929.5
-    ## 3 Supermarket Type2   1851822.8 1995.4987 928.0
-    ## 4 Supermarket Type3   3453926.1 3694.0386 935.0
+store\_normalizer &lt;- c(2,6,1,1) outlet\_sales &lt;- merge(total, avg, by='Outlet\_Type') %&gt;% merge(num, by='Outlet\_Type') %&gt;% mutate(avg\_sales = avg\_sales/store\_normalizer) %&gt;% mutate(n = n/store\_normalizer) outlet\_sales
 
 Best stores (sum sales for each outlet id)
 

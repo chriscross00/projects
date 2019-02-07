@@ -5,7 +5,6 @@ February 4, 2019
 
 ``` r
 library(tidyverse)
-library(glmnet)
 library(randomForest)
 library(scales)
 library(here)
@@ -15,14 +14,7 @@ To see all the code of this project go to: [Full](https://github.com/chriscross0
 
 BigMart is a fictional chain of grocery stores that sells a variety of products, from household supplies to alcohol. Like many other fields BigMart wants to predict the sale of a product. The matter is more pressing because many products have a short shelf life, meaning that the company can potential lose thousands of dollars if they buy the wrong produt. Therefore, our goal is to use data about the products and about each store to predict the future sale of a product.
 
-Conclusions:
-
--   Item\_MRP (price) is by far the strongest predictor of Item\_Outlet\_Sales (sales).
--   The next best predictors of sales are all related to the outlet. Outlet\_Type (with major caveats), Outlet\_Identifier, and Years\_Open all predict sales reasonably well.
--   Fruits and Vegetables and Snack Foods have the highest sales at $5,552,846 and represent 30% of the total sales. Item\_Types such as Breakfast and Seafood have the worst total sales and account for only 2% of our total profits.
--   The reasons why certain stores do better than others is beyond the scope of this dataset, we simply do not have the data to investigate.
-
-We'll go through a 5 step process:
+In order to understand the interactions within this data a multiple step process took place. In this report I'll go through a 5 step process:
 
 -   Processing the data
 -   Feature engineering
@@ -30,10 +22,19 @@ We'll go through a 5 step process:
 -   Model building
 -   Analysis
 
+As I went through this process a key question was determining which features are the best predictors of sales. That way BigMart can replicate those features across all their stores, increasing profits. Picking a model that preforms feature selection was a important aspect of this project.
+
+Below are the key findings from this analysis. The full information about each bullet point can be found in the Analysis section of this report. Conclusions:
+
+-   Item\_MRP (price) is by far the strongest predictor of Item\_Outlet\_Sales (sales).
+-   The next best predictors of sales are all related to the outlet. Outlet\_Type (with major caveats), Outlet\_Identifier, and Years\_Open all predict sales reasonably well.
+-   Fruits and Vegetables and Snack Foods have the highest sales at $5,552,846 and represent 30% of the total sales. Item\_Types such as Breakfast and Seafood have the worst total sales and account for only 2% of our total profits.
+-   The reasons why certain stores do better than others is beyond the scope of this dataset, I simply do not have the data to investigate.
+
 1 Read and clean data
 ---------------------
 
-Because the dataset is relatively small we can read it all into the R. We combined both the training and test dataset to ensure we got a complete picture of the data.
+Because the dataset is relatively small I can read it all into the R. I combined both the training and test dataset to ensure I got a complete picture of the data.
 
 ``` r
 here('bigmart_sales')
@@ -41,7 +42,7 @@ train <- read.csv('data/Train.csv')
 test <- read.csv('data/Test.csv')
 ```
 
-The summary function gives us a quick look at the type of data we are working with and where we need to clean.
+The summary function gives us a quick look at the type of data I are working with and where I need to clean.
 
 ``` r
 head(train)
@@ -225,9 +226,34 @@ summary(data)
     ##                           Max.   :13087.0  
     ## 
 
+Are certain Item\_Type given more visibilty than others? The boxplot shows no clear connection.
+
+``` r
+ggplot(data, aes(Item_Type, Item_Visibility)) +
+    geom_boxplot() +
+    theme(axis.text.x = element_text(angle=90, vjust=0.8)) + 
+    xlab('Item type') +
+    ylab('Item visibility') + 
+    ggtitle('Item visibility by item type')
+```
+
+![](bigmart_sales_report_files/figure-markdown_github/unnamed-chunk-5-1.png)
+
+Graphing Item\_Visibility against Item\_Outlet\_Sales explores if there is a realtionship between how visible an item is and it's sales. A hypothesis could be that items that are more visible have higher sales than items that are less visible. However, looking at the graph no relationship is apparent.
+
+``` r
+ggplot(data, aes(Item_Visibility, Item_Outlet_Sales, color = Item_Category)) + 
+    geom_point(size = 0.75) +
+    xlab('Item visibility') +
+    ylab('Sales') + 
+    ggtitle('Item sales vs visibility labeled by category')
+```
+
+![](bigmart_sales_report_files/figure-markdown_github/unnamed-chunk-6-1.png)
+
 Because our response variable is not normally distributed, it is skewed highly right skewed, a key assumption of linear regression is violated, that the response variable is normally distributed. In the context of a grocery store a highly right skewed Item\_Outlet\_Sales distribution makes sense: people aren't all buying one product, instead a variety of products are being sold at relatively low quantities.
 
-Instead of a linear model we'll run a random forest model which doesn't carry all the assumptions of linear regression.
+Instead of a linear model I'll run a random forest model which doesn't carry all the assumptions of linear regression. Several reasons for chosing a random forest model over other algorithms is that it can do regression, I didn't need to scale or normalize any of the features, and finally, and in this case most importantly, I can extract the most important features.
 
 ``` r
 ggplot(data, aes(Item_Outlet_Sales)) + 
@@ -235,12 +261,12 @@ ggplot(data, aes(Item_Outlet_Sales)) +
     ggtitle('Distribution of the sales')
 ```
 
-![](bigmart_sales_report_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](bigmart_sales_report_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 4 Model building
 ----------------
 
-We constructed a baseline model to see if the more advanced models we create are worth the effort. The baseline model takes the mean of the Item\_Outlet\_Sales as the predicted sales of each item.
+I constructed a baseline model to see if the more advanced models I create are worth the effort. The baseline model takes the mean of the Item\_Outlet\_Sales as the predicted sales of each item.
 
 ``` r
 mean_sales <- mean(train$Item_Outlet_Sales)
@@ -253,7 +279,7 @@ cat('MSE of baseline model:', mse_base1)
 
     ## MSE of baseline model: 2987332
 
-Finally, we ran a random forest model. It preforms far better than the baseline model.
+Finally, I ran a random forest model. It preforms far better than the baseline model.
 
 ``` r
 store_rf <- randomForest(Item_Outlet_Sales~., train, mtry=3, importance=T)
@@ -297,7 +323,7 @@ ggplot(feat_imp, aes(Feature, relative_imp)) +
     ggtitle('Relative importance of features from Random Forest model')
 ```
 
-![](bigmart_sales_report_files/figure-markdown_github/unnamed-chunk-9-1.png) \#\# 5 Analysis
+![](bigmart_sales_report_files/figure-markdown_github/unnamed-chunk-11-1.png) \#\# 5 Analysis
 
 Some outlets do much better than other outlets. The maximum sales and minimum sales are labelled below. Most of the outlets have a total sales of around $2,000,000.
 
@@ -317,9 +343,9 @@ ggplot(total_sales, aes(Outlet_Identifier, Total_Sales)) +
     theme(panel.grid.major = element_line(color = 'gray85'))
 ```
 
-![](bigmart_sales_report_files/figure-markdown_github/unnamed-chunk-10-1.png)
+![](bigmart_sales_report_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
-While Outlet\_Type is the second strongest predictor of price, the results may be skewed. We don't have a even distribution of Outlet\_Types, we have 2 Grocery Stores, 6 Type1, 1 Type2 and 1 Type3 Supermarkets. We don't know if these sales numbers are accurate across the board for each Outlet\_Type or if the Grocery Store, Typ2 and Type3 Supermarkets represent a outlier. Therefore, Outlet\_Type should be used with caution as a predictor of sales. A much better predictor is Outlet\_Identifier, though it lacks some of the generalization power.
+While Outlet\_Type is the second strongest predictor of price, the results may be skewed. I don't have a even distribution of Outlet\_Types, I have 2 Grocery Stores, 6 Type1, 1 Type2 and 1 Type3 Supermarkets. I don't know if these sales numbers are accurate across the board for each Outlet\_Type or if the Grocery Store, Typ2 and Type3 Supermarkets represent a outlier. Therefore, Outlet\_Type should be used with caution as a predictor of sales. A much better predictor is Outlet\_Identifier, though it lacks some of the generalization power.
 
 ``` r
 data %>% 
@@ -368,7 +394,7 @@ outlet_sales
 
 Looking at the items, Fruits and Vegetables and Snack Foods have the highest sales. Together just those two item types bring in $5,552,846 and represent 30% of the total sales across all stores. Item\_Types such as Breakfast and Seafood have the worst total sales and account for only 2% of our total profits.
 
-With two types of items, Fruits and Vegetables and Snack Foods, accounting for 30% of the total sales it is essential that we at least maintain those numbers. In particular, because Fruits and Vegetables have a short shelf life, they should be closely watched over time to look for consumer trends so that we do not stock too much at once. The Breakfast Item\_Type has lot's of potential room for improvement. It represents 1.25% of our total sales. Yet, most people eat 3 meals a day. This represents a large part of the market that we are missing.
+With two types of items, Fruits and Vegetables and Snack Foods, accounting for 30% of the total sales it is essential that I at least maintain those numbers. In particular, because Fruits and Vegetables have a short shelf life, they should be closely watched over time to look for consumer trends so that I do not stock too much at once. The Breakfast Item\_Type has lot's of potential room for improvement. It represents 1.25% of our total sales. Yet, most people eat 3 meals a day. This represents a large part of the market that I are missing.
 
 ``` r
 type <- data %>%
@@ -387,14 +413,14 @@ ggplot(type, aes(Item_Type, Type_Sales)) +
     theme(panel.grid.major = element_line(color = 'gray85'), panel.grid.minor.x = element_line(color = 'gray90'))
 ```
 
-![](bigmart_sales_report_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](bigmart_sales_report_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
 -   Grocery Stores sell far less items and by far have the lowest average sales. They sell far more low priced items than compared to Supermarket Type1.
 
 Next Steps
 ----------
 
-The reasons why certain stores do better than others is beyond the scope of this dataset, we simply do not have the data to investigate. That being said, finding the reasons why certain stores preform better than others would be a strong first step in increasing sales across all stores. Once we answer that we can answer the following questions with certainty:
+The reasons why certain stores do better than others is beyond the scope of this dataset, I simply do not have the data to investigate. That being said, finding the reasons why certain stores preform better than others would be a strong first step in increasing sales across all stores. Once I answer that I can answer the following questions with certainty:
 
 -   Stores X and Y need more work
 -   Stores that are X years old tend to do better
