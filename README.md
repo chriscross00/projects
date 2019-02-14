@@ -1,4 +1,4 @@
-# projects
+# Projects
 
 A collection of self-driven data projects.
 
