@@ -2,8 +2,7 @@
 title: "BigMart Sales Regression"
 author: "Christoper Chan"
 date: "February 4, 2019"
-output: 
-    github_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
