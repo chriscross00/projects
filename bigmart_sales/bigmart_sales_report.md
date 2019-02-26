@@ -1,4 +1,4 @@
-BigMart Sales Regression
+BigMart Sales Prediction
 ================
 Christoper Chan
 February 4, 2019
