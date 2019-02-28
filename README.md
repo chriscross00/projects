@@ -10,3 +10,8 @@ A collection of self-driven data projects.
 [San Francisco Food Truck Map](https://nbviewer.jupyter.org/github/chriscross00/projects/blob/859fa8bd3a4e6c4002edba7267a4786eb4564cfd/sf_food/sf_food.ipynb)
 * Created a interactive Plotly map of push carts and food trucks in San Francisco.
 * Visualized dataset in seaborn.
+
+Devereux Slough Time Series
+* Collected water quality data from loggers for over a year.
+* Created a ARIMA model based on water level.
+* Provided ecological explanations for the trends seen in the ARIMA model. 
