@@ -2,7 +2,7 @@
 title: "BigMart Sales Regression"
 author: "Christoper Chan"
 date: "February 4, 2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
@@ -16,7 +16,7 @@ library(scales)
 library(here)
 ```
 
-To see all the code of this project go to: [Full](https://github.com/chriscross00/projects/blob/master/bigmart-sales-data/pre-kaggle.md)
+To see all the code of this project go to: [Full](https://github.com/chriscross00/projects/blob/master/bigmart_sales/alts/full_project.md)
 
 
 
@@ -290,6 +290,6 @@ The reasons why certain stores do better than others is beyond the scope of this
 
 ## Things I learned:
 
-- lm to some extent fitlers out highly correlated predictors. If I ran years_open and Outlet_Estblishment_year at the same time, Years_Open would become NA because signularities.
+- lm to some extent fitlers out highly correlated predictors. If I ran years_open and Outlet_Estblishment_Year at the same time, Years_Open would become NA because signularities.
 - Feature engineering is one of the most important steps you can do to increase the accuracy of your model.
 

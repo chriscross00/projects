@@ -1,4 +1,4 @@
-BigMart Sales Prediction
+BigMart Sales Regression
 ================
 Christoper Chan
 February 4, 2019
@@ -10,7 +10,7 @@ library(scales)
 library(here)
 ```
 
-To see all the code of this project go to: [Full](https://github.com/chriscross00/projects/blob/master/bigmart-sales-data/pre-kaggle.md)
+To see all the code of this project go to: [Full](https://github.com/chriscross00/projects/blob/master/bigmart_sales/alts/full_project.md)
 
 BigMart is a fictional chain of grocery stores that sells a variety of products, from household supplies to alcohol. Like many other fields BigMart wants to predict the sale of a product. The matter is more pressing because many products have a short shelf life, meaning that the company can potential lose thousands of dollars if they buy the wrong produt. Therefore, our goal is to use data about the products and about each store to predict the future sale of a product.
 
@@ -429,5 +429,5 @@ The reasons why certain stores do better than others is beyond the scope of this
 Things I learned:
 -----------------
 
--   lm to some extent fitlers out highly correlated predictors. If I ran years\_open and Outlet\_Estblishment\_year at the same time, Years\_Open would become NA because signularities.
+-   lm to some extent fitlers out highly correlated predictors. If I ran years\_open and Outlet\_Estblishment\_Year at the same time, Years\_Open would become NA because signularities.
 -   Feature engineering is one of the most important steps you can do to increase the accuracy of your model.
