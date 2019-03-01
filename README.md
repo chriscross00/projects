@@ -9,7 +9,7 @@ A collection of self-driven data projects.
 
 [San Francisco Food Truck Map](https://nbviewer.jupyter.org/github/chriscross00/projects/blob/e9d176ecc9762848bc45723d9aee993c5d2c81f4/sf_food/sf_food.ipynb)
 * Created a interactive Plotly map of push carts and food trucks in San Francisco.
-* Visualized dataset in seaborn.
+* Statistical and spatial analysis conducted in Python with Jupyter Notebook and the Scipy, Pandas and Seaborn libraries.
 
 Devereux Slough Time Series
 * Collected water quality data from loggers for over a year.
