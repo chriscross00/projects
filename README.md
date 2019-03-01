@@ -8,7 +8,7 @@ A collection of self-driven data projects.
 * Suggested potential business steps to take to improve sales across all stores.
 
 [San Francisco Food Truck Map](https://nbviewer.jupyter.org/github/chriscross00/projects/blob/e9d176ecc9762848bc45723d9aee993c5d2c81f4/sf_food/sf_food.ipynb)
-* Created a interactive Plotly map of push carts and food trucks in San Francisco.
+* Created an interactive Plotly map of push carts and food trucks in San Francisco.
 * Statistical and spatial analysis conducted in Python with Jupyter Notebook and the SciPy, Pandas and Seaborn libraries.
 
 Devereux Slough Time Series
