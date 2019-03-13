@@ -11,7 +11,7 @@ Devereux Slough is a estuary in the Santa Barbara County. We developed Water Qua
 This project is broken down into the following steps:
 
 1.  [Background of Devereux Slough and data](#background)
-2.  [Normalizing the data](#clean)
+2.  [Normalizing the data](2-Normalizing-the-data)
 3.  [EDA](#eda)
 4.  [Creating the model](#model)
 5.  [Validating the model](#validate)
@@ -211,13 +211,11 @@ arima_param <- function(ts){
 Running the ARIMA parameter chooser function on our msts dataset. Plotting a forecast for two days gives us reasonable results. However, we have to validate our model in order to trust our forecast.
 
 ``` r
-arima_model <- arima_param(lv_ts)
+#arima_model <- arima_param(lv_ts)
 
-plotter <- forecast(arima_model$model, xreg=fourier(lv_ts, K=c(arima_model$i, arima_model$j), h=192))
-autoplot(plotter)
+#plotter <- forecast(arima_model$model, xreg=fourier(lv_ts, K=c(arima_model$i, arima_model$j), h=192))
+#autoplot(plotter)
 ```
-
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 5 Validate model
 ================
@@ -231,18 +229,8 @@ The residuals from our model should not exhibit any discernible patterns and sho
 The ACF plot shows significant spikes before 100, 200 and 300. Because our seasonality is 96, we would expect spikes at 96, 192 and 288. Our ACF plot follows our expected spikes, though we have some significant spikes when at odd areas, like 125.
 
 ``` r
-checkresiduals(arima_model$model, lag=96)
+#checkresiduals(arima_model$model, lag=96)
 ```
-
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-11-1.png)
-
-    ## 
-    ##  Ljung-Box test
-    ## 
-    ## data:  Residuals from Regression with ARIMA(2,0,3) errors
-    ## Q* = 70.722, df = 67, p-value = 0.3545
-    ## 
-    ## Model df: 29.   Total lags used: 96
 
 6 Forecasting
 =============
@@ -252,10 +240,8 @@ Now that we have validate our model we can be assured of the accuracy of our pre
 Because these measurements were taken at the very end of the rainy season we would expect the water level to not increase. Additionally, as we approach summer we expect to see a continually negative slope as water evaporates from the lagoon.
 
 ``` r
-autoplot(plotter)
+#autoplot(plotter)
 ```
-
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
 7 Conclusion
 ============
