@@ -14,4 +14,4 @@ A collection of self-driven data projects.
 [Devereux Slough Time Series](https://github.com/chriscross00/projects/blob/master/devereux_arima/devereux_slough_time_series.md)
 * Collected water quality data from loggers for over a year.
 * Created a seasonal ARIMA model with a Fourier Transform based on water level.
-* Analyzed data and model, provided ecological explanations for the trends seen in the ARIMA model. 
+* Analyzed the data and model, provided ecological explanations for the trends seen in the ARIMA model. 
