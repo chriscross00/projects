@@ -166,8 +166,13 @@ We'll create a function for reproducibility. It performs a grid search of ARIMA 
 ```{r}
 arima_param <- function(ts){
     # Performs a grid search for optimal ARIMA parameters by comparing aicc of each model
+    #
+    # Args:
+    #   ts: A time series object
     # 
-    # Return: The model and fourier transform with the lowest aicc
+    # Return: 
+    #    The model and fourier transform with the lowest aicc
+    #
     best_fit <- list(model=Inf, aic=Inf, i=Inf, j=Inf)
     
     for (i in 1:10){
