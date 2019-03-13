@@ -133,14 +133,10 @@ cat('p-value from adf.test() of lv_df:', lv_adf$p.value,
 
 # 4 Create the model {#model}
 
-Things to add:
+Time series can be approached a number of different ways, however some of the most common are autoregressive (AR) models, moving average (MA) models and autoregressive integrated moving average (ARIMA) models. This analysis will use an ARIMA model to model our water level time series. AR assumes points depend linearly on previous points and thus its formula is very similar to linear regression, with a error term. The MA model uses the errors of previous points to predict future points. ARIMA model combines both AR and MA models into a single model which can often model more complex interactions. The I term is the differencing factor. The formula for an ARIMA model is:
+$$Y_{t} = c + \phi_{1}y_{dt-1} + \phi_{p}y_{dt-p} + ... + \theta_{1}\epsilon_{t-1} + \theta_{q}\epsilon_{t-q} + \epsilon_{t}$$
 
-* ARIMA model
-    * Background
-    * equation
-    $$Y_{t} = c + \phi_{1}y_{dt-1} + \phi_{p}y_{dt-p} + ... + \theta_{1}\epsilon_{t-1} + \theta_{q}\epsilon_{t-q} + \epsilon_{t}$$
-    * Why i'm using this model
-        * Pros/Cons
+The use of a AR model makes sense in modelling water level, where past water levels will dictate present and future water levels. The benefits of a MA model is that it accounts for stochastic events. These events will cause some shift in the time series and eventually their effect will dispate over time. This is extremely useful in modelling natural systems as we have limited, or sometimes no, control over the environment. The major benefit of the ARIMA model is that it allows for modelling of more complex systems.
 
 The Fourier Transform (FT) decomposes a function based on time into the frequencies that make it up, using the understanding that all waveforms can be drescibed by a sum of sinusoids of different frequencies
 
@@ -209,6 +205,13 @@ The ACF plot shows significant spikes before 100, 200 and 300. Because our seaso
 ```
 
 # 6 Forecasting {#forecast}
+#Write more about why daily cycles occur
+
+The daily cycles are due to changes in air temperature and consequently evaporation. Increased air temperature cause heating of the water which causes some water moleculse to evaporate. 
+
+
+
+Evaporation will peak during This process will If we graphed air temperature alongside water level we would expect to see that the two lines are highly correlate, with the water level cycles closely following the air temperature cycles.
 Now that we have validate our model we can be assured of the accuracy of our predictions. Forecasting two days we can see the same daily seasonality that occurs in past days. We also see the continuation of the negative trend. The 95% confidence interval is actually not much larger than the 80% confidence interval.
 
 Because these measurements were taken at the very end of the rainy season we would expect the water level to not increase. Additionally, as we approach summer we expect to see a continually negative slope as water evaporates from the lagoon.
