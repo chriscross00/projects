@@ -150,16 +150,11 @@ cat('p-value from adf.test() of lv_df:', lv_adf$p.value,
 4 Create the model
 ==================
 
-Things to add:
+Time series can be approached a number of different ways, however some of the most common are autoregressive (AR) models, moving average (MA) models and autoregressive integrated moving average (ARIMA) models. This analysis will use an ARIMA model to model our water level time series. AR assumes points depend linearly on previous points and thus its formula is very similar to linear regression, with a error term. The MA model uses the errors of previous points to predict future points. ARIMA model combines both AR and MA models into a single model which can often model more complex interactions. The I term is the differencing factor. The formula for an ARIMA model is:
 
--   ARIMA model
-    -   Background
-    -   equation
+![Y\_{t} = c + \\phi\_{1}y\_{dt-1} + \\phi\_{p}y\_{dt-p} + ... + \\theta\_{1}\\epsilon\_{t-1} + \\theta\_{q}\\epsilon\_{t-q} + \\epsilon\_{t}](https://latex.codecogs.com/png.latex?Y_%7Bt%7D%20%3D%20c%20%2B%20%5Cphi_%7B1%7Dy_%7Bdt-1%7D%20%2B%20%5Cphi_%7Bp%7Dy_%7Bdt-p%7D%20%2B%20...%20%2B%20%5Ctheta_%7B1%7D%5Cepsilon_%7Bt-1%7D%20%2B%20%5Ctheta_%7Bq%7D%5Cepsilon_%7Bt-q%7D%20%2B%20%5Cepsilon_%7Bt%7D "Y_{t} = c + \phi_{1}y_{dt-1} + \phi_{p}y_{dt-p} + ... + \theta_{1}\epsilon_{t-1} + \theta_{q}\epsilon_{t-q} + \epsilon_{t}")
 
-        ![Y\_{t} = c + \\phi\_{1}y\_{dt-1} + \\phi\_{p}y\_{dt-p} + ... + \\theta\_{1}\\epsilon\_{t-1} + \\theta\_{q}\\epsilon\_{t-q} + \\epsilon\_{t}](https://latex.codecogs.com/png.latex?Y_%7Bt%7D%20%3D%20c%20%2B%20%5Cphi_%7B1%7Dy_%7Bdt-1%7D%20%2B%20%5Cphi_%7Bp%7Dy_%7Bdt-p%7D%20%2B%20...%20%2B%20%5Ctheta_%7B1%7D%5Cepsilon_%7Bt-1%7D%20%2B%20%5Ctheta_%7Bq%7D%5Cepsilon_%7Bt-q%7D%20%2B%20%5Cepsilon_%7Bt%7D "Y_{t} = c + \phi_{1}y_{dt-1} + \phi_{p}y_{dt-p} + ... + \theta_{1}\epsilon_{t-1} + \theta_{q}\epsilon_{t-q} + \epsilon_{t}")
-
-    -   Why i'm using this model
-        -   Pros/Cons
+The use of a AR model makes sense in modelling water level, where past water levels will dictate present and future water levels. The benefits of a MA model is that it accounts for stochastic events. These events will cause some shift in the time series and eventually their effect will dispate over time. This is extremely useful in modelling natural systems as we have limited, or sometimes no, control over the environment. The major benefit of the ARIMA model is that it allows for modelling of more complex systems.
 
 The Fourier Transform (FT) decomposes a function based on time into the frequencies that make it up, using the understanding that all waveforms can be drescibed by a sum of sinusoids of different frequencies
 
@@ -191,8 +186,13 @@ We'll create a function for reproducibility. It performs a grid search of ARIMA 
 ``` r
 arima_param <- function(ts){
     # Performs a grid search for optimal ARIMA parameters by comparing aicc of each model
+    #
+    # Args:
+    #   ts: A time series object
     # 
-    # Return: The model and fourier transform with the lowest aicc
+    # Return: 
+    #    The model and fourier transform with the lowest aicc
+    #
     best_fit <- list(model=Inf, aic=Inf, i=Inf, j=Inf)
     
     for (i in 1:10){
@@ -211,11 +211,13 @@ arima_param <- function(ts){
 Running the ARIMA parameter chooser function on our msts dataset. Plotting a forecast for two days gives us reasonable results. However, we have to validate our model in order to trust our forecast.
 
 ``` r
-#arima_model <- arima_param(lv_ts)
+arima_model <- arima_param(lv_ts)
 
-#plotter <- forecast(arima_model$model, xreg=fourier(lv_ts, K=c(arima_model$i, arima_model$j), h=192))
-#autoplot(plotter)
+plotter <- forecast(arima_model$model, xreg=fourier(lv_ts, K=c(arima_model$i, arima_model$j), h=192))
+autoplot(plotter)
 ```
+
+![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 5 Validate model
 ================
@@ -229,19 +231,36 @@ The residuals from our model should not exhibit any discernible patterns and sho
 The ACF plot shows significant spikes before 100, 200 and 300. Because our seasonality is 96, we would expect spikes at 96, 192 and 288. Our ACF plot follows our expected spikes, though we have some significant spikes when at odd areas, like 125.
 
 ``` r
-#checkresiduals(arima_model$model, lag=96)
+checkresiduals(arima_model$model, lag=96)
 ```
+
+![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-11-1.png)
+
+    ## 
+    ##  Ljung-Box test
+    ## 
+    ## data:  Residuals from Regression with ARIMA(2,0,3) errors
+    ## Q* = 70.722, df = 67, p-value = 0.3545
+    ## 
+    ## Model df: 29.   Total lags used: 96
 
 6 Forecasting
 =============
 
-Now that we have validate our model we can be assured of the accuracy of our predictions. Forecasting two days we can see the same daily seasonality that occurs in past days. We also see the continuation of the negative trend. The 95% confidence interval is actually not much larger than the 80% confidence interval.
+Write more about why daily cycles occur
+=======================================
+
+The daily cycles are due to changes in air temperature and consequently evaporation. Increased air temperature cause heating of the water which causes some water moleculse to evaporate.
+
+Evaporation will peak during This process will If we graphed air temperature alongside water level we would expect to see that the two lines are highly correlate, with the water level cycles closely following the air temperature cycles. Now that we have validate our model we can be assured of the accuracy of our predictions. Forecasting two days we can see the same daily seasonality that occurs in past days. We also see the continuation of the negative trend. The 95% confidence interval is actually not much larger than the 80% confidence interval.
 
 Because these measurements were taken at the very end of the rainy season we would expect the water level to not increase. Additionally, as we approach summer we expect to see a continually negative slope as water evaporates from the lagoon.
 
 ``` r
-#autoplot(plotter)
+autoplot(plotter)
 ```
+
+![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
 7 Conclusion
 ============

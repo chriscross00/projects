@@ -186,10 +186,10 @@ arima_param <- function(ts){
 
 Running the ARIMA parameter chooser function on our msts dataset. Plotting a forecast for two days gives us reasonable results. However, we have to validate our model in order to trust our forecast.
 ```{r}
-#arima_model <- arima_param(lv_ts)
+arima_model <- arima_param(lv_ts)
 
-#plotter <- forecast(arima_model$model, xreg=fourier(lv_ts, K=c(arima_model$i, arima_model$j), h=192))
-#autoplot(plotter)
+plotter <- forecast(arima_model$model, xreg=fourier(lv_ts, K=c(arima_model$i, arima_model$j), h=192))
+autoplot(plotter)
 ```
 
 # 5 Validate model {#validate}
@@ -201,7 +201,7 @@ The residuals from our model should not exhibit any discernible patterns and sho
 
 The ACF plot shows significant spikes before 100, 200 and 300. Because our seasonality is 96, we would expect spikes at 96, 192 and 288. Our ACF plot follows our expected spikes, though we have some significant spikes when at odd areas, like 125.
 ```{r}
-#checkresiduals(arima_model$model, lag=96)
+checkresiduals(arima_model$model, lag=96)
 ```
 
 # 6 Forecasting {#forecast}
@@ -209,14 +209,12 @@ The ACF plot shows significant spikes before 100, 200 and 300. Because our seaso
 
 The daily cycles are due to changes in air temperature and consequently evaporation. Increased air temperature cause heating of the water which causes some water moleculse to evaporate. 
 
-
-
 Evaporation will peak during This process will If we graphed air temperature alongside water level we would expect to see that the two lines are highly correlate, with the water level cycles closely following the air temperature cycles.
 Now that we have validate our model we can be assured of the accuracy of our predictions. Forecasting two days we can see the same daily seasonality that occurs in past days. We also see the continuation of the negative trend. The 95% confidence interval is actually not much larger than the 80% confidence interval.
 
 Because these measurements were taken at the very end of the rainy season we would expect the water level to not increase. Additionally, as we approach summer we expect to see a continually negative slope as water evaporates from the lagoon.
 ```{r}
-#autoplot(plotter)
+autoplot(plotter)
 ```
 
 # 7 Conclusion {#analysis}
