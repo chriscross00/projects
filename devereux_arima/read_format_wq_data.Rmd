@@ -35,19 +35,28 @@ View(my_files)
 ```
 
 
+This works!
 ```{r}
-my_files_rbind <- 
-  do.call(rbind,
-          lapply(list.files('working_data/180530 Logger Data/',
-                            full.names = TRUE,
-                            pattern = '*.csv',
-                            recursive = TRUE), read.csv))
-  
+my_files <- 
+  list.files('working_data/180530 Logger Data/',
+             pattern = '*.csv',
+             full.names = TRUE,
+             recursive = TRUE) 
+
+my_files
+
+test_data <- data.frame()
+for (file in my_files){
+  temp <- read_csv(file, skip=1)
+  test_data <- cbind.fill(test_data, temp, fill=NA)
+}
+
+View(test_data)
+
 ```
 
 https://serialmentor.com/blog/2016/6/13/reading-and-combining-many-tidy-data-files-in-R
 ```{r}
-library(rowr)
 data <- 
   list.files('working_data/180530 Logger Data/',
                             pattern = '*.csv',
