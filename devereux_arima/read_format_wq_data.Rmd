@@ -42,31 +42,70 @@ my_files <-
              pattern = '*.csv',
              full.names = TRUE,
              recursive = TRUE) 
-
-my_files
-
 test_data <- data.frame()
 for (file in my_files){
   temp <- read_csv(file, skip=1)
   test_data <- cbind.fill(test_data, temp, fill=NA)
 }
-
 View(test_data)
-
 ```
 
-https://serialmentor.com/blog/2016/6/13/reading-and-combining-many-tidy-data-files-in-R
+I'll need to modify this when I read all the dir. This reads date subdir individually.
 ```{r}
-data <- 
-  list.files('working_data/180530 Logger Data/',
-                            pattern = '*.csv',
-                            full.names = TRUE,
-                            recursive = TRUE) %>%
-  map(read_csv) %>%
-  reduce(cbind.fill)
-View(data)
+create_date_df <- function(path) {
+  # Recursively reads csv files and binds them to each other column-wise
+  #
+  # Args:
+  #   path(object): A specified directory to read
+  #
+  # Returns:
+  #   combined_df(dataframe): A dataframe with all csv's columns appended
+  my_files <- 
+    list.files(path,
+               pattern = '*.csv',
+               full.names = TRUE,
+               recursive = TRUE) 
+  combined_df <- data.frame()
+  
+  for (file in my_files){
+    temp <- read_csv(file, skip=1)
+    combined_df <- cbind.fill(combined_df, temp, fill=NA)
+
+  }
+  return(combined_df)
+}
 ```
 
+
+```{r}
+test_path <- 'working_data/180530 Logger Data/'
+
+test1 <- create_date_df(test_path)
+test1 <- clean_date_df(test1)
+
+
+head(test1)
+```
+
+```{r}
+clean_date_df <- function(df) {
+  # Removes duplicate columns from dataframe, shortens names and changes factors to numeric when appropriate
+  #
+  # Args:
+  #   df(dataframe): A dataframe with duplicate indexes and times
+  #
+  # Returns:
+  #   df(dataframe): A cleaned dataframe ready for feature engineering
+  df <- df[c(2:5, 8, 9, 12, 13)]
+  names(df) <- c('obs', 'date_time', 'surface_pressure', 'air_temp1', 'salinity', 'sal_temp2', 'depth_pressure', 'depth_temp')
+  
+  # Converts factors to doubles 
+  for (i in list(3, 4, 7, 8)){
+    df[, i] <- as.numeric(levels(df[, i]))[df[, i]]
+  }
+  return(df)
+}
+```
 
 Process:
 - Read the csv from each subdir
