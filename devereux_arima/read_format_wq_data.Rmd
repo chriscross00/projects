@@ -12,6 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r, warning=FALSE, message=FALSE}
 library(here)
 library(tidyverse)
+library(rowr)
 ```
 
 Setting the working dir
@@ -20,36 +21,6 @@ here()
 ```
 
 Skip=1 is required because each csv has a Plot_title as the first row. I need to cbind, not make a single csv
-```{r}
-my_files <- 
-  list.files('working_data/180530 Logger Data/',
-             pattern = '*.csv',
-             full.names = TRUE,
-             recursive = TRUE) %>%
-  map_df(~read_csv(., col_types = cols(.default = 'c'), skip=1)) %>%
-  set_names(c('obs', 'date_time', 'surface_pressure', 'air_temp1', 'salinity', 'sal_temp2', 'depth_pressure', 'depth_temp')) %>%
-  gather(key, value, -date_time) %>%
-  spread(key, value)
-
-View(my_files)
-```
-
-
-This works!
-```{r}
-my_files <- 
-  list.files('working_data/180530 Logger Data/',
-             pattern = '*.csv',
-             full.names = TRUE,
-             recursive = TRUE) 
-test_data <- data.frame()
-for (file in my_files){
-  temp <- read_csv(file, skip=1)
-  test_data <- cbind.fill(test_data, temp, fill=NA)
-}
-View(test_data)
-```
-
 I'll need to modify this when I read all the dir. This reads date subdir individually.
 ```{r}
 create_date_df <- function(path) {
@@ -76,17 +47,6 @@ create_date_df <- function(path) {
 }
 ```
 
-
-```{r}
-test_path <- 'working_data/180530 Logger Data/'
-
-test1 <- create_date_df(test_path)
-test1 <- clean_date_df(test1)
-
-
-head(test1)
-```
-
 ```{r}
 clean_date_df <- function(df) {
   # Removes duplicate columns from dataframe, shortens names and changes factors to numeric when appropriate
@@ -98,6 +58,7 @@ clean_date_df <- function(df) {
   #   df(dataframe): A cleaned dataframe ready for feature engineering
   df <- df[c(2:5, 8, 9, 12, 13)]
   names(df) <- c('obs', 'date_time', 'surface_pressure', 'air_temp1', 'salinity', 'sal_temp2', 'depth_pressure', 'depth_temp')
+  df <- drop_na(df)
   
   # Converts factors to doubles 
   for (i in list(3, 4, 7, 8)){
@@ -107,18 +68,84 @@ clean_date_df <- function(df) {
 }
 ```
 
-Process:
-- Read the csv from each subdir
-  read.files('working_data/', pattern='*.csv', recursive=TRUE)
-- cbind for each date
-- calculate water level from change in pressure
-- return final csv
+```{r}
+create_level <- function(df) {
+  # Creates the water level in meters, converting the difference of air pressure and depth pressure
+  #
+  # Args:
+  #   df(dataframe): A dataframe with duplicate indexes and times
+  #
+  # Returns:
+  #   df(dataframe): A dataframe ready for a ARIMA model
+  conv_factor = 0.013595100263597
+  mutate(df, level_m = conv_factor*(df[, 7] - df[, 3]))
+}
+```
 
-for (date_subdir in data) {
-  for (subdir in date_subdir){
-    subdir <- read_csv(csv)
-    cb
-  }
+Test run
+
+
+```{r}
+create_arima_ready <- function(path) {
+  # A helper function that wraps the creation and cleaning of a dataframe
+  #
+  # Args:
+  #   path(object): A specified directory to read
+  #
+  # Returns:
+  #   ready_df(dataframe): A dataframe ready for a ARIMA model
+  ready_df <- path %>%
+    create_date_df() %>%
+    clean_date_df() %>%
+    create_level()
+  
+  return(ready_df)
+}
+```
+
+Okay, so i need to label each output CSV. I can do this by parsing the name of each input.
+```{r, message=FALSE}
+test_path <- 'working_data/180530 Logger Data/'
+test1 <- create_arima_ready(test_path)
+
+head(test1)
+
+write_csv(test1, path = 'test12345.csv')
+```
+
+Correctly parses some of the data
+```{r}
+whole_dir <- function(path) {
+  csv <- list.files(path, full.names = TRUE)
+  test5 <- lapply(csv, create_arima_ready)
+  return(test5)
 }
 
-Output: csv with water level and other wq data
+a <- list.files('./working_data/', full.names = TRUE)
+
+test5 <- list()
+for (i in a){
+  test5[[i]] <- create_arima_ready(i)
+}
+
+test5
+```
+
+
+```{r}
+whole_dir <- function(path) {
+  csv <- list.files(path, full.names = TRUE)
+  test5 <- lapply(csv, create_arima_ready)
+  return(test5)
+}
+
+b <- './working_data/'
+
+abc <- whole_dir(b)
+
+
+abc
+```
+
+
+
