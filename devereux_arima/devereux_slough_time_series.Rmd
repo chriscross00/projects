@@ -161,26 +161,26 @@ lv_ts <- msts(lv$level_m, seasonal.periods=c(96,35064))
 We'll create a function for reproducibility. It performs a grid search of ARIMA parameters by adjusting the orders of the Fourier term. By comparing the AIC of different models we can select the model with the largest AIC. 
 ```{r}
 arima_param <- function(ts){
-    # Performs a grid search for optimal ARIMA parameters by comparing aicc of each model
-    #
-    # Args:
-    #   ts: A time series object
-    # 
-    # Return: 
-    #    The model and fourier transform with the lowest aicc
-    #
-    best_fit <- list(model=Inf, aic=Inf, i=Inf, j=Inf)
+  # Performs a grid search for optimal ARIMA parameters by comparing aicc of each model
+  #
+  # Args:
+  #   ts: A time series object
+  # 
+  # Return: 
+  #    The model and fourier transform with the lowest aicc
+  #
+  best_fit <- list(model=Inf, aic=Inf, i=Inf, j=Inf)
     
-    for (i in 1:10){
-        for (j in 1:5){
-            fit <- auto.arima(ts, seasonal=FALSE, xreg=fourier(ts, K=c(i,j)))
-            if (fit$aic < best_fit$aic)
-                best_fit <- list(model=fit, aicc=fit$aic, i=i, j=j)
-            else break;
-        }
-    
+  for (i in 1:10){
+    for (j in 1:5){
+      fit <- auto.arima(ts, seasonal=FALSE, xreg=fourier(ts, K=c(i,j)))
+      if (fit$aic < best_fit$aic)
+        best_fit <- list(model=fit, aicc=fit$aic, i=i, j=j)
+      else break;
     }
-    return(best_fit)
+    
+  }
+  return(best_fit)
 }
 ```
 

@@ -1,0 +1,36 @@
+---
+title: "read_format_wq_data"
+author: "Christoper Chan"
+date: "March 19, 2019"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, warning=FALSE, message=FALSE}
+library(here)
+library(tidyverse)
+```
+
+Setting the working dir
+```{r}
+here()
+```
+
+Process:
+- Read the csv from each subdir
+  read.files('data/', pattern='*.csv', recursive=TRUE)
+- cbind for each date
+- calculate water level from change in pressure
+- return final csv
+
+for (date_subdir in data) {
+  for (subdir in date_subdir){
+    subdir <- read_csv(csv)
+    cb
+  }
+}
+
+Output: csv with water level and other wq data
