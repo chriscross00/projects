@@ -19,9 +19,49 @@ Setting the working dir
 here()
 ```
 
+Skip=1 is required because each csv has a Plot_title as the first row. I need to cbind, not make a single csv
+```{r}
+my_files <- 
+  list.files('working_data/180530 Logger Data/',
+             pattern = '*.csv',
+             full.names = TRUE,
+             recursive = TRUE) %>%
+  map_df(~read_csv(., col_types = cols(.default = 'c'), skip=1)) %>%
+  set_names(c('obs', 'date_time', 'surface_pressure', 'air_temp1', 'salinity', 'sal_temp2', 'depth_pressure', 'depth_temp')) %>%
+  gather(key, value, -date_time) %>%
+  spread(key, value)
+
+View(my_files)
+```
+
+
+```{r}
+my_files_rbind <- 
+  do.call(rbind,
+          lapply(list.files('working_data/180530 Logger Data/',
+                            full.names = TRUE,
+                            pattern = '*.csv',
+                            recursive = TRUE), read.csv))
+  
+```
+
+https://serialmentor.com/blog/2016/6/13/reading-and-combining-many-tidy-data-files-in-R
+```{r}
+library(rowr)
+data <- 
+  list.files('working_data/180530 Logger Data/',
+                            pattern = '*.csv',
+                            full.names = TRUE,
+                            recursive = TRUE) %>%
+  map(read_csv) %>%
+  reduce(cbind.fill)
+View(data)
+```
+
+
 Process:
 - Read the csv from each subdir
-  read.files('data/', pattern='*.csv', recursive=TRUE)
+  read.files('working_data/', pattern='*.csv', recursive=TRUE)
 - cbind for each date
 - calculate water level from change in pressure
 - return final csv
