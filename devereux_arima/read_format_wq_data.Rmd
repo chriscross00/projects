@@ -20,8 +20,10 @@ Setting the working dir
 here()
 ```
 
-Skip=1 is required because each csv has a Plot_title as the first row. I need to cbind, not make a single csv
-I'll need to modify this when I read all the dir. This reads date subdir individually.
+Skip=1 is required because each csv has a Plot_title as the first row. I need to
+cbind, not make a single csv
+I'll need to modify this when I read all the dir. This reads date subdir 
+individually.
 ```{r}
 create_date_df <- function(path) {
   # Recursively reads csv files and binds them to each other column-wise
@@ -41,7 +43,6 @@ create_date_df <- function(path) {
   for (file in my_files){
     temp <- read_csv(file, skip=1)
     combined_df <- cbind.fill(combined_df, temp, fill=NA)
-
   }
   return(combined_df)
 }
@@ -49,7 +50,8 @@ create_date_df <- function(path) {
 
 ```{r}
 clean_date_df <- function(df) {
-  # Removes duplicate columns from dataframe, shortens names and changes factors to numeric when appropriate
+  # Removes duplicate columns from dataframe, shortens names and changes factors 
+  # to numeric when appropriate
   #
   # Args:
   #   df(dataframe): A dataframe with duplicate indexes and times
@@ -57,7 +59,8 @@ clean_date_df <- function(df) {
   # Returns:
   #   df(dataframe): A cleaned dataframe ready for feature engineering
   df <- df[c(2:5, 8, 9, 12, 13)]
-  names(df) <- c('obs', 'date_time', 'surface_pressure', 'air_temp1', 'salinity', 'sal_temp2', 'depth_pressure', 'depth_temp')
+  names(df) <- c('obs', 'date_time', 'surface_pressure', 'air_temp1', 'salinity', 
+                 'sal_temp2', 'depth_pressure', 'depth_temp')
   df <- drop_na(df)
   
   # Converts factors to doubles 
@@ -70,7 +73,8 @@ clean_date_df <- function(df) {
 
 ```{r}
 create_level <- function(df) {
-  # Creates the water level in meters, converting the difference of air pressure and depth pressure
+  # Creates the water level in meters, converting the difference of air pressure
+  # and depth pressure
   #
   # Args:
   #   df(dataframe): A dataframe with duplicate indexes and times
@@ -83,8 +87,6 @@ create_level <- function(df) {
 ```
 
 Test run
-
-
 ```{r}
 create_arima_ready <- function(path) {
   # A helper function that wraps the creation and cleaning of a dataframe
@@ -103,7 +105,8 @@ create_arima_ready <- function(path) {
 }
 ```
 
-Okay, so i need to label each output CSV. I can do this by parsing the name of each input.
+Okay, so i need to label each output CSV. I can do this by parsing the name of 
+each input.
 ```{r, message=FALSE}
 test_path <- 'working_data/180530 Logger Data/'
 test1 <- create_arima_ready(test_path)
@@ -113,39 +116,17 @@ head(test1)
 write_csv(test1, path = 'test12345.csv')
 ```
 
-Correctly parses some of the data
+Correctly parses some of the data. Some of the data is missing, find the data, 
+name correctly
 ```{r}
 whole_dir <- function(path) {
   csv <- list.files(path, full.names = TRUE)
-  test5 <- lapply(csv, create_arima_ready)
-  return(test5)
+  arima_ready_dir <- lapply(csv, create_arima_ready)
+  return(arima_ready_dir)
 }
-
-a <- list.files('./working_data/', full.names = TRUE)
-
-test5 <- list()
-for (i in a){
-  test5[[i]] <- create_arima_ready(i)
-}
-
-test5
 ```
 
 
-```{r}
-whole_dir <- function(path) {
-  csv <- list.files(path, full.names = TRUE)
-  test5 <- lapply(csv, create_arima_ready)
-  return(test5)
-}
-
-b <- './working_data/'
-
-abc <- whole_dir(b)
-
-
-abc
-```
 
 
 
