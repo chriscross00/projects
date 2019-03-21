@@ -48,6 +48,7 @@ create_date_df <- function(path) {
 }
 ```
 
+Change this function to reference columns by names instead of indexes
 ```{r}
 clean_date_df <- function(df) {
   # Removes duplicate columns from dataframe, shortens names and changes factors 
@@ -124,6 +125,20 @@ whole_dir <- function(path) {
   arima_ready_dir <- lapply(csv, create_arima_ready)
   return(arima_ready_dir)
 }
+```
+
+
+```{r}
+x <- function(df) {
+  names(df) <- c('A', 'B', 'C')
+}
+
+test_df <- data.frame('a'=1, 'b'=2)
+
+test_df %>%
+  rename(A=a,
+         B=b,
+         C=c)
 ```
 
 
