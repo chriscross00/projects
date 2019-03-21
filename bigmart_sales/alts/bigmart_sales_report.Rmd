@@ -44,7 +44,7 @@ Conclusions:
 
 Because the dataset is relatively small I can read it all into the R. I combined both the training and test dataset to ensure I got a complete picture of the data.
 ```{r, message=FALSE, results='hide'}
-here('bigmart_sales')
+here()
 train <- read.csv('data/Train.csv')
 test <- read.csv('data/Test.csv')
 ```
