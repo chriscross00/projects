@@ -41,7 +41,8 @@ create_date_df <- function(path) {
   combined_df <- data.frame()
   
   for (file in my_files){
-    temp <- read_csv(file, skip=1)
+    temp <- read_csv(file, skip=1, progress = show_progress())
+    cat('Reading file: ', file)
     combined_df <- cbind.fill(combined_df, temp, fill=NA)
   }
   return(combined_df)
@@ -127,19 +128,13 @@ whole_dir <- function(path) {
 }
 ```
 
-
 ```{r}
-x <- function(df) {
-  names(df) <- c('A', 'B', 'C')
-}
+test_dir <- 'working_data/'
 
-test_df <- data.frame('a'=1, 'b'=2)
-
-test_df %>%
-  rename(A=a,
-         B=b,
-         C=c)
+test5 <- whole_dir(test_dir)
+whole_dir
 ```
+
 
 
 
