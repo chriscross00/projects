@@ -41,8 +41,8 @@ create_date_df <- function(path) {
   combined_df <- data.frame()
   
   for (file in my_files){
-    temp <- read_csv(file, skip=1, progress = show_progress())
-    cat('Reading file: ', file)
+    temp <- read_csv(file, skip=1, col_types = cols())
+    cat('Reading file: ', file, '\n')
     combined_df <- cbind.fill(combined_df, temp, fill=NA)
   }
   return(combined_df)
@@ -107,17 +107,6 @@ create_arima_ready <- function(path) {
 }
 ```
 
-Okay, so i need to label each output CSV. I can do this by parsing the name of 
-each input.
-```{r, message=FALSE}
-test_path <- 'working_data/180530 Logger Data/'
-test1 <- create_arima_ready(test_path)
-
-head(test1)
-
-write_csv(test1, path = 'test12345.csv')
-```
-
 Correctly parses some of the data. Some of the data is missing, find the data, 
 name correctly
 ```{r}
@@ -128,11 +117,23 @@ whole_dir <- function(path) {
 }
 ```
 
+Test: single dir
+```{r, message=FALSE}
+test_path <- 'working_data/180530 Logger Data/'
+test1 <- create_arima_ready(test_path)
+
+head(test1)
+
+write_csv(test1, path = 'test12345.csv')
+```
+
+
+Test: all dir
 ```{r}
 test_dir <- 'working_data/'
 
 test5 <- whole_dir(test_dir)
-whole_dir
+test5
 ```
 
 
