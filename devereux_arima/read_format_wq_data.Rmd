@@ -16,7 +16,7 @@ library(rowr)
 ```
 
 Setting the working dir
-```{r}
+```{r, message=FALSE}
 here()
 ```
 
