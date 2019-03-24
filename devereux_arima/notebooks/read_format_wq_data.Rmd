@@ -9,15 +9,22 @@ output: github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Introduction
+
+This notebook is a part 0 of the Devereux Slough time series project. I have 
+created functions that assist in reading in and cleaning the csv as well as some 
+light feature engineering.
 ```{r, warning=FALSE, message=FALSE}
 library(here)
 library(tidyverse)
 library(rowr)
 ```
 
-Setting the working dir
+Setting the working directory as data/. This gives me the flexibility to work 
+with csvs at different stages of cleaning pipeline.
 ```{r, message=FALSE}
 here()
+getwd()
 ```
 
 Skip=1 is required because each csv has a Plot_title as the first row. I need to
@@ -67,7 +74,9 @@ clean_date_df <- function(df) {
   
   # Converts factors to doubles 
   for (i in list(3, 4, 7, 8)){
-    df[, i] <- as.numeric(levels(df[, i]))[df[, i]]
+    if (class(df[, i]) == 'factor'){
+      df[, i] <- as.numeric(levels(df[, i]))[df[, i]]
+    }
   }
   return(df)
 }
@@ -88,7 +97,8 @@ create_level <- function(df) {
 }
 ```
 
-Test run
+create_arima_ready works on date subdirectories. Therefore I'll need a function 
+that can parse multiple date subdirectories.
 ```{r}
 create_arima_ready <- function(path) {
   # A helper function that wraps the creation and cleaning of a dataframe
@@ -119,25 +129,44 @@ whole_dir <- function(path) {
 
 Test: single dir
 ```{r, message=FALSE}
-test_path <- 'working_data/180530 Logger Data/'
-test1 <- create_arima_ready(test_path)
+test_path <- here('data', 'processed', '180530 Logger Data')
+test1 <- create_date_df(test_path)
+#test1 <- clean_date_df(test1)
 
 head(test1)
 
-write_csv(test1, path = 'test12345.csv')
 ```
-
 
 Test: all dir
 ```{r}
-test_dir <- 'working_data/'
+test_dir <- './data/processed'
 
 test5 <- whole_dir(test_dir)
 test5
 ```
 
+180502 test
+```{r}
+test_path <- here('data', 'interim', '180502 Logger Data')
 
 
 
 
+
+test5 <- create_date_df(test_path)
+# test5 <- clean_date_df(test5)
+
+
+
+head(test5)
+str(test5)
+
+```
+
+
+
+
+```{r}
+class(test1[, 2])
+```
 
