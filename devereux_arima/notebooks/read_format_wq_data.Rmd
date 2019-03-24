@@ -161,39 +161,33 @@ str(test5)
 
 ```{r}
 conversion_func <- function(df){
-  index <- sapply(df[, 3:8], is.factor)
-  df[index] <- lapply(df[index], function(x) as.numeric(levels(x))[x])
+  index <- sapply(df[5:8], is.factor)
+  df[5:8] <- lapply(df[index], function(x) as.numeric(levels(x))[x])
   return(df)
 }
 
 
 lop <- conversion_func(test5)
 str(lop)
+head(lop)
+
+#lop[, 7] <- as.numeric(levels(lop[, 7]))[lop[, 7]]
 ```
 
+This function works, but i'd like to generalize it.
 ```{r}
-what <- create_arima_ready(test_path)
-
-head(what)
-```
-
-```{r}
-just_factor <- function(df) {
-  for (i in list(3:8)) {
-    if (is.factor(df[, i]) == TRUE) {
-      df[, i] <- as.numeric(levels(df[, i]))[df[, i]]
-    }
-  }
+unc <- function(df){
+  df[5:8] <- lapply(df[5:8], function(x) as.numeric(levels(x))[x])
   return(df)
 }
+
+
+pool <- unc(test5)
+str(pool)
+
+
+head(pool)
 ```
 
-
-
-```{r}
-kill <- just_factor(test5)
-
-str(kill)
-```
 
 
