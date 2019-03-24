@@ -48,7 +48,7 @@ create_date_df <- function(path) {
   combined_df <- data.frame()
   
   for (file in my_files){
-    temp <- read_csv(file, skip=1, col_types = cols())
+    temp <- read_csv(file, skip=1)
     cat('Reading file: ', file, '\n')
     combined_df <- cbind.fill(combined_df, temp, fill=NA)
   }
@@ -73,8 +73,8 @@ clean_date_df <- function(df) {
   df <- drop_na(df)
   
   # Converts factors to doubles 
-  for (i in list(3, 4, 7, 8)){
-    if (class(df[, i]) == 'factor'){
+  for (i in list(3:8)) {
+    if (is.factor(df[, i] == TRUE)) {
       df[, i] <- as.numeric(levels(df[, i]))[df[, i]]
     }
   }
@@ -131,7 +131,7 @@ Test: single dir
 ```{r, message=FALSE}
 test_path <- here('data', 'processed', '180530 Logger Data')
 test1 <- create_date_df(test_path)
-#test1 <- clean_date_df(test1)
+test1 <- clean_date_df(test1)
 
 head(test1)
 
@@ -139,34 +139,61 @@ head(test1)
 
 Test: all dir
 ```{r}
-test_dir <- './data/processed'
+test_dir <- here('data', 'processed')
 
 test5 <- whole_dir(test_dir)
 test5
 ```
 
-180502 test
+180423 test
 ```{r}
-test_path <- here('data', 'interim', '180502 Logger Data')
-
-
+test_path <- here('data', 'interim', '180405 Logger Data')
 
 
 
 test5 <- create_date_df(test_path)
-# test5 <- clean_date_df(test5)
-
-
+test5 <- clean_date_df(test5)
 
 head(test5)
 str(test5)
-
 ```
 
+
+```{r}
+conversion_func <- function(df){
+  index <- sapply(df[, 3:8], is.factor)
+  df[index] <- lapply(df[index], function(x) as.numeric(levels(x))[x])
+  return(df)
+}
+
+
+lop <- conversion_func(test5)
+str(lop)
+```
+
+```{r}
+what <- create_arima_ready(test_path)
+
+head(what)
+```
+
+```{r}
+just_factor <- function(df) {
+  for (i in list(3:8)) {
+    if (is.factor(df[, i]) == TRUE) {
+      df[, i] <- as.numeric(levels(df[, i]))[df[, i]]
+    }
+  }
+  return(df)
+}
+```
 
 
 
 ```{r}
-class(test1[, 2])
+kill <- just_factor(test5)
+
+str(kill)
 ```
+
 
