@@ -1,7 +1,12 @@
 ---
 title: "Devereux Slough Time Series"
 author: "Christopher Chan"
-date: "`r format(Sys.time(), '%d, %B, %Y, %H:%M')`"
+date: "`r format(Sys.time(), '%H:%M %d %B %Y')`"
+knit: (function(input_file, encoding) {
+       rmarkdown::render(input_file, 
+                        encoding = encoding, 
+                        output_dir = here::here('reports'))
+                        })
 output:
     github_document:
         pandoc_arg: --webtex
