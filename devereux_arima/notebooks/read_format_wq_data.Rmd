@@ -1,11 +1,11 @@
 ---
 title: "read_format_wq_data"
 author: "Christoper Chan"
-date: "`r format(Sys.time(), '%d %B %Y %H:%M')`"
+date: "`r format(Sys.time(), '%H:%M %d %B %Y')`"
 knit: (function(input_file, encoding) {
        rmarkdown::render(input_file, 
                         encoding = encoding, 
-                        output_dir = file.path(here::here('reports')))
+                        output_dir = here::here('reports'))
                         })
 output: github_document
 ---
