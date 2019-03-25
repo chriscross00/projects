@@ -5,7 +5,8 @@ date: "`r format(Sys.time(), '%d %B %Y %H:%M')`"
 knit: (function(input_file, encoding) {
        rmarkdown::render(input_file, 
                         encoding = encoding, 
-                        output_dir = file.path(dirname(input_file), 'reports'))})
+                        output_dir = file.path(here::here('reports')))
+                        })
 output: github_document
 ---
 
@@ -15,11 +16,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #THIS IS JUST A TEST
 
-
-```{r}
-a <- file.path(dirname(getwd()))
-print(a)
-```
 
 
 # Introduction
@@ -37,10 +33,6 @@ library(rowr)
 
 Setting the working directory as data/. This gives me the flexibility to work 
 with csvs at different stages of cleaning pipeline.
-```{r, message=FALSE}
-here('reports')
-getwd()
-```
 
 Skip=1 is required because each csv has a Plot_title as the first row. I need to
 cbind, not make a single csv

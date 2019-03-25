@@ -1,7 +1,17 @@
 read\_format\_wq\_data
 ================
 Christoper Chan
-March 19, 2019
+25 March 2019 16:38
+
+THIS IS JUST A TEST
+===================
+
+Introduction
+============
+
+The data I collected from Devereux Slogh comes from 4 loggers
+
+This notebook is a part 0 of the Devereux Slough time series project. I have created functions that assist in reading in and cleaning the csv as well as some light feature engineering.
 
 ``` r
 library(here)
@@ -9,13 +19,7 @@ library(tidyverse)
 library(rowr)
 ```
 
-Setting the working dir
-
-``` r
-here()
-```
-
-    ## [1] "/home/ckc/Documents/git_projects/projects/devereux_arima"
+Setting the working directory as data/. This gives me the flexibility to work with csvs at different stages of cleaning pipeline.
 
 Skip=1 is required because each csv has a Plot\_title as the first row. I need to cbind, not make a single csv I'll need to modify this when I read all the dir. This reads date subdir individually.
 
@@ -37,11 +41,14 @@ create_date_df <- function(path) {
   
   for (file in my_files){
     temp <- read_csv(file, skip=1)
+    cat('Reading file: ', file, '\n')
     combined_df <- cbind.fill(combined_df, temp, fill=NA)
   }
   return(combined_df)
 }
 ```
+
+Change this function to reference columns by names instead of indexes
 
 ``` r
 clean_date_df <- function(df) {
@@ -59,8 +66,10 @@ clean_date_df <- function(df) {
   df <- drop_na(df)
   
   # Converts factors to doubles 
-  for (i in list(3, 4, 7, 8)){
-    df[, i] <- as.numeric(levels(df[, i]))[df[, i]]
+  for (i in list(3:8)) {
+    if (is.factor(df[, i] == TRUE)) {
+      df[, i] <- as.numeric(levels(df[, i]))[df[, i]]
+    }
   }
   return(df)
 }
@@ -81,7 +90,7 @@ create_level <- function(df) {
 }
 ```
 
-Test run
+create\_arima\_ready works on date subdirectories. Therefore I'll need a function that can parse multiple date subdirectories.
 
 ``` r
 create_arima_ready <- function(path) {
@@ -101,11 +110,29 @@ create_arima_ready <- function(path) {
 }
 ```
 
-Okay, so i need to label each output CSV. I can do this by parsing the name of each input.
+Correctly parses some of the data. Some of the data is missing, find the data, name correctly
 
 ``` r
-test_path <- 'working_data/180530 Logger Data/'
-test1 <- create_arima_ready(test_path)
+whole_dir <- function(path) {
+  csv <- list.files(path, full.names = TRUE)
+  arima_ready_dir <- lapply(csv, create_arima_ready)
+  return(arima_ready_dir)
+}
+```
+
+Test: single dir
+
+``` r
+test_path <- here('data', 'processed', '180530 Logger Data')
+test1 <- create_date_df(test_path)
+```
+
+    ## Reading file:  /home/ckc/Documents/git_projects/projects/devereux_arima/data/processed/180530 Logger Data/Atmos Pressure/Atmos_180530.csv 
+    ## Reading file:  /home/ckc/Documents/git_projects/projects/devereux_arima/data/processed/180530 Logger Data/Conductivity/Conductivity_180530.csv 
+    ## Reading file:  /home/ckc/Documents/git_projects/projects/devereux_arima/data/processed/180530 Logger Data/Depth Pressure/Depth_180530.csv
+
+``` r
+test1 <- clean_date_df(test1)
 
 head(test1)
 ```
@@ -117,24 +144,64 @@ head(test1)
     ## 4    4 05/19/18 02:45:00 PM           759.40    17.760  31.2167     24.79
     ## 5    5 05/19/18 03:00:00 PM           759.21    17.855  31.2607     24.92
     ## 6    6 05/19/18 03:15:00 PM           759.04    17.760  31.2372     25.02
-    ##   depth_pressure depth_temp  level_m
-    ## 1         904.03     19.853 1.962181
-    ## 2         903.91     19.853 1.961773
-    ## 3         903.82     19.948 1.961229
-    ## 4         903.61     20.043 1.960549
-    ## 5         903.61     20.043 1.963132
-    ## 6         903.45     19.948 1.963268
+    ##   depth_pressure depth_temp
+    ## 1         904.03     19.853
+    ## 2         903.91     19.853
+    ## 3         903.82     19.948
+    ## 4         903.61     20.043
+    ## 5         903.61     20.043
+    ## 6         903.45     19.948
+
+Test: all dir
 
 ``` r
-write_csv(test1, path = 'test12345.csv')
+# test_dir <- here('data', 'processed')
+# 
+# test5 <- whole_dir(test_dir)
+# test5
 ```
 
-Correctly parses some of the data. Some of the data is missing, find the data, name correctly
+180423 test
 
 ``` r
-whole_dir <- function(path) {
-  csv <- list.files(path, full.names = TRUE)
-  arima_ready_dir <- lapply(csv, create_arima_ready)
-  return(arima_ready_dir)
-}
+# test_path <- here('data', 'interim', '180405 Logger Data')
+# 
+# 
+# 
+# test5 <- create_date_df(test_path)
+# test5 <- clean_date_df(test5)
+# 
+# head(test5)
+# str(test5)
+```
+
+``` r
+# conversion_func <- function(df){
+#   index <- sapply(df[5:8], is.factor)
+#   df[5:8] <- lapply(df[index], function(x) as.numeric(levels(x))[x])
+#   return(df)
+# }
+# 
+# 
+# lop <- conversion_func(test5)
+# str(lop)
+# head(lop)
+# 
+# #lop[, 7] <- as.numeric(levels(lop[, 7]))[lop[, 7]]
+```
+
+This function works, but i'd like to generalize it.
+
+``` r
+# unc <- function(df){
+#   df[5:8] <- lapply(df[5:8], function(x) as.numeric(levels(x))[x])
+#   return(df)
+# }
+# 
+# 
+# pool <- unc(test5)
+# str(pool)
+# 
+# 
+# head(pool)
 ```
