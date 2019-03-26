@@ -1,7 +1,23 @@
 test
 ================
 Christoper Chan
-22:59 25 March 2019
+23:00 25 March 2019
+
+``` r
+library(knitr)
+library(tidyverse)
+```
+
+    ## ── Attaching packages ────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+
+    ## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
+    ## ✔ tibble  1.4.2     ✔ dplyr   0.7.8
+    ## ✔ tidyr   0.8.2     ✔ stringr 1.3.1
+    ## ✔ readr   1.2.1     ✔ forcats 0.3.0
+
+    ## ── Conflicts ───────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## ✖ dplyr::filter() masks stats::filter()
+    ## ✖ dplyr::lag()    masks stats::lag()
 
 ``` r
 library(ggplot2)
@@ -18,12 +34,6 @@ ggplot(df, aes(X, Y)) +
 ```
 
 ![](/home/ckc/Documents/git_projects/projects/devereux_arima/reports/test_files/figure-markdown_github/unnamed-chunk-3-1.png)
-
-``` r
-getwd()
-```
-
-    ## [1] "/home/ckc/Documents/git_projects/projects/devereux_arima/notebooks"
 
 ``` r
 print('hello world')
