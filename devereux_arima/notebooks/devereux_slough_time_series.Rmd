@@ -289,7 +289,7 @@ parameters by adjusting the orders of the Fourier term. By comparing the AIC of
 different models we can select the model with the largest AIC. 
 ```{r}
 arima_param <- function(ts){
-  # Performs a grid search for optimal ARIMA parameters by comparing aicc of
+  # Performs a grid search for optimal ARIMA parameters by comparing aic of
   # each model
   #
   # Args:
