@@ -10,18 +10,7 @@ knit: (function(input_file, encoding) {
 output: github_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
 ```{r}
-library(ggplot2)
-```
-
-```{r}
-df <- data.frame(X = 1:5, Y = 1:5)
-
-ggplot(df, aes(X, Y)) +
-  geom_point()
+## test
 ```
 
