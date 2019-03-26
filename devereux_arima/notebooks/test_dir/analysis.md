@@ -1,7 +1,7 @@
 test
 ================
 Christoper Chan
-23:47 25 March 2019
+23:54 25 March 2019
 
 ``` r
 library(knitr)
@@ -30,7 +30,7 @@ a <- ggplot(df, aes(X, Y)) +
 print(a)
 ```
 
-![](/home/ckc/Documents/git_projects/projects/devereux_arima/test_files/figure-markdown_github/unnamed-chunk-2-1.png)
+![](/home/ckc/Documents/git_projects/projects/devereux_arima/notebooks/test_dir/analysis_files/figure-markdown_github/unnamed-chunk-2-1.png)
 
 ``` r
 print('hello world')

@@ -5,7 +5,7 @@ date: "`r format(Sys.time(), '%H:%M %d %B %Y')`"
 knit: (function(input_file, encoding) {
        rmarkdown::render(input_file, 
                         encoding = encoding, 
-                        output_file = here::here('test.md'))
+                        output_file=file.path(dirname(input_file), 'test_dir', 'analysis.md'))
                         })
 output: rmarkdown::github_document
 ---
