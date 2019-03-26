@@ -1,7 +1,7 @@
 read\_format\_wq\_data
 ================
 Christoper Chan
-22:34 25 March 2019
+22:38 25 March 2019
 
 Introduction
 ============
@@ -122,32 +122,8 @@ Test: single dir
 ``` r
 test_path <- here('data', 'processed', '180530 Logger Data')
 test1 <- create_date_df(test_path)
-```
-
-    ## Reading file:  /home/ckc/Documents/git_projects/projects/devereux_arima/data/processed/180530 Logger Data/Atmos Pressure/Atmos_180530.csv 
-    ## Reading file:  /home/ckc/Documents/git_projects/projects/devereux_arima/data/processed/180530 Logger Data/Conductivity/Conductivity_180530.csv 
-    ## Reading file:  /home/ckc/Documents/git_projects/projects/devereux_arima/data/processed/180530 Logger Data/Depth Pressure/Depth_180530.csv
-
-``` r
 test1 <- clean_date_df(test1)
-
-head(test1)
 ```
-
-    ##    obs            date_time surface_pressure air_temp1 salinity sal_temp2
-    ## 1    1 05/19/18 02:00:00 PM           759.70    17.665  31.2050     24.39
-    ## 2    2 05/19/18 02:15:00 PM           759.61    17.950  31.1553     24.49
-    ## 3    3 05/19/18 02:30:00 PM           759.56    17.855  31.2430     24.69
-    ## 4    4 05/19/18 02:45:00 PM           759.40    17.760  31.2167     24.79
-    ## 5    5 05/19/18 03:00:00 PM           759.21    17.855  31.2607     24.92
-    ## 6    6 05/19/18 03:15:00 PM           759.04    17.760  31.2372     25.02
-    ##   depth_pressure depth_temp
-    ## 1         904.03     19.853
-    ## 2         903.91     19.853
-    ## 3         903.82     19.948
-    ## 4         903.61     20.043
-    ## 5         903.61     20.043
-    ## 6         903.45     19.948
 
 Test: all dir
 

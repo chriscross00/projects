@@ -131,13 +131,10 @@ whole_dir <- function(path) {
 ```
 
 Test: single dir
-```{r, message=FALSE}
+```{r, message=FALSE, results='hide'}
 test_path <- here('data', 'processed', '180530 Logger Data')
 test1 <- create_date_df(test_path)
 test1 <- clean_date_df(test1)
-
-head(test1)
-
 ```
 
 Test: all dir
