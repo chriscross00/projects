@@ -14,6 +14,20 @@ output: rmarkdown::github_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+TO DO:
+
+- Make md render graphs properly
+  * [This](https://deanattali.com/blog/ezknitr-package/) might fix my problems
+  * Helpful links:
+    - https://www.tidyverse.org/articles/2017/12/workflow-vs-script/
+    - https://community.rstudio.com/t/is-it-possible-to-save-the-html-output-in-a-directory-which-is-not-the-one-where-the-rmd-file-resides/3588
+    - https://github.com/rstudio/rmarkdown/issues/587
+    - https://github.com/yihui/knitr/issues/913
+    - https://gist.github.com/jennybc/362f52446fe1ebc4c49f
+    - https://stackoverflow.com/questions/19989325/knit-rmd-file-to-md-and-save-the-md-file-one-level-up-with-a-different-name
+    
+
+
 ```{r}
 library(knitr)
 library(tidyverse)
