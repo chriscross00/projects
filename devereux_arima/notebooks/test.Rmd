@@ -23,8 +23,9 @@ library(ggplot2)
 
 ```{r}
 df <- data.frame(X = 1:5, Y = 1:5)
-ggplot(df, aes(X, Y)) +
+a <- ggplot(df, aes(X, Y)) +
   geom_point()
+print(a)
 ```
 
 ```{r}

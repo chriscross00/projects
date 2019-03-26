@@ -1,7 +1,7 @@
 test
 ================
 Christoper Chan
-23:37 25 March 2019
+23:39 25 March 2019
 
 ``` r
 library(knitr)
@@ -25,8 +25,9 @@ library(ggplot2)
 
 ``` r
 df <- data.frame(X = 1:5, Y = 1:5)
-ggplot(df, aes(X, Y)) +
+a <- ggplot(df, aes(X, Y)) +
   geom_point()
+print(a)
 ```
 
 ![](/home/ckc/Documents/git_projects/projects/devereux_arima/reports/test_files/figure-markdown_github/unnamed-chunk-2-1.png)
