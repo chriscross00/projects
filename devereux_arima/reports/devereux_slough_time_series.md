@@ -1,7 +1,7 @@
 Devereux Slough Time Series
 ================
 Christopher Chan
-February 17, 2019
+17:24 25 March 2019
 
 Introduction
 ============
@@ -52,9 +52,11 @@ A PhD thesis by Darcy Goodman examined Devereux Slough in a holistic sense, espe
 
 ### Collection method
 
-The Pier is one of three sites that we conducted consistently and is the deepest of all the sites, with consistent depths of over 1.5 meters. Data was collected via data loggers deployed off the Pier. The loggers recorded data every 15 minutes, which amounts to 96 data points per day. We retrieved the data and performed maintaince on the loggers every 2 weeks. This took roughly 2 hours, which explains some of the gaps in the data.
+The Pier is one of three sites that we conducted consistently and is the deepest of all the sites, with consistent depths of over 1.5 meters. Data was collected via 4 data loggers deployed off the Pier. The loggers recorded data every 15 minutes, which amounts to 96 data points per day. We retrieved the data and performed maintaince on the loggers every 2 weeks. This took roughly 2 hours, which explains some of the gaps in the data.
 
-![](figures/FT-DevereuxSlough.jpg) A gorgeous picture of the Pier. Credits to the Santa Barbara Audubon Society
+![](figures/FT-DevereuxSlough.jpg)
+
+A gorgeous picture of the Pier. Credits to the Santa Barbara Audubon Society
 
 ### Expected trends
 
@@ -73,11 +75,18 @@ library(tseries)
 Reading in a logger dataset that I've been using for testing.
 
 ``` r
-here()
-
-lv <- read_csv('data/180301 Level Data.csv')
+lv <- read_csv(here('data', 'processed', '180301 Level Data.csv'))
 head(lv, n=5)
 ```
+
+    ## # A tibble: 5 x 5
+    ##   sample_number date_time      temperature_water sub_pressure level_m
+    ##           <dbl> <chr>                      <dbl>        <dbl>   <dbl>
+    ## 1             1 02/12/18 12:00              15.9         164.    2.19
+    ## 2             2 02/12/18 12:15              15.9         164.    2.19
+    ## 3             3 02/12/18 12:30              15.9         164.    2.19
+    ## 4             4 02/12/18 12:45              15.9         164.    2.19
+    ## 5             5 02/12/18 13:00              15.9         165.    2.20
 
 Changing the format of the date\_time column into a readible format by time series functions. We are using the zoo() over other time series functions, like the standard ts(), because it works well with irregular intervals.
 
@@ -85,7 +94,10 @@ Changing the format of the date\_time column into a readible format by time seri
 lv$date_time <- as.POSIXct(lv$date_time, format = '%m/%d/%y %H:%M')
 lv_df <- lv[c(2,5)]
 
-cat('Absolute difference in water level over the period of', as.character(min(lv_df$date_time)), 'and', as.character(min(lv_df$date_time)), 'in meters:', max(lv_df$level_m) - min(lv_df$level_m))
+cat('Absolute difference in water level over the period of', 
+    as.character(min(lv_df$date_time)), 'and', 
+    as.character(min(lv_df$date_time)), 'in meters:', 
+    max(lv_df$level_m) - min(lv_df$level_m))
 ```
 
     ## Absolute difference in water level over the period of 2018-02-12 12:00:00 and 2018-02-12 12:00:00 in meters: 0.06599439
@@ -106,7 +118,7 @@ ggplot(lv_df, aes(date_time, level_m)) +
     ggtitle('Water level (m) over time')
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](/home/ckc/Documents/git_projects/projects/devereux_arima/reports/devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 This breaks down the data into it's individual components: seasonality, trend and the residuals, well irregular components using loess which gives the acronym STL. The seasonality seems to be daily and the amplitude does not seem to change, confirming a constant variance. This means we don't need to transform the amplitude, ie take the log. The trend is a relatively constant negative slope that occurs over the course of the dataset. The remainder, which are residuals from the seasonal plus trend fit, show no distinct pattern and are white noise. This means that all the data has been extracted from it and we have captured the entire picture.
 
@@ -118,7 +130,7 @@ decomp_ts <- ts(lv_df$level_m, frequency = 96) %>%
     plot(main='Decomposition of level_m')
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](/home/ckc/Documents/git_projects/projects/devereux_arima/reports/devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-5-1.png)
 
 Because our decomposition plots show a negative trend we must make the time series stationary. This is done by taking the seasonal difference. The ACF and PACF before and after differencing are shown below. Because each day has 96 observations, our daily seasonal difference component is lag=96.A plot of the data after taking the seasonal difference shows that the trend is removed. Even after taking the seasonal difference there is significant autocorrelation with previous points. Now that the trend is removed from the dataset we can move on with our model.
 
@@ -126,13 +138,13 @@ Because our decomposition plots show a negative trend we must make the time seri
 ggtsdisplay(lv_df$level_m, main='ACF and PACF of level_m')
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-6-1.png)
+![](/home/ckc/Documents/git_projects/projects/devereux_arima/reports/devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
 ``` r
 ggtsdisplay(diff(lv_df$level_m, lag=96), main='ACF and PACF of diff(level_m)')
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-6-2.png)
+![](/home/ckc/Documents/git_projects/projects/devereux_arima/reports/devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-6-2.png)
 
 A more mathematically rigorous analysis of stationarity is the Augmented Dickey Fuller (ADF) Test. Running the ADF test on our data with daily seasonality taken into account gives us a p-value of less than 0.01. Because our p-value &gt; 0.05 we can reject our ![H\_0](https://latex.codecogs.com/png.latex?H_0 "H_0") that there is a unit root in our time series, and accept the ![H\_1](https://latex.codecogs.com/png.latex?H_1 "H_1") that the time series is stationary.
 
@@ -141,7 +153,8 @@ lv_adf <- adf.test(lv_df$level_m, k=96)
 lv_diff_adf <- adf.test(diff(lv_df$level_m, lag=96), k=96)
 
 cat('p-value from adf.test() of lv_df:', lv_adf$p.value,
-    '\np-value from adf.test() of seasonally differenced lv_df:', lv_diff_adf$p.value)
+    '\np-value from adf.test() of seasonally differenced lv_df:', 
+    lv_diff_adf$p.value)
 ```
 
     ## p-value from adf.test() of lv_df: 0.36561 
@@ -165,7 +178,8 @@ The inverse fourier transform that converts a function of frequency into a funct
 We need to use a FT because seasonal versions of ARIMA are not designed to take in periods as long as daily, 96, instead seasonal ARIMA periods are typically much shorter like monthly, 12, or quarterly, 4. ARIMA implemented in R has a seasonal period max of 350, but I saw that I was testing the limits of my 16gb of memory at even 96. Instead we'll use the fourier transformation, this has a number of advantages:
 
     * Can use seasonality of any length
-    * Can include multiple seasonalities. In this case we can do daily and annual
+    * Can include multiple seasonalities. In this case we can do daily and
+      annual
 
 The main disadvantage is that seasonality is assumed to be fixed. In this case it is fine, because the variance among days is stable and seasonality is very stable, we won't take more than 96 measurements per day and we've accounted for leap years.
 
@@ -185,26 +199,27 @@ We'll create a function for reproducibility. It performs a grid search of ARIMA 
 
 ``` r
 arima_param <- function(ts){
-    # Performs a grid search for optimal ARIMA parameters by comparing aicc of each model
-    #
-    # Args:
-    #   ts: A time series object
-    # 
-    # Return: 
-    #    The model and fourier transform with the lowest aicc
-    #
-    best_fit <- list(model=Inf, aic=Inf, i=Inf, j=Inf)
+  # Performs a grid search for optimal ARIMA parameters by comparing aicc of
+  # each model
+  #
+  # Args:
+  #   ts: A time series object
+  # 
+  # Return: 
+  #    The model and fourier transform with the lowest aicc
+  #
+  best_fit <- list(model=Inf, aic=Inf, i=Inf, j=Inf)
     
-    for (i in 1:10){
-        for (j in 1:5){
-            fit <- auto.arima(ts, seasonal=FALSE, xreg=fourier(ts, K=c(i,j)))
-            if (fit$aic < best_fit$aic)
-                best_fit <- list(model=fit, aicc=fit$aic, i=i, j=j)
-            else break;
-        }
-    
+  for (i in 1:10){
+    for (j in 1:5){
+      fit <- auto.arima(ts, seasonal=FALSE, xreg=fourier(ts, K=c(i,j)))
+      if (fit$aic < best_fit$aic)
+        best_fit <- list(model=fit, aicc=fit$aic, i=i, j=j)
+      else break;
     }
-    return(best_fit)
+    
+  }
+  return(best_fit)
 }
 ```
 
@@ -213,11 +228,13 @@ Running the ARIMA parameter chooser function on our msts dataset. Plotting a for
 ``` r
 arima_model <- arima_param(lv_ts)
 
-plotter <- forecast(arima_model$model, xreg=fourier(lv_ts, K=c(arima_model$i, arima_model$j), h=192))
+plotter <- forecast(arima_model$model, 
+                    xreg=fourier(lv_ts, K=c(arima_model$i, arima_model$j), 
+                                 h=192))
 autoplot(plotter)
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-10-1.png)
+![](/home/ckc/Documents/git_projects/projects/devereux_arima/reports/devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-10-1.png)
 
 5 Validate model
 ================
@@ -234,7 +251,7 @@ The ACF plot shows significant spikes before 100, 200 and 300. Because our seaso
 checkresiduals(arima_model$model, lag=96)
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](/home/ckc/Documents/git_projects/projects/devereux_arima/reports/devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-11-1.png)
 
     ## 
     ##  Ljung-Box test
@@ -252,7 +269,9 @@ Write more about why daily cycles occur
 
 The daily cycles are due to changes in air temperature and consequently evaporation. Increased air temperature cause heating of the water which causes some water moleculse to evaporate.
 
-Evaporation will peak during This process will If we graphed air temperature alongside water level we would expect to see that the two lines are highly correlate, with the water level cycles closely following the air temperature cycles. Now that we have validate our model we can be assured of the accuracy of our predictions. Forecasting two days we can see the same daily seasonality that occurs in past days. We also see the continuation of the negative trend. The 95% confidence interval is actually not much larger than the 80% confidence interval.
+Evaporation will peak during This process will If we graphed air temperature alongside water level we would expect to see that the two lines are highly correlate, with the water level cycles closely following the air temperature cycles.
+
+Now that we have validate our model we can be assured of the accuracy of our predictions. Forecasting two days we can see the same daily seasonality that occurs in past days. We also see the continuation of the negative trend. The 95% confidence interval is actually not much larger than the 80% confidence interval.
 
 Because these measurements were taken at the very end of the rainy season we would expect the water level to not increase. Additionally, as we approach summer we expect to see a continually negative slope as water evaporates from the lagoon.
 
@@ -260,7 +279,7 @@ Because these measurements were taken at the very end of the rainy season we wou
 autoplot(plotter)
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-12-1.png)
+![](/home/ckc/Documents/git_projects/projects/devereux_arima/reports/devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
 7 Conclusion
 ============

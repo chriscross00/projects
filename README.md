@@ -11,7 +11,7 @@ A collection of self-driven data projects.
 * Created an interactive Plotly map of push carts and food trucks in San Francisco.
 * Statistical and spatial analysis conducted in Python with Jupyter Notebook and the SciPy, Pandas and Seaborn libraries.
 
-[Devereux Slough Time Series](https://github.com/chriscross00/projects/blob/master/devereux_arima/reports/devereux_slough_time_series.md)
+[Devereux Slough Time Series](https://github.com/chriscross00/projects/tree/master/devereux_arima/reports)
 * Collected water quality data from loggers for over a year.
 * Created a seasonal ARIMA model with a Fourier Transform based on water level.
 * Analyzed the data and model, provided ecological explanations for the trends seen in the ARIMA model. 
