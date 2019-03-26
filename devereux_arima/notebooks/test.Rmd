@@ -20,7 +20,6 @@ library(tidyverse)
 library(ggplot2)
 ```
 
-
 ```{r}
 df <- data.frame(X = 1:5, Y = 1:5)
 a <- ggplot(df, aes(X, Y)) +
