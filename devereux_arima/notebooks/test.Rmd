@@ -7,10 +7,10 @@ knit: (function(input_file, encoding) {
                         encoding = encoding, 
                         output_dir = here::here('reports'))
                         })
-output: github_document
+output: rmarkdown::github_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, cache=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -20,9 +20,6 @@ library(tidyverse)
 library(ggplot2)
 ```
 
-```{r}
-## Test
-```
 
 ```{r}
 df <- data.frame(X = 1:5, Y = 1:5)
