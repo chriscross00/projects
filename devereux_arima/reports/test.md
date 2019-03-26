@@ -1,42 +1,67 @@
-test
-================
-Christoper Chan
-23:00 25 March 2019
+---
+title: "test"
+author: "Christoper Chan"
+date: "23:03 25 March 2019"
+knit: (function(input_file, encoding) {
+       rmarkdown::render(input_file, 
+                        encoding = encoding, 
+                        output_dir = here::here('reports'))
+                        })
+output: 
+  html_document:
+    keep_md: TRUE
+---
 
-``` r
+
+
+
+```r
 library(knitr)
 library(tidyverse)
 ```
 
-    ## ── Attaching packages ────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+```
+## ── Attaching packages ────────────────────────────────────────────────────────────────────── tidyverse 1.2.1 ──
+```
 
-    ## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
-    ## ✔ tibble  1.4.2     ✔ dplyr   0.7.8
-    ## ✔ tidyr   0.8.2     ✔ stringr 1.3.1
-    ## ✔ readr   1.2.1     ✔ forcats 0.3.0
+```
+## ✔ ggplot2 3.1.0     ✔ purrr   0.2.5
+## ✔ tibble  1.4.2     ✔ dplyr   0.7.8
+## ✔ tidyr   0.8.2     ✔ stringr 1.3.1
+## ✔ readr   1.2.1     ✔ forcats 0.3.0
+```
 
-    ## ── Conflicts ───────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
-    ## ✖ dplyr::filter() masks stats::filter()
-    ## ✖ dplyr::lag()    masks stats::lag()
+```
+## ── Conflicts ───────────────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+```
 
-``` r
+```r
 library(ggplot2)
 ```
 
-``` r
+
+```r
 ## Test
 ```
 
-``` r
+
+```r
 df <- data.frame(X = 1:5, Y = 1:5)
 ggplot(df, aes(X, Y)) +
   geom_point()
 ```
 
-![](/home/ckc/Documents/git_projects/projects/devereux_arima/reports/test_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](/home/ckc/Documents/git_projects/projects/devereux_arima/reports/test_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
-``` r
+
+
+
+```r
 print('hello world')
 ```
 
-    ## [1] "hello world"
+```
+## [1] "hello world"
+```

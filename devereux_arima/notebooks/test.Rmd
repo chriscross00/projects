@@ -7,7 +7,9 @@ knit: (function(input_file, encoding) {
                         encoding = encoding, 
                         output_dir = here::here('reports'))
                         })
-output: github_document
+output: 
+  html_document:
+    keep_md: TRUE
 ---
 
 ```{r setup, include=FALSE}
