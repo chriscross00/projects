@@ -1,10 +1,7 @@
 read\_format\_wq\_data
 ================
 Christoper Chan
-16:40 25 March 2019
-
-THIS IS JUST A TEST
-===================
+22:34 25 March 2019
 
 Introduction
 ============
