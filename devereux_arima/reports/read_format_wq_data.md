@@ -1,10 +1,14 @@
 read\_format\_wq\_data
 ================
 Christoper Chan
-22:38 25 March 2019
+20:37 26 March 2019
 
 Introduction
 ============
+
+to do:
+
+-   explain why i'm using the here library
 
 The data I collected from Devereux Slogh comes from 4 loggers
 
@@ -14,6 +18,21 @@ This notebook is a part 0 of the Devereux Slough time series project. I have cre
 library(here)
 library(tidyverse)
 library(rowr)
+```
+
+``` r
+make_md <- function(input_name, output_name) {
+  # Moves the knitted md from the notebooks dir to reports dir and deletes 
+  # orginal. input_name_files are still located in notebooks dir and are 
+  # referenced in the report.md.
+  # 
+  # Args:
+  #   input_name: The name of the knitted md. Typically same as the Rmd title.
+  #   output_name: A new name for the md in the reports dir.
+  #
+  # Output: A new md in the reports dir. 
+  file.rename(from = here('notebooks', input_name), to = here('reports', output_name))
+}
 ```
 
 Setting the working directory as data/. This gives me the flexibility to work with csvs at different stages of cleaning pipeline.

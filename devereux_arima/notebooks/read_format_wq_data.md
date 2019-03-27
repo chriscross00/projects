@@ -1,34 +1,26 @@
----
-title: "read_format_wq_data"
-author: "Christoper Chan"
-date: "`r format(Sys.time(), '%H:%M %d %B %Y')`"
-output: github_document
----
+read\_format\_wq\_data
+================
+Christoper Chan
+20:39 26 March 2019
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-# Introduction
-
+Introduction
+============
 
 to do:
 
-- explain why i'm using the here library
+-   explain why i'm using the here library
 
+The data I collected from Devereux Slogh comes from 4 loggers
 
-The data I collected from Devereux Slogh comes from 4 loggers 
+This notebook is a part 0 of the Devereux Slough time series project. I have created functions that assist in reading in and cleaning the csv as well as some light feature engineering.
 
-This notebook is a part 0 of the Devereux Slough time series project. I have 
-created functions that assist in reading in and cleaning the csv as well as some 
-light feature engineering.
-```{r libraries, warning=FALSE, message=FALSE}
+``` r
 library(here)
 library(tidyverse)
 library(rowr)
 ```
 
-```{r make and move report}
+``` r
 make_md <- function(input_name, output_name) {
   # Moves the knitted md from the notebooks dir to reports dir and deletes 
   # orginal. input_name_files are still located in notebooks dir and are 
@@ -43,14 +35,11 @@ make_md <- function(input_name, output_name) {
 }
 ```
 
-Setting the working directory as data/. This gives me the flexibility to work 
-with csvs at different stages of cleaning pipeline.
+Setting the working directory as data/. This gives me the flexibility to work with csvs at different stages of cleaning pipeline.
 
-Skip=1 is required because each csv has a Plot_title as the first row. I need to
-cbind, not make a single csv
-I'll need to modify this when I read all the dir. This reads date subdir 
-individually.
-```{r create_df}
+Skip=1 is required because each csv has a Plot\_title as the first row. I need to cbind, not make a single csv I'll need to modify this when I read all the dir. This reads date subdir individually.
+
+``` r
 create_date_df <- function(path) {
   # Recursively reads csv files and binds them to each other column-wise
   #
@@ -76,7 +65,8 @@ create_date_df <- function(path) {
 ```
 
 Change this function to reference columns by names instead of indexes
-```{r clean_df}
+
+``` r
 clean_date_df <- function(df) {
   # Removes duplicate columns from dataframe, shortens names and changes factors 
   # to numeric when appropriate
@@ -101,7 +91,7 @@ clean_date_df <- function(df) {
 }
 ```
 
-```{r create_level}
+``` r
 create_level <- function(df) {
   # Creates the water level in meters, converting the difference of air pressure
   # and depth pressure
@@ -116,9 +106,9 @@ create_level <- function(df) {
 }
 ```
 
-create_arima_ready works on date subdirectories. Therefore I'll need a function 
-that can parse multiple date subdirectories.
-```{r df_pipe}
+create\_arima\_ready works on date subdirectories. Therefore I'll need a function that can parse multiple date subdirectories.
+
+``` r
 create_arima_ready <- function(path) {
   # A helper function that wraps the creation and cleaning of a dataframe
   #
@@ -136,9 +126,9 @@ create_arima_ready <- function(path) {
 }
 ```
 
-Correctly parses some of the data. Some of the data is missing, find the data, 
-name correctly
-```{r dir_wrapper}
+Correctly parses some of the data. Some of the data is missing, find the data, name correctly
+
+``` r
 whole_dir <- function(path) {
   csv <- list.files(path, full.names = TRUE)
   arima_ready_dir <- lapply(csv, create_arima_ready)
@@ -147,18 +137,22 @@ whole_dir <- function(path) {
 ```
 
 Test: single dir
-```{r, message=FALSE, results='hide'}
+
+``` r
 test_path <- here('data', 'processed', '180530 Logger Data')
 test1 <- create_date_df(test_path)
 test1 <- clean_date_df(test1)
 ```
 
-```{r}
+``` r
 make_md('read_format_wq_data.md', 'read_format_wq_data.md')
 ```
 
+    ## [1] TRUE
+
 Test: all dir
-```{r}
+
+``` r
 # test_dir <- here('data', 'processed')
 # 
 # test5 <- whole_dir(test_dir)
@@ -166,7 +160,8 @@ Test: all dir
 ```
 
 180423 test
-```{r}
+
+``` r
 # test_path <- here('data', 'interim', '180405 Logger Data')
 # 
 # 
@@ -178,13 +173,7 @@ Test: all dir
 # str(test5)
 ```
 
-
-```{r}
-
-```
-
-
-```{r}
+``` r
 # conversion_func <- function(df){
 #   index <- sapply(df[5:8], is.factor)
 #   df[5:8] <- lapply(df[index], function(x) as.numeric(levels(x))[x])
@@ -200,7 +189,8 @@ Test: all dir
 ```
 
 This function works, but i'd like to generalize it.
-```{r}
+
+``` r
 # unc <- function(df){
 #   df[5:8] <- lapply(df[5:8], function(x) as.numeric(levels(x))[x])
 #   return(df)
@@ -213,6 +203,3 @@ This function works, but i'd like to generalize it.
 # 
 # head(pool)
 ```
-
-
-

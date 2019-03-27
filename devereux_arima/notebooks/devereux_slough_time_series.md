@@ -1,7 +1,7 @@
 Devereux Slough Time Series
 ================
 Christopher Chan
-20:46 26 March 2019
+20:47 26 March 2019
 
 Introduction
 ============
@@ -124,7 +124,7 @@ cat('Absolute difference in water level over the period of',
 3 EDA
 =====
 
-Graphing the water level across time we gather a number of important insights into our data. The first is that the time series is not stationary. A quick look at the graph and we can conclude that the mean decreases over time. Without further testing it is too hard to tell if the variance and covariance vary over time, but I believe they are relatively constant. If the variance is constant than we can perform additive decomposition, this is where the seasonal variation is constant across time. A additive model is describe as: ![Time series = Seasonal + Trend + Random](https://latex.codecogs.com/png.latex?Time%20series%20%3D%20Seasonal%20%2B%20Trend%20%2B%20Random "Time series = Seasonal + Trend + Random")
+Graphing the water level across time we gather a number of important insights into our data. The first is that the time series is not stationary. A quick look at the graph and we can conclude that the mean decreases over time. Without further testing it is too hard to tell if the variance and covariance vary over time, but I believe they are relatively constant. If the variance is constant than we can perform additive decomposition, this is where the seasonal variation is constant across time. A additive model is describe as: *T**i**m**e**s**e**r**i**e**s* = *S**e**a**s**o**n**a**l* + *T**r**e**n**d* + *R**a**n**d**o**m*
 
 Second, it appears we have some seasonality, on a daily basis. This should be removed in order to get a accurate depiction of the trend of the series. These statistical facts fit the ecological realities of Devereux Slough. Because of the very short rainy season, roughly 3 months, in Santa Barbara we would expect to see water level decrease in late winter. Additionally, we should expect a annual seasonality, meaning that the water level will have a predictable cycle over the course of a year. We'll have to factor both the daily and annual seasonality into our time series model.
 
@@ -165,7 +165,7 @@ ggtsdisplay(diff(lv_df$level_m, lag=96), main='ACF and PACF of diff(level_m)')
 
 ![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-5-2.png)
 
-A more mathematically rigorous analysis of stationarity is the Augmented Dickey Fuller (ADF) Test. Running the ADF test on our data with daily seasonality taken into account gives us a p-value of less than 0.01. Because our p-value &gt; 0.05 we can reject our ![H\_0](https://latex.codecogs.com/png.latex?H_0 "H_0") that there is a unit root in our time series, and accept the ![H\_1](https://latex.codecogs.com/png.latex?H_1 "H_1") that the time series is stationary.
+A more mathematically rigorous analysis of stationarity is the Augmented Dickey Fuller (ADF) Test. Running the ADF test on our data with daily seasonality taken into account gives us a p-value of less than 0.01. Because our p-value &gt; 0.05 we can reject our *H*<sub>0</sub> that there is a unit root in our time series, and accept the *H*<sub>1</sub> that the time series is stationary.
 
 ``` r
 lv_adf <- adf.test(lv_df$level_m, k=96)
@@ -183,16 +183,14 @@ cat('p-value from adf.test() of lv_df:', lv_adf$p.value,
 ==================
 
 Time series can be approached a number of different ways, however some of the most common are autoregressive (AR) models, moving average (MA) models and autoregressive integrated moving average (ARIMA) models. This analysis will use an ARIMA model to model our water level time series. AR assumes points depend linearly on previous points and thus its formula is very similar to linear regression, with a error term. The MA model uses the errors of previous points to predict future points. ARIMA model combines both AR and MA models into a single model which can often model more complex interactions. The I term is the differencing factor. The formula for an ARIMA model is:
-
-![Y\_{t} = c + \\phi\_{1}y\_{dt-1} + \\phi\_{p}y\_{dt-p} + ... + \\theta\_{1}\\epsilon\_{t-1} + \\theta\_{q}\\epsilon\_{t-q} + \\epsilon\_{t}](https://latex.codecogs.com/png.latex?Y_%7Bt%7D%20%3D%20c%20%2B%20%5Cphi_%7B1%7Dy_%7Bdt-1%7D%20%2B%20%5Cphi_%7Bp%7Dy_%7Bdt-p%7D%20%2B%20...%20%2B%20%5Ctheta_%7B1%7D%5Cepsilon_%7Bt-1%7D%20%2B%20%5Ctheta_%7Bq%7D%5Cepsilon_%7Bt-q%7D%20%2B%20%5Cepsilon_%7Bt%7D "Y_{t} = c + \phi_{1}y_{dt-1} + \phi_{p}y_{dt-p} + ... + \theta_{1}\epsilon_{t-1} + \theta_{q}\epsilon_{t-q} + \epsilon_{t}")
+*Y*<sub>*t*</sub> = *c* + *ϕ*<sub>1</sub>*y*<sub>*d**t* − 1</sub> + *ϕ*<sub>*p*</sub>*y*<sub>*d**t* − *p*</sub> + ... + *θ*<sub>1</sub>*ϵ*<sub>*t* − 1</sub> + *θ*<sub>*q*</sub>*ϵ*<sub>*t* − *q*</sub> + *ϵ*<sub>*t*</sub>
 
 The use of a AR model makes sense in modelling water level, where past water levels will dictate present and future water levels. The benefits of a MA model is that it accounts for stochastic events. These events will cause some shift in the time series and eventually their effect will dispate over time. This is extremely useful in modelling natural systems as we have limited, or sometimes no, control over the environment. The major benefit of the ARIMA model is that it allows for modelling of more complex systems.
 
 The Fourier Transform (FT) decomposes a function based on time into the frequencies that make it up, using the understanding that all waveforms can be drescibed by a sum of sinusoids of different frequencies
 
 The inverse fourier transform that converts a function of frequency into a function of time, as follows:
-
-![f(x) = \\int^{\\infty}\_{-\\infty}F(K)e^{2{\\pi}ikx}dk](https://latex.codecogs.com/png.latex?f%28x%29%20%3D%20%5Cint%5E%7B%5Cinfty%7D_%7B-%5Cinfty%7DF%28K%29e%5E%7B2%7B%5Cpi%7Dikx%7Ddk "f(x) = \int^{\infty}_{-\infty}F(K)e^{2{\pi}ikx}dk")
+*f*(*x*)=∫<sub>−∞</sub><sup>∞</sup>*F*(*K*)*e*<sup>2*π**i**k**x*</sup>*d**k*
 
 We need to use a FT because seasonal versions of ARIMA are not designed to take in periods as long as daily, 96, instead seasonal ARIMA periods are typically much shorter like monthly, 12, or quarterly, 4. ARIMA implemented in R has a seasonal period max of 350, but I saw that I was testing the limits of my 16gb of memory at even 96. Instead we'll use the fourier transformation, this has a number of advantages:
 
@@ -203,10 +201,8 @@ We need to use a FT because seasonal versions of ARIMA are not designed to take 
 The main disadvantage is that seasonality is assumed to be fixed. In this case it is fine, because the variance among days is stable and seasonality is very stable, we won't take more than 96 measurements per day and we've accounted for leap years.
 
 For this project we'll use a multi-seasonal time series (msts) function as our time series. This allows us to take into account the daily seasonality we've seen from the plots and the annual seasonality we'd expect to see based on meteorological reasoning. Since the loggers take measurements every 15 minutes we get our seasonal.period from the following equations:
-
-![\\text{4(measurements per hour) \* 24(hours in a day) = 96(measurements per day)}\\\\
-\\text{96(measurements per day) \* 365.25(days per year) = 35064(measurements per year)}](https://latex.codecogs.com/png.latex?%5Ctext%7B4%28measurements%20per%20hour%29%20%2A%2024%28hours%20in%20a%20day%29%20%3D%2096%28measurements%20per%20day%29%7D%5C%5C%0A%5Ctext%7B96%28measurements%20per%20day%29%20%2A%20365.25%28days%20per%20year%29%20%3D%2035064%28measurements%20per%20year%29%7D "\text{4(measurements per hour) * 24(hours in a day) = 96(measurements per day)}\\
-\text{96(measurements per day) * 365.25(days per year) = 35064(measurements per year)}")
+$$\\text{4(measurements per hour) \* 24(hours in a day) = 96(measurements per day)}\\\\
+\\text{96(measurements per day) \* 365.25(days per year) = 35064(measurements per year)}$$
 
 Now that we have normalized our data and have time series object made we create a model.
 
@@ -260,7 +256,7 @@ autoplot(plotter)
 
 checkresiduals() is a nice wrapper function that calls a number of test typically used in validating time series models. We'll look at each test individually to make sure we can trust our forecasts.
 
-Running a Lijung-Box test helps give us a quantifiable determination if the our model is valide. The Ljung-Box test examines if there is autocorrelation in the series. The ![H\_0](https://latex.codecogs.com/png.latex?H_0 "H_0") of the Box-Ljung test is that the data is independently distributed and we do not experience non-random correlation, rejecting the ![H\_0](https://latex.codecogs.com/png.latex?H_0 "H_0") means that serial correlation exist in the data. This is opposite of most statistical test, so it's a little weird to think about. Since the p-value &gt; 0.05, 0.3545, we fail to reject the ![H\_0](https://latex.codecogs.com/png.latex?H_0 "H_0") and conclude the data is independently distributed.
+Running a Lijung-Box test helps give us a quantifiable determination if the our model is valide. The Ljung-Box test examines if there is autocorrelation in the series. The *H*<sub>0</sub> of the Box-Ljung test is that the data is independently distributed and we do not experience non-random correlation, rejecting the *H*<sub>0</sub> means that serial correlation exist in the data. This is opposite of most statistical test, so it's a little weird to think about. Since the p-value &gt; 0.05, 0.3545, we fail to reject the *H*<sub>0</sub> and conclude the data is independently distributed.
 
 The residuals from our model should not exhibit any discernible patterns and should be white noise. Additionally, the mean should be 0 and the variance constant. Looking at the residual plot we can see that it fullfils all these requirements. This is further confirmed by our distribution plot of the residuals, which is roughly normally distributed.
 

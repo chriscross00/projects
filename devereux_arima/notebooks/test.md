@@ -1,7 +1,7 @@
 test
 ================
 Christoper Chan
-20:19 26 March 2019
+20:51 26 March 2019
 
 ``` r
 library(tidyverse)
@@ -28,11 +28,22 @@ library(here)
 This correctly makes a md file in the reports.
 
 ``` r
-make_func <- function(input_name, output_name) {
-  file.rename(from = here('notebooks', input_name), to = here('reports', output_name))
+make_md <- function(input_name, output_name) {
+  # Moves the knitted md from the notebooks dir to reports dir and deletes 
+  # orginal. input_name_files are still located in notebooks dir and are 
+  # referenced in the report.md.
+  # 
+  # Args:
+  #   input_name: The name of the knitted md. Typically same as the Rmd title.
+  #   output_name: A new name for the md in the reports dir.
+  #
+  # Output: A new md in the reports dir. 
+  file.rename(here('notebooks', input_name), here('reports', output_name))
 }
+```
 
-make_func('test.md', 'yes.md')
+``` r
+file.rename(here('notebooks', 'test.md'), here('reports', 'test.md'))
 ```
 
     ## [1] TRUE
