@@ -17,16 +17,21 @@ to do:
   * https://www.biostars.org/p/218837/
   * https://stackoverflow.com/questions/5187745/imported-a-csv-dataset-to-r-but-the-values-becomes-factors
   * https://stackoverflow.com/questions/20943317/how-to-find-out-whether-a-variable-is-a-factor-or-continuous-in-r
-  
-  
-- explain why i'm using the here library
-
-
-The data I collected from Devereux Slogh comes from 4 loggers 
+ 
 
 This notebook is a part 0 of the Devereux Slough time series project. I have 
 created functions that assist in reading in and cleaning the csv as well as some 
 light feature engineering.
+
+I've chosen to use the library here because it's simplicity and consistency.
+Because I have seperate directories for notebooks and data I needed a way to 
+navigate between them. While base R does offer this functionality, pathing is 
+relative to the current working directory which changes based on where I created
+a document. here offers absolute pathing by setting up a root directory.
+
+The data I collected from Devereux Slogh comes from 4 loggers, each collecting
+different types of information. 
+
 ```{r libraries, warning=FALSE, message=FALSE}
 library(here)
 library(tidyverse)
