@@ -32,10 +32,16 @@ make_func <- function(input_name, output_name) {
   file.rename(from = here('notebooks', input_name), to = here('reports', output_name))
 }
 
-make_func('test.md', 'yes.md')
+make_func('test.md', 'completed.md')
 ```
 
-    ## [1] TRUE
+    ## Warning in file.rename(from = here("notebooks", input_name), to =
+    ## here("reports", : cannot rename file '/home/ckc/Documents/git_projects/
+    ## projects/devereux_arima/notebooks/test.md' to '/home/ckc/Documents/
+    ## git_projects/projects/devereux_arima/reports/completed.md', reason 'No such
+    ## file or directory'
+
+    ## [1] FALSE
 
 TO DO:
 

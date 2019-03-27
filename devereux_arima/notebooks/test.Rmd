@@ -13,10 +13,16 @@ library(here)
 This correctly makes a md file in the reports.
 ```{r setup, include=FALSE, cache=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
-file.rename(here('notebooks', 'test.md'), here('reports', 'completed.md'))
 ```
 
+```{r}
+make_func <- function(input_name, output_name) {
+  file.rename(from = here('notebooks', input_name), to = here('reports', output_name))
+}
+
+make_func('test.md', 'yes.md')
+
+```
 
 TO DO:
 
