@@ -21,7 +21,7 @@ The data I collected from Devereux Slogh comes from 4 loggers
 This notebook is a part 0 of the Devereux Slough time series project. I have 
 created functions that assist in reading in and cleaning the csv as well as some 
 light feature engineering.
-```{r, warning=FALSE, message=FALSE}
+```{r libraries, warning=FALSE, message=FALSE}
 library(here)
 library(tidyverse)
 library(rowr)
@@ -34,7 +34,7 @@ Skip=1 is required because each csv has a Plot_title as the first row. I need to
 cbind, not make a single csv
 I'll need to modify this when I read all the dir. This reads date subdir 
 individually.
-```{r}
+```{r create_df}
 create_date_df <- function(path) {
   # Recursively reads csv files and binds them to each other column-wise
   #
@@ -60,7 +60,7 @@ create_date_df <- function(path) {
 ```
 
 Change this function to reference columns by names instead of indexes
-```{r}
+```{r clean_df}
 clean_date_df <- function(df) {
   # Removes duplicate columns from dataframe, shortens names and changes factors 
   # to numeric when appropriate
@@ -85,7 +85,7 @@ clean_date_df <- function(df) {
 }
 ```
 
-```{r}
+```{r create_level}
 create_level <- function(df) {
   # Creates the water level in meters, converting the difference of air pressure
   # and depth pressure
@@ -102,7 +102,7 @@ create_level <- function(df) {
 
 create_arima_ready works on date subdirectories. Therefore I'll need a function 
 that can parse multiple date subdirectories.
-```{r}
+```{r df_pipe}
 create_arima_ready <- function(path) {
   # A helper function that wraps the creation and cleaning of a dataframe
   #
@@ -122,7 +122,7 @@ create_arima_ready <- function(path) {
 
 Correctly parses some of the data. Some of the data is missing, find the data, 
 name correctly
-```{r}
+```{r dir_wrapper}
 whole_dir <- function(path) {
   csv <- list.files(path, full.names = TRUE)
   arima_ready_dir <- lapply(csv, create_arima_ready)
