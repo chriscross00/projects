@@ -2,11 +2,6 @@
 title: "read_format_wq_data"
 author: "Christoper Chan"
 date: "`r format(Sys.time(), '%H:%M %d %B %Y')`"
-knit: (function(input_file, encoding) {
-       rmarkdown::render(input_file, 
-                        encoding = encoding, 
-                        output_dir = here::here('reports'))
-                        })
 output: github_document
 ---
 
@@ -15,6 +10,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 # Introduction
+
+
+to do:
+
+- explain why i'm using the here library
+
 
 The data I collected from Devereux Slogh comes from 4 loggers 
 
@@ -156,6 +157,11 @@ Test: all dir
 # 
 # head(test5)
 # str(test5)
+```
+
+
+```{r}
+
 ```
 
 

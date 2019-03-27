@@ -1,7 +1,7 @@
 test
 ================
 Christoper Chan
-19:44 26 March 2019
+20:09 26 March 2019
 
 ``` r
 library(tidyverse)
@@ -24,6 +24,8 @@ library(here)
 ```
 
     ## here() starts at /home/ckc/Documents/git_projects/projects/devereux_arima
+
+This correctly makes a md file in the reports.
 
 TO DO:
 
