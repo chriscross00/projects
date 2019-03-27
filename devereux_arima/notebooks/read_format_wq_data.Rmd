@@ -13,7 +13,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 to do:
-
+- PARSE THE FILES CORRECTLY
+  * https://www.biostars.org/p/218837/
+  * https://stackoverflow.com/questions/5187745/imported-a-csv-dataset-to-r-but-the-values-becomes-factors
+  * https://stackoverflow.com/questions/20943317/how-to-find-out-whether-a-variable-is-a-factor-or-continuous-in-r
+  
+  
 - explain why i'm using the here library
 
 
@@ -26,6 +31,9 @@ light feature engineering.
 library(here)
 library(tidyverse)
 library(rowr)
+
+
+options(stringsAsFactors = FALSE)
 ```
 
 ```{r make and move report}
@@ -94,12 +102,13 @@ clean_date_df <- function(df) {
                  'sal_temp2', 'depth_pressure', 'depth_temp')
   df <- drop_na(df)
   
-  # Converts factors to doubles 
-  for (i in list(3:8)) {
-    if (is.factor(df[, i] == TRUE)) {
-      df[, i] <- as.numeric(levels(df[, i]))[df[, i]]
-    }
-  }
+  # Converts factors to doubles
+  df[3:8] <- lapply(df[3:8], as.numeric(x))
+  # for (i in list(3:8)) {
+  #   if (is.factor(df[, i] == TRUE)) {
+  #     df[, i] <- as.numeric(levels(df[, i]))[df[, i]]
+  #  }
+  #}
   return(df)
 }
 ```
@@ -150,11 +159,21 @@ whole_dir <- function(path) {
 ```
 
 Test: single dir
-```{r, message=FALSE, results='hide'}
+```{r}
 test_path <- here('data', 'processed', '180530 Logger Data')
 test1 <- create_date_df(test_path)
 test1 <- clean_date_df(test1)
+
+
+
+str(test1)
 ```
+
+
+```{r}
+
+```
+
 
 ```{r}
 make_md('read_format_wq_data.md', 'read_format_wq_data.md')
@@ -162,10 +181,10 @@ make_md('read_format_wq_data.md', 'read_format_wq_data.md')
 
 Test: all dir
 ```{r}
-# test_dir <- here('data', 'processed')
-# 
-# test5 <- whole_dir(test_dir)
-# test5
+test_dir <- here('data', 'processed')
+
+test5 <- whole_dir(test_dir)
+test5
 ```
 
 180423 test
@@ -179,11 +198,6 @@ Test: all dir
 # 
 # head(test5)
 # str(test5)
-```
-
-
-```{r}
-
 ```
 
 
@@ -204,18 +218,46 @@ Test: all dir
 
 This function works, but i'd like to generalize it.
 ```{r}
-# unc <- function(df){
-#   df[5:8] <- lapply(df[5:8], function(x) as.numeric(levels(x))[x])
-#   return(df)
-# }
-# 
-# 
-# pool <- unc(test5)
-# str(pool)
-# 
-# 
-# head(pool)
+unc <- function(df) {
+
+  df <- df[c(2:5, 8, 9, 12, 13)]
+  names(df) <- c('obs', 'date_time', 'surface_pressure', 'air_temp1', 'salinity', 
+                 'sal_temp2', 'depth_pressure', 'depth_temp')
+  df <- drop_na(df)
+  return(df)
+}
+
+pool <- unc(test1)
+str(pool)
 ```
 
+```{r}
+pt <- here('data', 'processed', '180530 Logger Data')
+
+
+a <- list.files(pt, pattern='*csv', recursive=TRUE)
+
+b <- read_csv(a)
+
+
+check_str <- read_csv(pt, skip=1)
+
+str(check_str)
+```
+
+
+
+```{r}
+fact <- sapply(pool[3:8], is.factor)
+fact
+
+fact1 <- pool[fact]
+str(fact1)
+```
+
+
+```{r}
+
+```
 
 
