@@ -4,7 +4,7 @@ author: "Christoper Chan"
 date: "`r format(Sys.time(), '%H:%M %d %B %Y')`"
 output: github_document
 ---
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(tidyverse)
 library(ggplot2)
 library(here)
@@ -18,16 +18,19 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r make and move report}
 make_md <- function(input_name, output_name) {
-  # Moves the knitted md from the notebooks dir to reports dir and deletes 
-  # orginal. input_name_files are still located in notebooks dir and are 
-  # referenced in the report.md.
+  # Moves the knitted md and supporting images from the notebooks dir to reports
+  # dir. A copy of the md and 
   # 
   # Args:
   #   input_name: The name of the knitted md. Typically same as the Rmd title.
   #   output_name: A new name for the md in the reports dir.
   #
   # Output: A new md in the reports dir. 
-  file.rename(here('notebooks', input_name), here('reports', output_name))
+  file.rename(from = here('notebooks', input_name), 
+              to = here('reports', output_name))
+  
+  file.copy(from = list.files(pattern = '*files'), 
+            to = here('reports'), recursive = TRUE)
 }
 ```
 

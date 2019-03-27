@@ -125,17 +125,21 @@ library(tseries)
 
 ```{r make and move report}
 make_md <- function(input_name, output_name) {
-  # Moves the knitted md from the notebooks dir to reports dir and deletes 
-  # orginal. input_name_files are still located in notebooks dir and are 
-  # referenced in the report.md.
+  # Moves the knitted md and supporting images from the notebooks dir to reports
+  # dir. A copy of the md and 
   # 
   # Args:
   #   input_name: The name of the knitted md. Typically same as the Rmd title.
   #   output_name: A new name for the md in the reports dir.
   #
   # Output: A new md in the reports dir. 
-  file.rename(from = here('notebooks', input_name), to = here('reports', output_name))
+  file.rename(from = here('notebooks', input_name), 
+              to = here('reports', output_name))
+  
+  file.copy(from = list.files(pattern = '*files'), 
+            to = here('reports'), recursive = TRUE)
 }
+
 
 make_md('devereux_slough_time_series.md', 'devereux_slough_time_series.md')
 ```
@@ -310,8 +314,8 @@ arima_param <- function(ts){
   #
   best_fit <- list(model=Inf, aic=Inf, i=Inf, j=Inf)
   
-  for (i in 1:2){ #1:10
-    for (j in 1:2){ #1:5
+  for (i in 1:10){ #1:10
+    for (j in 1:5){ #1:5
       fit <- auto.arima(ts, seasonal=FALSE, xreg=fourier(ts, K=c(i,j)))
       if (fit$aic < best_fit$aic)
         best_fit <- list(model=fit, aicc=fit$aic, i=i, j=j)

@@ -1,7 +1,7 @@
 Devereux Slough Time Series
 ================
 Christopher Chan
-20:47 26 March 2019
+00:06 27 March 2019
 
 Introduction
 ============
@@ -71,22 +71,26 @@ library(tseries)
 
 ``` r
 make_md <- function(input_name, output_name) {
-  # Moves the knitted md from the notebooks dir to reports dir and deletes 
-  # orginal. input_name_files are still located in notebooks dir and are 
-  # referenced in the report.md.
+  # Moves the knitted md and supporting images from the notebooks dir to reports
+  # dir. A copy of the md and 
   # 
   # Args:
   #   input_name: The name of the knitted md. Typically same as the Rmd title.
   #   output_name: A new name for the md in the reports dir.
   #
   # Output: A new md in the reports dir. 
-  file.rename(from = here('notebooks', input_name), to = here('reports', output_name))
+  file.rename(from = here('notebooks', input_name), 
+              to = here('reports', output_name))
+  
+  file.copy(from = list.files(pattern = '*files'), 
+            to = here('reports'), recursive = TRUE)
 }
+
 
 make_md('devereux_slough_time_series.md', 'devereux_slough_time_series.md')
 ```
 
-    ## [1] TRUE
+    ## [1] TRUE TRUE
 
 2 Normalizing the data
 ======================
@@ -225,8 +229,8 @@ arima_param <- function(ts){
   #
   best_fit <- list(model=Inf, aic=Inf, i=Inf, j=Inf)
   
-  for (i in 1:2){ #1:10
-    for (j in 1:2){ #1:5
+  for (i in 1:10){ #1:10
+    for (j in 1:5){ #1:5
       fit <- auto.arima(ts, seasonal=FALSE, xreg=fourier(ts, K=c(i,j)))
       if (fit$aic < best_fit$aic)
         best_fit <- list(model=fit, aicc=fit$aic, i=i, j=j)
@@ -271,10 +275,10 @@ checkresiduals(arima_model$model, lag=96)
     ## 
     ##  Ljung-Box test
     ## 
-    ## data:  Residuals from Regression with ARIMA(5,0,1) errors
-    ## Q* = 139.72, df = 81, p-value = 5.539e-05
+    ## data:  Residuals from Regression with ARIMA(2,0,3) errors
+    ## Q* = 70.722, df = 67, p-value = 0.3545
     ## 
-    ## Model df: 15.   Total lags used: 96
+    ## Model df: 29.   Total lags used: 96
 
 6 Forecasting
 =============
