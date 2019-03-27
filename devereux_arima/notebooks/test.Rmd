@@ -14,8 +14,6 @@ This correctly makes a md file in the reports.
 ```{r setup, include=FALSE, cache=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
-
-file.rename('test.md', '../reports/test.md')
 ```
 
 ```{r make and move report}
@@ -33,6 +31,13 @@ make_md <- function(input_name, output_name) {
 }
 ```
 
+
+```{r}
+make_md('test.md', 'test.md')
+```
+  file.rename(here('notebooks', paste(input_name, 'files', sep = '_')),
+              here('reports', paste(output_name, 'files', sep = '_')),
+              recursive = TRUE)
 
 TO DO:
 

@@ -1,7 +1,7 @@
 test
 ================
 Christoper Chan
-21:06 26 March 2019
+21:20 26 March 2019
 
 ``` r
 library(tidyverse)
@@ -42,6 +42,20 @@ make_md <- function(input_name, output_name) {
 }
 ```
 
+``` r
+make_md('test.md', 'test.md')
+```
+
+    ## Warning in file.rename(here("notebooks", input_name), here("reports",
+    ## output_name)): cannot rename file '/home/ckc/Documents/git_projects/
+    ## projects/devereux_arima/notebooks/test.md' to '/home/ckc/Documents/
+    ## git_projects/projects/devereux_arima/reports/test.md', reason 'No such file
+    ## or directory'
+
+    ## [1] FALSE
+
+file.rename(here('notebooks', paste(input\_name, 'files', sep = '*')), here('reports', paste(output\_name, 'files', sep = '*')), recursive = TRUE)
+
 TO DO:
 
 -   Make md render graphs properly
@@ -59,7 +73,7 @@ a <- ggplot(df, aes(X, Y)) +
 print(a)
 ```
 
-![](test_files/figure-markdown_github/unnamed-chunk-2-1.png)
+![](test_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 ``` r
 print('hello world')
