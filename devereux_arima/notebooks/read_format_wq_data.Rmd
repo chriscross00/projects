@@ -36,9 +36,6 @@ different types of information.
 library(here)
 library(tidyverse)
 library(rowr)
-
-
-options(stringsAsFactors = FALSE)
 ```
 
 ```{r make and move report}
@@ -108,7 +105,10 @@ clean_date_df <- function(df) {
   df <- drop_na(df)
   
   # Converts factors to doubles
-  df[3:8] <- lapply(df[3:8], as.numeric(x))
+  factors_to_convert <- sapply(df[,3:8], is.factor)
+  df[,3:8][factors_to_convert] <- lapply(df[3:8][factors_to_convert], 
+                                         function(x) as.numeric(as.character(x)))
+  # df[3:8] <- lapply(df[3:8], as.numeric(x))
   # for (i in list(3:8)) {
   #   if (is.factor(df[, i] == TRUE)) {
   #     df[, i] <- as.numeric(levels(df[, i]))[df[, i]]
@@ -169,16 +169,8 @@ test_path <- here('data', 'processed', '180530 Logger Data')
 test1 <- create_date_df(test_path)
 test1 <- clean_date_df(test1)
 
-
-
 str(test1)
 ```
-
-
-```{r}
-
-```
-
 
 ```{r}
 make_md('read_format_wq_data.md', 'read_format_wq_data.md')
@@ -189,6 +181,8 @@ Test: all dir
 test_dir <- here('data', 'processed')
 
 test5 <- whole_dir(test_dir)
+
+
 test5
 ```
 
@@ -204,65 +198,3 @@ test5
 # head(test5)
 # str(test5)
 ```
-
-
-```{r}
-# conversion_func <- function(df){
-#   index <- sapply(df[5:8], is.factor)
-#   df[5:8] <- lapply(df[index], function(x) as.numeric(levels(x))[x])
-#   return(df)
-# }
-# 
-# 
-# lop <- conversion_func(test5)
-# str(lop)
-# head(lop)
-# 
-# #lop[, 7] <- as.numeric(levels(lop[, 7]))[lop[, 7]]
-```
-
-This function works, but i'd like to generalize it.
-```{r}
-unc <- function(df) {
-
-  df <- df[c(2:5, 8, 9, 12, 13)]
-  names(df) <- c('obs', 'date_time', 'surface_pressure', 'air_temp1', 'salinity', 
-                 'sal_temp2', 'depth_pressure', 'depth_temp')
-  df <- drop_na(df)
-  return(df)
-}
-
-pool <- unc(test1)
-str(pool)
-```
-
-```{r}
-pt <- here('data', 'processed', '180530 Logger Data')
-
-
-a <- list.files(pt, pattern='*csv', recursive=TRUE)
-
-b <- read_csv(a)
-
-
-check_str <- read_csv(pt, skip=1)
-
-str(check_str)
-```
-
-
-
-```{r}
-fact <- sapply(pool[3:8], is.factor)
-fact
-
-fact1 <- pool[fact]
-str(fact1)
-```
-
-
-```{r}
-
-```
-
-
