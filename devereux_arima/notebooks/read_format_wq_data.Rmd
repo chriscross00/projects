@@ -54,6 +54,8 @@ make_md <- function(input_name, output_name) {
   file.copy(from = list.files(pattern = '*files'), 
             to = here('reports'), recursive = TRUE)
 }
+
+make_md('read_format_wq_data.md', 'read_format_wq_data.md')
 ```
 
 Setting the working directory as data/. This gives me the flexibility to work 
@@ -173,7 +175,7 @@ str(test1)
 ```
 
 ```{r}
-make_md('read_format_wq_data.md', 'read_format_wq_data.md')
+
 ```
 
 Test: all dir
