@@ -1,0 +1,29 @@
+---
+title: "test_wd"
+author: "Christoper Chan"
+date: "March 26, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+getwd()
+```
+```{r}
+library(ggplot2)
+```
+
+
+```{r}
+df <- data.frame(X = 1:5, Y = 1:5)
+a <- ggplot(df, aes(X, Y)) +
+  geom_point()
+print(a)
+```
+
+```{r}
+print('hello world')
+```

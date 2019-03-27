@@ -25,13 +25,17 @@ TO DO:
 library(knitr)
 library(tidyverse)
 library(ggplot2)
+library(here)
+```
+```{r}
+getwd()
 ```
 
 ```{r}
 library(ezknitr)
 
 
-ezknit(file = 'test.Rmd')
+ezknit(file = here('notebooks', 'test.Rmd'), out_dir = here('reports'))
 ```
 
 
