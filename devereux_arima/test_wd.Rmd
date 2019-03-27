@@ -2,7 +2,7 @@
 title: "test_wd"
 author: "Christoper Chan"
 date: "March 26, 2019"
-output: html_document
+output: github_document
 ---
 
 ```{r setup, include=FALSE}
