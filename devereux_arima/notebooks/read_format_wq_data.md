@@ -1,18 +1,18 @@
 read\_format\_wq\_data
 ================
 Christoper Chan
-20:39 26 March 2019
+17:22 27 March 2019
 
 Introduction
 ============
 
-to do:
-
--   explain why i'm using the here library
-
-The data I collected from Devereux Slogh comes from 4 loggers
+to do: - Create a function that outputs a .csv - Create a function that combines all the csv and outputs a single csv
 
 This notebook is a part 0 of the Devereux Slough time series project. I have created functions that assist in reading in and cleaning the csv as well as some light feature engineering.
+
+I've chosen to use the library here because it's simplicity and consistency. Because I have seperate directories for notebooks and data I needed a way to navigate between them. While base R does offer this functionality, pathing is relative to the current working directory which changes based on where I created a document. here offers absolute pathing by setting up a root directory.
+
+The data I collected from Devereux Slogh comes from 4 loggers, each collecting different types of information.
 
 ``` r
 library(here)
@@ -22,18 +22,25 @@ library(rowr)
 
 ``` r
 make_md <- function(input_name, output_name) {
-  # Moves the knitted md from the notebooks dir to reports dir and deletes 
-  # orginal. input_name_files are still located in notebooks dir and are 
-  # referenced in the report.md.
+  # Moves the knitted md and supporting images from the notebooks dir to reports
+  # dir.
   # 
   # Args:
   #   input_name: The name of the knitted md. Typically same as the Rmd title.
   #   output_name: A new name for the md in the reports dir.
   #
   # Output: A new md in the reports dir. 
-  file.rename(from = here('notebooks', input_name), to = here('reports', output_name))
+  file.rename(from = here('notebooks', input_name), 
+              to = here('reports', output_name))
+  
+  file.copy(from = list.files(pattern = '*files'), 
+            to = here('reports'), recursive = TRUE)
 }
+
+make_md('read_format_wq_data.md', 'read_format_wq_data.md')
 ```
+
+    ## [1] TRUE TRUE
 
 Setting the working directory as data/. This gives me the flexibility to work with csvs at different stages of cleaning pipeline.
 
@@ -81,12 +88,16 @@ clean_date_df <- function(df) {
                  'sal_temp2', 'depth_pressure', 'depth_temp')
   df <- drop_na(df)
   
-  # Converts factors to doubles 
-  for (i in list(3:8)) {
-    if (is.factor(df[, i] == TRUE)) {
-      df[, i] <- as.numeric(levels(df[, i]))[df[, i]]
-    }
-  }
+  # Converts factors to doubles
+  factors_to_convert <- sapply(df[,3:8], is.factor)
+  df[,3:8][factors_to_convert] <- lapply(df[3:8][factors_to_convert], 
+                                         function(x) as.numeric(as.character(x)))
+  # df[3:8] <- lapply(df[3:8], as.numeric(x))
+  # for (i in list(3:8)) {
+  #   if (is.factor(df[, i] == TRUE)) {
+  #     df[, i] <- as.numeric(levels(df[, i]))[df[, i]]
+  #  }
+  #}
   return(df)
 }
 ```
@@ -102,7 +113,7 @@ create_level <- function(df) {
   # Returns:
   #   df(dataframe): A dataframe ready for a ARIMA model
   conv_factor = 0.013595100263597
-  mutate(df, level_m = conv_factor*(df[, 7] - df[, 3]))
+  mutate(df, level_m = conv_factor*(df[,'depth_pressure'] - df[,'surface_pressure']))
 }
 ```
 
@@ -139,67 +150,17 @@ whole_dir <- function(path) {
 Test: single dir
 
 ``` r
-test_path <- here('data', 'processed', '180530 Logger Data')
-test1 <- create_date_df(test_path)
-test1 <- clean_date_df(test1)
+# test_path <- here('data', 'interim', '180212 Logger Data')
+# test1 <- create_arima_ready(test_path)
+# 
+# str(test1)
+# head(test1)
 ```
-
-``` r
-make_md('read_format_wq_data.md', 'read_format_wq_data.md')
-```
-
-    ## [1] TRUE
 
 Test: all dir
 
 ``` r
-# test_dir <- here('data', 'processed')
-# 
-# test5 <- whole_dir(test_dir)
-# test5
-```
+test_dir <- here('data', 'processed')
 
-180423 test
-
-``` r
-# test_path <- here('data', 'interim', '180405 Logger Data')
-# 
-# 
-# 
-# test5 <- create_date_df(test_path)
-# test5 <- clean_date_df(test5)
-# 
-# head(test5)
-# str(test5)
-```
-
-``` r
-# conversion_func <- function(df){
-#   index <- sapply(df[5:8], is.factor)
-#   df[5:8] <- lapply(df[index], function(x) as.numeric(levels(x))[x])
-#   return(df)
-# }
-# 
-# 
-# lop <- conversion_func(test5)
-# str(lop)
-# head(lop)
-# 
-# #lop[, 7] <- as.numeric(levels(lop[, 7]))[lop[, 7]]
-```
-
-This function works, but i'd like to generalize it.
-
-``` r
-# unc <- function(df){
-#   df[5:8] <- lapply(df[5:8], function(x) as.numeric(levels(x))[x])
-#   return(df)
-# }
-# 
-# 
-# pool <- unc(test5)
-# str(pool)
-# 
-# 
-# head(pool)
+test5 <- whole_dir(test_dir)
 ```

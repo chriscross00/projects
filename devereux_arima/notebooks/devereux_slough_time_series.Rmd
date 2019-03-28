@@ -126,7 +126,7 @@ library(tseries)
 ```{r make and move report}
 make_md <- function(input_name, output_name) {
   # Moves the knitted md and supporting images from the notebooks dir to reports
-  # dir. A copy of the md and 
+  # dir.
   # 
   # Args:
   #   input_name: The name of the knitted md. Typically same as the Rmd title.

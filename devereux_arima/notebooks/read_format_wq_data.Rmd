@@ -13,11 +13,8 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 to do:
-- PARSE THE FILES CORRECTLY
-  * https://www.biostars.org/p/218837/
-  * https://stackoverflow.com/questions/5187745/imported-a-csv-dataset-to-r-but-the-values-becomes-factors
-  * https://stackoverflow.com/questions/20943317/how-to-find-out-whether-a-variable-is-a-factor-or-continuous-in-r
- 
+- Create a function that outputs a .csv
+- Create a function that combines all the csv and outputs a single csv
 
 This notebook is a part 0 of the Devereux Slough time series project. I have 
 created functions that assist in reading in and cleaning the csv as well as some 
@@ -41,7 +38,7 @@ library(rowr)
 ```{r make and move report}
 make_md <- function(input_name, output_name) {
   # Moves the knitted md and supporting images from the notebooks dir to reports
-  # dir. A copy of the md and 
+  # dir.
   # 
   # Args:
   #   input_name: The name of the knitted md. Typically same as the Rmd title.
@@ -131,7 +128,7 @@ create_level <- function(df) {
   # Returns:
   #   df(dataframe): A dataframe ready for a ARIMA model
   conv_factor = 0.013595100263597
-  mutate(df, level_m = conv_factor*(df[, 7] - df[, 3]))
+  mutate(df, level_m = conv_factor*(df[,'depth_pressure'] - df[,'surface_pressure']))
 }
 ```
 
@@ -167,36 +164,16 @@ whole_dir <- function(path) {
 
 Test: single dir
 ```{r}
-test_path <- here('data', 'processed', '180530 Logger Data')
-test1 <- create_date_df(test_path)
-test1 <- clean_date_df(test1)
-
-str(test1)
+# test_path <- here('data', 'interim', '180212 Logger Data')
+# test1 <- create_arima_ready(test_path)
+# 
+# str(test1)
+# head(test1)
 ```
-
-```{r}
-
-```
-
 Test: all dir
-```{r}
+```{r, message=FALSE, warning=FALSE, results='hide'}
 test_dir <- here('data', 'processed')
 
 test5 <- whole_dir(test_dir)
-
-
-test5
 ```
 
-180423 test
-```{r}
-# test_path <- here('data', 'interim', '180405 Logger Data')
-# 
-# 
-# 
-# test5 <- create_date_df(test_path)
-# test5 <- clean_date_df(test5)
-# 
-# head(test5)
-# str(test5)
-```
