@@ -1,18 +1,16 @@
 read\_format\_wq\_data
 ================
 Christoper Chan
-17:22 27 March 2019
+19:26 29 March 2019
+
+to do: - Create a function that outputs a .csv - Create a function that combines all the csv and outputs a single csv
 
 Introduction
 ============
 
-to do: - Create a function that outputs a .csv - Create a function that combines all the csv and outputs a single csv
+This notebook is a part 0 of the Devereux Slough time series project. We wrote functions that aggregate and cleaning the data as well as some light feature engineering.
 
-This notebook is a part 0 of the Devereux Slough time series project. I have created functions that assist in reading in and cleaning the csv as well as some light feature engineering.
-
-I've chosen to use the library here because it's simplicity and consistency. Because I have seperate directories for notebooks and data I needed a way to navigate between them. While base R does offer this functionality, pathing is relative to the current working directory which changes based on where I created a document. here offers absolute pathing by setting up a root directory.
-
-The data I collected from Devereux Slogh comes from 4 loggers, each collecting different types of information.
+We've chosen to use the library here because it's simplicity and consistency. Because we have seperate directories for notebooks and data we needed a way to navigate between them. While base R does offer this functionality, pathing is relative to the current working directory which changes based on where I created a document. here() offers absolute pathing by setting up a root directory.
 
 ``` r
 library(here)
@@ -42,9 +40,36 @@ make_md('read_format_wq_data.md', 'read_format_wq_data.md')
 
     ## [1] TRUE TRUE
 
-Setting the working directory as data/. This gives me the flexibility to work with csvs at different stages of cleaning pipeline.
+Functions
+=========
 
-Skip=1 is required because each csv has a Plot\_title as the first row. I need to cbind, not make a single csv I'll need to modify this when I read all the dir. This reads date subdir individually.
+The data file structure is:
+
+``` r
+|
+|--- data
+|     |
+      |--- raw
+      |
+      |--- interim
+      |
+      |--- processed
+            |
+            |--- date_01/
+            |
+            |--- date_02/
+            |
+            |--- date_i
+                  |
+                  |--- Atmos Pressure/
+                  |--- Conductivity/
+                  |--- Depth Pressure/
+                  |--- MiniDot/
+```
+
+Functions are roughly broken down into functions that modify a dataframe and functions that pipe dataframes. Modularization allowed for easier debugging of the functions. create\_arima\_ready\_() is a wrapper that cleans a date directory. whole\_dir() is a wrapper on top of create\_arima\_ready() which allows for all date directories to be cleaned. Date directories are more accurately a sampling period, the date is just when the data was extracted and the logger reset.
+
+We'll create Skip=1 is required because each csv has a Plot\_title as the first row.
 
 ``` r
 create_date_df <- function(path) {
@@ -71,8 +96,6 @@ create_date_df <- function(path) {
 }
 ```
 
-Change this function to reference columns by names instead of indexes
-
 ``` r
 clean_date_df <- function(df) {
   # Removes duplicate columns from dataframe, shortens names and changes factors 
@@ -92,15 +115,12 @@ clean_date_df <- function(df) {
   factors_to_convert <- sapply(df[,3:8], is.factor)
   df[,3:8][factors_to_convert] <- lapply(df[3:8][factors_to_convert], 
                                          function(x) as.numeric(as.character(x)))
-  # df[3:8] <- lapply(df[3:8], as.numeric(x))
-  # for (i in list(3:8)) {
-  #   if (is.factor(df[, i] == TRUE)) {
-  #     df[, i] <- as.numeric(levels(df[, i]))[df[, i]]
-  #  }
-  #}
+
   return(df)
 }
 ```
+
+Our pressure data is in mmHg, but we can convert pressure to meters of water.
 
 ``` r
 create_level <- function(df) {
@@ -117,11 +137,10 @@ create_level <- function(df) {
 }
 ```
 
-create\_arima\_ready works on date subdirectories. Therefore I'll need a function that can parse multiple date subdirectories.
-
 ``` r
 create_arima_ready <- function(path) {
-  # A helper function that wraps the creation and cleaning of a dataframe
+  # A helper function that wraps the creation and cleaning of a single dataframe.
+  # Aggregates all the csvs for a single sampling period.
   #
   # Args:
   #   path(object): A specified directory to read
@@ -137,10 +156,17 @@ create_arima_ready <- function(path) {
 }
 ```
 
-Correctly parses some of the data. Some of the data is missing, find the data, name correctly
-
 ``` r
 whole_dir <- function(path) {
+  # A wrapper that list all the sampling period directories and pipes them into
+  # create_arima_ready().
+  #
+  # Args:
+  #   path(object): A path to the processed data dir
+  #
+  # Returns:
+  # arima_ready_dir(dataframe): A collection of dataframes ready for a ARIMA 
+  #                             model
   csv <- list.files(path, full.names = TRUE)
   arima_ready_dir <- lapply(csv, create_arima_ready)
   return(arima_ready_dir)
@@ -158,6 +184,8 @@ Test: single dir
 ```
 
 Test: all dir
+
+Setting the working directory as data/. This gives me the flexibility to work with csvs at different stages of cleaning pipeline.
 
 ``` r
 test_dir <- here('data', 'processed')

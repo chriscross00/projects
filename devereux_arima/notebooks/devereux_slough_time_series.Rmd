@@ -231,7 +231,7 @@ Fuller (ADF) Test. Running the ADF test on our data with daily seasonality taken
 into account gives us a p-value of less than 0.01. Because our p-value > 0.05 we
 can reject our $H_0$ that there is a unit root in our time series, and accept 
 the $H_1$ that the time series is stationary.
-```{r, warning=FALSE}
+```{r stationarity, warning=FALSE}
 lv_adf <- adf.test(lv_df$level_m, k=96)
 lv_diff_adf <- adf.test(diff(lv_df$level_m, lag=96), k=96)
 
@@ -301,7 +301,7 @@ lv_ts <- msts(lv$level_m, seasonal.periods=c(96,35064))
 We'll create a function for reproducibility. It performs a grid search of ARIMA
 parameters by adjusting the orders of the Fourier term. By comparing the AIC of
 different models we can select the model with the largest AIC. 
-```{r}
+```{r arima_param}
 arima_param <- function(ts){
   # Performs a grid search for optimal ARIMA parameters by comparing aic of
   # each model
@@ -338,6 +338,8 @@ plotter <- forecast(arima_model$model,
                                  h=192))
 autoplot(plotter)
 ```
+
+
 
 # 5 Validate model {#validate}
 checkresiduals() is a nice wrapper function that calls a number of test 
