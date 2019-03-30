@@ -59,24 +59,26 @@ The data file structure is:
 ```{r, warning=FALSE, eval=FALSE, echo=TRUE}
 
 |
-|--- data
+|-- data
 |     |
-      |--- raw
+      |-- raw
       |
-      |--- interim
+      |-- interim
       |
-      |--- processed
+      |-- processed
             |
-            |--- date_01/
+            |-- date_01/
             |
-            |--- date_02/
+            |-- date_02/
             |
-            |--- date_i
+            |-- ......
+            |
+            |-- date_i
                   |
-                  |--- Atmos Pressure/
-                  |--- Conductivity/
-                  |--- Depth Pressure/
-                  |--- MiniDot/
+                  |-- Atmos Pressure/
+                  |-- Conductivity/
+                  |-- Depth Pressure/
+                  |-- MiniDot/
 ```
 
 Functions are roughly broken down into functions that modify a dataframe and

@@ -1,7 +1,7 @@
 read\_format\_wq\_data
 ================
 Christoper Chan
-19:30 29 March 2019
+19:33 29 March 2019
 
 to do: - Create a function that outputs a .csv - Create a function that combines all the csv and outputs a single csv
 
@@ -38,7 +38,7 @@ make_md <- function(input_name, output_name) {
 make_md('read_format_wq_data.md', 'read_format_wq_data.md')
 ```
 
-    ## [1] TRUE TRUE
+    ## [1] TRUE
 
 Functions
 =========
@@ -47,24 +47,26 @@ The data file structure is:
 
 ``` r
 |
-|--- data
+|-- data
 |     |
-      |--- raw
+      |-- raw
       |
-      |--- interim
+      |-- interim
       |
-      |--- processed
+      |-- processed
             |
-            |--- date_01/
+            |-- date_01/
             |
-            |--- date_02/
+            |-- date_02/
             |
-            |--- date_i
+            |-- ......
+            |
+            |-- date_i
                   |
-                  |--- Atmos Pressure/
-                  |--- Conductivity/
-                  |--- Depth Pressure/
-                  |--- MiniDot/
+                  |-- Atmos Pressure/
+                  |-- Conductivity/
+                  |-- Depth Pressure/
+                  |-- MiniDot/
 ```
 
 Functions are roughly broken down into functions that modify a dataframe and functions that pipe dataframes. Modularization allowed for easier debugging of the functions. create\_arima\_ready\_() is a wrapper that cleans a date directory. whole\_dir() is a wrapper on top of create\_arima\_ready() which allows for all date directories to be cleaned. Date directories are more accurately a sampling period, the date is just when the data was extracted and the logger reset.

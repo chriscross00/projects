@@ -1,7 +1,7 @@
 read\_format\_wq\_data
 ================
 Christoper Chan
-19:26 29 March 2019
+19:30 29 March 2019
 
 to do: - Create a function that outputs a .csv - Create a function that combines all the csv and outputs a single csv
 
