@@ -1,7 +1,7 @@
 read\_format\_wq\_data
 ================
 Christoper Chan
-19:11 29 March 2019
+19:26 29 March 2019
 
 to do: - Create a function that outputs a .csv - Create a function that combines all the csv and outputs a single csv
 
@@ -49,14 +49,27 @@ The data file structure is:
 |
 |--- data
 |     |
-|     |--- raw
+      |--- raw
+      |
+      |--- interim
       |
       |--- processed
+            |
+            |--- date_01/
+            |
+            |--- date_02/
+            |
+            |--- date_i
+                  |
+                  |--- Atmos Pressure/
+                  |--- Conductivity/
+                  |--- Depth Pressure/
+                  |--- MiniDot/
 ```
 
-Functions are roughly broken down into functions that modify a dataframe and functions that pipe dataframes. Modularization allowed for easier debugging of functions
+Functions are roughly broken down into functions that modify a dataframe and functions that pipe dataframes. Modularization allowed for easier debugging of the functions. create\_arima\_ready\_() is a wrapper that cleans a date directory. whole\_dir() is a wrapper on top of create\_arima\_ready() which allows for all date directories to be cleaned. Date directories are more accurately a sampling period, the date is just when the data was extracted and the logger reset.
 
-We'll create Skip=1 is required because each csv has a Plot\_title as the first row. We I'll need to modify this when I read all the dir. This reads date subdir individually.
+We'll create Skip=1 is required because each csv has a Plot\_title as the first row.
 
 ``` r
 create_date_df <- function(path) {
@@ -83,8 +96,6 @@ create_date_df <- function(path) {
 }
 ```
 
-Change this function to reference columns by names instead of indexes
-
 ``` r
 clean_date_df <- function(df) {
   # Removes duplicate columns from dataframe, shortens names and changes factors 
@@ -109,6 +120,8 @@ clean_date_df <- function(df) {
 }
 ```
 
+Our pressure data is in mmHg, but we can convert pressure to meters of water.
+
 ``` r
 create_level <- function(df) {
   # Creates the water level in meters, converting the difference of air pressure
@@ -123,8 +136,6 @@ create_level <- function(df) {
   mutate(df, level_m = conv_factor*(df[,'depth_pressure'] - df[,'surface_pressure']))
 }
 ```
-
-create\_arima\_ready works on date subdirectories. Therefore I'll need a function that can parse multiple date subdirectories.
 
 ``` r
 create_arima_ready <- function(path) {
@@ -180,5 +191,4 @@ Setting the working directory as data/. This gives me the flexibility to work wi
 test_dir <- here('data', 'processed')
 
 test5 <- whole_dir(test_dir)
-test5
 ```

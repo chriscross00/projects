@@ -79,7 +79,6 @@ The data file structure is:
                   |--- MiniDot/
 ```
 
-
 Functions are roughly broken down into functions that modify a dataframe and
 functions that pipe dataframes. Modularization allowed for easier debugging of
 the functions. create_arima_ready_() is a wrapper that cleans a date directory. 
