@@ -1,9 +1,7 @@
 Data Pipeline and Cleaning
 ================
 Christoper Chan
-00:28 02 April 2019
-
-to do: - Create a function that outputs a .csv - Create a function that combines all the csv and outputs a single csv
+00:29 02 April 2019
 
 Introduction
 ============
