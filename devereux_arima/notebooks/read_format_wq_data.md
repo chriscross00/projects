@@ -1,9 +1,7 @@
-read\_format\_wq\_data
+Data Pipeline and Cleaning
 ================
 Christoper Chan
-19:33 29 March 2019
-
-to do: - Create a function that outputs a .csv - Create a function that combines all the csv and outputs a single csv
+00:29 02 April 2019
 
 Introduction
 ============
@@ -35,7 +33,7 @@ make_md <- function(input_name, output_name) {
             to = here('reports'), recursive = TRUE)
 }
 
-make_md('read_format_wq_data.md', 'read_format_wq_data.md')
+make_md('read_format_wq_data.md', 'Data Pipeline and Cleaning.md')
 ```
 
     ## [1] TRUE
@@ -51,9 +49,9 @@ The data file structure is:
 |     |
       |-- raw
       |
-      |-- interim
-      |
       |-- processed
+      |
+      |-- interim
             |
             |-- date_01/
             |
@@ -71,7 +69,7 @@ The data file structure is:
 
 Functions are roughly broken down into functions that modify a dataframe and functions that pipe dataframes. Modularization allowed for easier debugging of the functions. create\_arima\_ready\_() is a wrapper that cleans a date directory. whole\_dir() is a wrapper on top of create\_arima\_ready() which allows for all date directories to be cleaned. Date directories are more accurately a sampling period, the date is just when the data was extracted and the logger reset.
 
-We'll create Skip=1 is required because each csv has a Plot\_title as the first row.
+We'll create Skip=1 is required because each csv has a header as the first row.
 
 ``` r
 create_date_df <- function(path) {
@@ -108,16 +106,15 @@ clean_date_df <- function(df) {
   #
   # Returns:
   #   df(dataframe): A cleaned dataframe ready for feature engineering
-  df <- df[c(2:5, 8, 9, 12, 13)]
-  names(df) <- c('obs', 'date_time', 'surface_pressure', 'air_temp1', 'salinity', 
+  df <- df[c(3:5, 8, 9, 12, 13)]
+  names(df) <- c('date_time', 'surface_pressure', 'air_temp1', 'salinity', 
                  'sal_temp2', 'depth_pressure', 'depth_temp')
   df <- drop_na(df)
   
   # Converts factors to doubles
-  factors_to_convert <- sapply(df[,3:8], is.factor)
-  df[,3:8][factors_to_convert] <- lapply(df[3:8][factors_to_convert], 
+  factors_to_convert <- sapply(df[,2:7], is.factor)
+  df[,2:7][factors_to_convert] <- lapply(df[2:7][factors_to_convert], 
                                          function(x) as.numeric(as.character(x)))
-
   return(df)
 }
 ```
@@ -167,7 +164,7 @@ whole_dir <- function(path) {
   #   path(object): A path to the processed data dir
   #
   # Returns:
-  # arima_ready_dir(dataframe): A collection of dataframes ready for a ARIMA 
+  #   arima_ready_dir(list): A list of dataframes ready for a ARIMA 
   #                             model
   csv <- list.files(path, full.names = TRUE)
   arima_ready_dir <- lapply(csv, create_arima_ready)
@@ -175,22 +172,26 @@ whole_dir <- function(path) {
 }
 ```
 
-Test: single dir
-
 ``` r
-# test_path <- here('data', 'interim', '180212 Logger Data')
-# test1 <- create_arima_ready(test_path)
-# 
-# str(test1)
-# head(test1)
+create_csv <- function(list_df, output_name) {
+  # Combines dataframes stored in a list into a single dataframe
+  #
+  # Args:
+  #   list_df(list): A list of dataframes
+  #   output_name(string): The name of the output that must end in .csv
+  #
+  # Returns: Writes a csv to a output directory
+  combined_df <- bind_rows(list_df, .id = 'sample_period')
+  
+  write_csv(combined_df, here('data', 'processed', output_name))  
+}
 ```
 
-Test: all dir
-
-Setting the working directory as data/. This gives me the flexibility to work with csvs at different stages of cleaning pipeline.
+The nice part about wrapping functions is that we only need to define 1 initial vairable and call 3 functions. We could have combined whole\_dir and create\_csv into 1 function, however we may want to do data analysis on the seperate dataframes.
 
 ``` r
-test_dir <- here('data', 'processed')
+dir_path <- here('data', 'interim')
 
-test5 <- whole_dir(test_dir)
+interim_df <- whole_dir(dir_path)
+create_csv(interim_df, 'niche.csv')
 ```
