@@ -48,7 +48,7 @@ make_md <- function(input_name, output_name) {
             to = here('reports'), recursive = TRUE)
 }
 
-make_md('read_format_wq_data.md', 'read_format_wq_data.md')
+make_md('read_format_wq_data.md', 'Data Pipeline and Cleaning.md')
 ```
 
 
@@ -184,7 +184,7 @@ whole_dir <- function(path) {
   #   path(object): A path to the processed data dir
   #
   # Returns:
-  # arima_ready_dir(dataframe): A collection of dataframes ready for a ARIMA 
+  # arima_ready_dir(list): A list of dataframes ready for a ARIMA 
   #                             model
   csv <- list.files(path, full.names = TRUE)
   arima_ready_dir <- lapply(csv, create_arima_ready)
@@ -209,5 +209,12 @@ with csvs at different stages of cleaning pipeline.
 test_dir <- here('data', 'processed')
 
 test5 <- whole_dir(test_dir)
+
+test5
 ```
+
+```{r}
+big <- bind_rows(test5, .id = 'column_label')
+```
+
 
