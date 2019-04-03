@@ -141,7 +141,7 @@ make_md <- function(input_name, output_name) {
 }
 
 
-make_md('devereux_slough_time_series.md', 'devereux_slough_time_series.md')
+make_md('devereux_slough_time_series.md', 'Devereux Slough Time Series.md')
 ```
 
 # 2 Normalizing the data {#clean}
@@ -314,8 +314,8 @@ arima_param <- function(ts){
   #
   best_fit <- list(model=Inf, aic=Inf, i=Inf, j=Inf)
   
-  for (i in 1:10){ #1:10 all data: 2
-    for (j in 1:5){ #1:5 all data: 1
+  for (i in 1:2){ #1:10 all data: 2
+    for (j in 1:1){ #1:5 all data: 1
       fit <- auto.arima(ts, seasonal=FALSE, xreg=fourier(ts, K=c(i,j)))
       if (fit$aic < best_fit$aic)
         best_fit <- list(model=fit, aicc=fit$aic, i=i, j=j)
@@ -333,9 +333,6 @@ our model in order to trust our forecast.
 ```{r}
 arima_model <- arima_param(lv_ts)
 
-
-
-
 plotter <- forecast(arima_model$model, 
                     xreg=fourier(lv_ts, K=c(arima_model$i, arima_model$j), 
                                  h=500))
@@ -343,13 +340,11 @@ autoplot(plotter)
 ```
 
 ```{r}
-
 ploy <- forecast(arima_model$model, 
                     xreg=fourier(lv_ts, K=c(2, 1), 
                                  h=5000))
 autoplot(ploy)
 ```
-
 
 # 5 Validate model {#validate}
 checkresiduals() is a nice wrapper function that calls a number of test 
@@ -423,4 +418,17 @@ of 2017.
 
 In addition to water level data we also have salinity, temperature and oxygen 
 data. This framework can be expand to our other datasets to create additional 
-models, providing a more complete picture of the annual lagoon cycles.  
+models, providing a more complete picture of the annual lagoon cycles.
+
+
+# 8 Bonus
+Using the aggregated dataframe we produced from the Data Pipeline and Cleaning 
+notebook we can rerun the entire analysis with 3 months of data.
+
+To do:
+
+- Run analysis with complete.csv
+- Do light analysis
+- 
+
+

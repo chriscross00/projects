@@ -1,7 +1,7 @@
 Devereux Slough Time Series
 ================
 Christopher Chan
-20:48 02 April 2019
+20:47 02 April 2019
 
 Introduction
 ============
@@ -87,7 +87,7 @@ make_md <- function(input_name, output_name) {
 }
 
 
-make_md('devereux_slough_time_series.md', 'Devereux Slough Time Series.md')
+make_md('devereux_slough_time_series.md', 'devereux_slough_time_series.md')
 ```
 
     ## [1] TRUE
