@@ -185,7 +185,8 @@ whole_dir <- function(path) {
 
 ```{r create_csv}
 create_csv <- function(list_df, output_name) {
-  # Combines dataframes stored in a list into a single dataframe
+  # Combines dataframes stored in a list into a single dataframe, removes
+  # extreme values and creates a output csv. 
   #
   # Args:
   #   list_df(list): A list of dataframes
@@ -193,6 +194,7 @@ create_csv <- function(list_df, output_name) {
   #
   # Returns: Writes a csv to a output directory
   combined_df <- bind_rows(list_df, .id = 'sample_period')
+  combined_df <- filter(combined_df, level_m > 1.5)
   
   write_csv(combined_df, here('data', 'processed', output_name))  
 }
@@ -206,7 +208,7 @@ dataframes.
 dir_path <- here('data', 'interim')
 
 interim_df <- whole_dir(dir_path)
-create_csv(interim_df, 'niche.csv')
+create_csv(interim_df, 'complete.csv')
 ```
 
 

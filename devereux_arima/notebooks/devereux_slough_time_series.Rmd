@@ -147,7 +147,7 @@ make_md('devereux_slough_time_series.md', 'devereux_slough_time_series.md')
 # 2 Normalizing the data {#clean}
 Reading in a logger dataset that I've been using for testing.
 ```{r, message=FALSE}
-lv <- read_csv(here('data', 'processed', '180301 Level Data.csv'))
+lv <- read_csv(here('data', 'processed', 'complete.csv'))
 head(lv, n=5)
 ```
 
@@ -156,11 +156,11 @@ series functions. We are using the zoo() over other time series functions, like
 the standard ts(), because it works well with irregular intervals. 
 ```{r}
 lv$date_time <- as.POSIXct(lv$date_time, format = '%m/%d/%y %H:%M')
-lv_df <- lv[c(2,5)]
+lv_df <- lv[c(2,9)]
 
 cat('Absolute difference in water level over the period of', 
     as.character(min(lv_df$date_time)), 'and', 
-    as.character(min(lv_df$date_time)), 'in meters:', 
+    as.character(max(lv_df$date_time)), 'in meters:', 
     max(lv_df$level_m) - min(lv_df$level_m))
 ```
 
@@ -228,7 +228,7 @@ ggtsdisplay(diff(lv_df$level_m, lag=96), main='ACF and PACF of diff(level_m)')
 
 A more mathematically rigorous analysis of stationarity is the Augmented Dickey
 Fuller (ADF) Test. Running the ADF test on our data with daily seasonality taken
-into account gives us a p-value of less than 0.01. Because our p-value > 0.05 we
+into account gives us a p-value of less than 0.01. Because our p-value < 0.05 we
 can reject our $H_0$ that there is a unit root in our time series, and accept 
 the $H_1$ that the time series is stationary.
 ```{r stationarity, warning=FALSE}
@@ -314,8 +314,8 @@ arima_param <- function(ts){
   #
   best_fit <- list(model=Inf, aic=Inf, i=Inf, j=Inf)
   
-  for (i in 1:10){ #1:10
-    for (j in 1:5){ #1:5
+  for (i in 1:10){ #1:10 all data: 2
+    for (j in 1:5){ #1:5 all data: 1
       fit <- auto.arima(ts, seasonal=FALSE, xreg=fourier(ts, K=c(i,j)))
       if (fit$aic < best_fit$aic)
         best_fit <- list(model=fit, aicc=fit$aic, i=i, j=j)
@@ -333,12 +333,22 @@ our model in order to trust our forecast.
 ```{r}
 arima_model <- arima_param(lv_ts)
 
+
+
+
 plotter <- forecast(arima_model$model, 
                     xreg=fourier(lv_ts, K=c(arima_model$i, arima_model$j), 
-                                 h=192))
+                                 h=500))
 autoplot(plotter)
 ```
 
+```{r}
+
+ploy <- forecast(arima_model$model, 
+                    xreg=fourier(lv_ts, K=c(2, 1), 
+                                 h=5000))
+autoplot(ploy)
+```
 
 
 # 5 Validate model {#validate}
