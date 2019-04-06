@@ -1,0 +1,13 @@
+Overview:
+- Store data into a MySQL database
+	* Pull data and show queries
+		- Lot's of them
+- Come up with hypothesis
+- Do statistical test on the dataset
+	* ANOVA
+	* Pearson correlation
+	* Regression
+- Discussion: 
+	* Talk about why we can't use ML
+		-  Food insecurity is actually broken up by states, not counties. Therefore we only have 50 observations
+
