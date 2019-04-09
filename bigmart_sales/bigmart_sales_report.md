@@ -1,13 +1,12 @@
 BigMart Sales Regression
 ================
 Christoper Chan
-February 4, 2019
+20:38 08 April 2019
 
 ``` r
 library(tidyverse)
 library(randomForest)
 library(scales)
-library(here)
 ```
 
 To see all the code of this project go to: [Full](https://github.com/chriscross00/projects/blob/master/bigmart_sales/alts/full_project.md)
@@ -31,15 +30,16 @@ Below are the key findings from this analysis. The full information about each b
 -   Fruits and Vegetables and Snack Foods have the highest sales at $5,552,846 and represent 30% of the total sales. Item\_Types such as Breakfast and Seafood have the worst total sales and account for only 2% of our total profits.
 -   The reasons why certain stores do better than others is beyond the scope of this dataset, I simply do not have the data to investigate.
 
+A interactive dashboard of the key findings of this project can be found [here](https://public.tableau.com/profile/christopher.chan7070#!/vizhome/bigmat_sales/bigmart_sales).
+
 1 Read and clean data
 ---------------------
 
 Because the dataset is relatively small I can read it all into the R. I combined both the training and test dataset to ensure I got a complete picture of the data.
 
 ``` r
-here('bigmart_sales')
-train <- read.csv('data/Train.csv')
-test <- read.csv('data/Test.csv')
+train <- read.csv('../data/Train.csv')
+test <- read.csv('../data/Test.csv')
 ```
 
 The summary function gives us a quick look at the type of data I are working with and where I need to clean.
