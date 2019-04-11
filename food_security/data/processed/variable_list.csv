@@ -1,0 +1,278 @@
+﻿Category Name,Category Code,Subcategory Name,Variable Name,Variable Code,Geography,Units
+Access and Proximity to Grocery Store,ACCESS,Overall,"Population, low access to store, 2010",LACCESS_POP10,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Overall,"Population, low access to store, 2015",LACCESS_POP15,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Overall,"Population, low access to store (% change), 2010 -15",PCH_LACCESS_POP_10_15,CNTY10,% change
+Access and Proximity to Grocery Store,ACCESS,Overall,"Population, low access to store (%), 2010",PCT_LACCESS_POP10,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Overall,"Population, low access to store (%), 2015",PCT_LACCESS_POP15,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Household Resources,"Low income & low access to store, 2010",LACCESS_LOWI10,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Household Resources,"Low income & low access to store, 2015",LACCESS_LOWI15,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Household Resources,"Low income & low access to store (% change), 2010 - 15",PCH_LACCESS_LOWI_10_15,CNTY10,% change
+Access and Proximity to Grocery Store,ACCESS,Household Resources,"Low income & low access to store (%), 2010",PCT_LACCESS_LOWI10,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Household Resources,"Low income & low access to store (%), 2015",PCT_LACCESS_LOWI15,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Household Resources,"Households, no car & low access to store, 2010",LACCESS_HHNV10,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Household Resources,"Households, no car & low access to store, 2015",LACCESS_HHNV15,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Household Resources,"Households, no car & low access to store (% change), 2010 - 15",PCH_LACCESS_HHNV_10_15,CNTY10,% change
+Access and Proximity to Grocery Store,ACCESS,Household Resources,"Households, no car & low access to store (%), 2010",PCT_LACCESS_HHNV10,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Household Resources,"Households, no car & low access to store (%), 2015",PCT_LACCESS_HHNV15,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Household Resources,"SNAP households, low access to store, 2015",LACCESS_SNAP15,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Household Resources,"SNAP households, low access to store (%), 2015",PCT_LACCESS_SNAP15,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Children, low access to store, 2010",LACCESS_CHILD10,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Children, low access to store, 2015",LACCESS_CHILD15,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Children, low access to store (% change), 2010 - 15",PCH_LACCESS_CHILD_10_15,CNTY10,% change
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Children, low access to store (%), 2010",PCT_LACCESS_CHILD10,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Children, low access to store (%), 2015",PCT_LACCESS_CHILD15,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Seniors, low access to store, 2010",LACCESS_SENIORS10,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Seniors, low access to store, 2015",LACCESS_SENIORS15,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Seniors, low access to store (% change), 2010 -15",PCH_LACCESS_SENIORS_10_15,CNTY10,% change
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Seniors, low access to store (%), 2010",PCT_LACCESS_SENIORS10,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Seniors, low access to store (%), 2015",PCT_LACCESS_SENIORS15,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Demographics,"White, low access to store, 2015",LACCESS_WHITE15,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Demographics,"White, low access to store (%), 2015",PCT_LACCESS_WHITE15,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Black, low access to store, 2015",LACCESS_BLACK15,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Black, low access to store (%), 2015",PCT_LACCESS_BLACK15,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Hispanic ethnicity, low access to store, 2015",LACCESS_HISP15,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Hispanic ethnicity, low access to store (%), 2015",PCT_LACCESS_HISP15,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Asian, low access to store, 2015",LACCESS_NHASIAN15,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Asian, low access to store (%), 2015",PCT_LACCESS_NHASIAN15,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Demographics,"American Indian or Alaska Native, low access to store, 2015",LACCESS_NHNA15,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Demographics,"American Indian or Alaska Native, low access to store (%), 2015",PCT_LACCESS_NHNA15,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Hawaiian or Pacific Islander, low access to store, 2015",LACCESS_NHPI15,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Hawaiian or Pacific Islander, low access to store (%), 2015",PCT_LACCESS_NHPI15,CNTY10,Percent
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Multiracial, low access to store, 2015",LACCESS_MULTIR15,CNTY10,Count
+Access and Proximity to Grocery Store,ACCESS,Demographics,"Multiracial, low access to store (%), 2015",PCT_LACCESS_MULTIR15,CNTY10,Percent
+Store Availability,STORES,Grocery,"Grocery stores, 2009",GROC09,CNTY10,Count
+Store Availability,STORES,Grocery,"Grocery stores, 2014",GROC14,CNTY10,Count
+Store Availability,STORES,Grocery,"Grocery stores (% change), 2009-14",PCH_GROC_09_14,CNTY10,% change
+Store Availability,STORES,Grocery,"Grocery stores/1,000 pop, 2009",GROCPTH09,CNTY10,"# per 1,000 pop"
+Store Availability,STORES,Grocery,"Grocery stores/1,000 pop, 2014",GROCPTH14,CNTY10,"# per 1,000 pop"
+Store Availability,STORES,Grocery,"Grocery stores/1,000 pop (% change), 2009-14",PCH_GROCPTH_09_14,CNTY10,% change
+Store Availability,STORES,Supercenters,"Supercenters & club stores, 2009",SUPERC09,CNTY10,Count
+Store Availability,STORES,Supercenters,"Supercenters & club stores, 2014",SUPERC14,CNTY10,Count
+Store Availability,STORES,Supercenters,"Supercenters & club stores (% change), 2009-14",PCH_SUPERC_09_14,CNTY10,% change
+Store Availability,STORES,Supercenters,"Supercenters & club stores/1,000 pop, 2009",SUPERCPTH09,CNTY10,"# per 1,000 pop"
+Store Availability,STORES,Supercenters,"Supercenters & club stores/1,000 pop, 2014",SUPERCPTH14,CNTY10,"# per 1,000 pop"
+Store Availability,STORES,Supercenters,"Supercenters & club stores/1,000 pop (% change), 2007-14",PCH_SUPERCPTH_09_14,CNTY10,% change
+Store Availability,STORES,Convenience,"Convenience stores, 2009",CONVS09,CNTY10,Count
+Store Availability,STORES,Convenience,"Convenience stores, 2014",CONVS14,CNTY10,Count
+Store Availability,STORES,Convenience,"Convenience stores (% change), 2009-14",PCH_CONVS_09_14,CNTY10,% change
+Store Availability,STORES,Convenience,"Convenience stores/1,000 pop, 2009",CONVSPTH09,CNTY10,"# per 1,000 pop"
+Store Availability,STORES,Convenience,"Convenience stores/1,000 pop, 2014",CONVSPTH14,CNTY10,"# per 1,000 pop"
+Store Availability,STORES,Convenience,"Convenience stores/1,000 pop (% change), 2009-14",PCH_CONVSPTH_09_14,CNTY10,% change
+Store Availability,STORES,Specialized,"Specialized food stores, 2009",SPECS09,CNTY10,Count
+Store Availability,STORES,Specialized,"Specialized food stores, 2014",SPECS14,CNTY10,Count
+Store Availability,STORES,Specialized,"Specialized food stores (% change), 2009-14",PCH_SPECS_09_14,CNTY10,% change
+Store Availability,STORES,Specialized,"Specialized food stores/1,000 pop, 2009",SPECSPTH09,CNTY10,"# per 1,000 pop"
+Store Availability,STORES,Specialized,"Specialized food stores/1,000 pop, 2014",SPECSPTH14,CNTY10,"# per 1,000 pop"
+Store Availability,STORES,Specialized,"Specialized food stores/1,000 pop (% change), 2009-14",PCH_SPECSPTH_09_14,CNTY10,% change
+Store Availability,STORES,SNAP-authorized,"SNAP-authorized stores, 2012",SNAPS12,CNTY10,Count
+Store Availability,STORES,SNAP-authorized,"SNAP-authorized stores, 2016",SNAPS16,CNTY10,Count
+Store Availability,STORES,SNAP-authorized,"SNAP-authorized stores (% change), 2012-16",PCH_SNAPS_12_16,CNTY10,% change
+Store Availability,STORES,SNAP-authorized,"SNAP-authorized stores/1,000 pop, 2012",SNAPSPTH12,CNTY10,"# per 1,000 pop"
+Store Availability,STORES,SNAP-authorized,"SNAP-authorized stores/1,000 pop, 2016",SNAPSPTH16,CNTY10,"# per 1,000 pop"
+Store Availability,STORES,SNAP-authorized,"SNAP-authorized stores/1,000 pop (% change), 2012-16",PCH_SNAPSPTH_12_16,CNTY10,% change
+Store Availability,STORES,WIC-authorized,"WIC-authorized stores, 2008",WICS08,CNTY10,Count
+Store Availability,STORES,WIC-authorized,"WIC-authorized stores, 2012",WICS12,CNTY10,Count
+Store Availability,STORES,WIC-authorized,"WIC-authorized stores (% change), 2008-12",PCH_WICS_08_12,CNTY10,% change
+Store Availability,STORES,WIC-authorized,"WIC-authorized stores/1,000 pop, 2008",WICSPTH08,CNTY10,"# per 1,000 pop"
+Store Availability,STORES,WIC-authorized,"WIC-authorized stores/1,000 pop, 2012",WICSPTH12,CNTY10,"# per 1,000 pop"
+Store Availability,STORES,WIC-authorized,"WIC-authorized stores/1,000 pop (% change), 2008-12",PCH_WICSPTH_08_12,CNTY10,% change
+Restaurant Availability and Expenditures,RESTAURANTS,Fast-food,"Fast-food restaurants, 2009",FFR09,CNTY10,Count
+Restaurant Availability and Expenditures,RESTAURANTS,Fast-food,"Fast-food restaurants, 2014",FFR14,CNTY10,Count
+Restaurant Availability and Expenditures,RESTAURANTS,Fast-food,"Fast-food restaurants (% change), 2009-14",PCH_FFR_09_14,CNTY10,% change
+Restaurant Availability and Expenditures,RESTAURANTS,Fast-food,"Fast-food restaurants/1,000 pop, 2009",FFRPTH09,CNTY10,"# per 1,000 pop"
+Restaurant Availability and Expenditures,RESTAURANTS,Fast-food,"Fast-food restaurants/1,000 pop, 2014",FFRPTH14,CNTY10,"# per 1,000 pop"
+Restaurant Availability and Expenditures,RESTAURANTS,Fast-food,"Fast-food restaurants/1,000 pop (% change), 2009-14",PCH_FFRPTH_09_14,CNTY10,% change
+Restaurant Availability and Expenditures,RESTAURANTS,Full-service,"Full-service restaurants, 2009",FSR09,CNTY10,Count
+Restaurant Availability and Expenditures,RESTAURANTS,Full-service,"Full-service restaurants, 2014",FSR14,CNTY10,Count
+Restaurant Availability and Expenditures,RESTAURANTS,Full-service,"Full-service restaurants (% change), 2009-14",PCH_FSR_09_14,CNTY10,% change
+Restaurant Availability and Expenditures,RESTAURANTS,Full-service,"Full-service restaurants/1,000 pop, 2009",FSRPTH09,CNTY10,Count
+Restaurant Availability and Expenditures,RESTAURANTS,Full-service,"Full-service restaurants/1,000 pop, 2014",FSRPTH14,CNTY10,Count
+Restaurant Availability and Expenditures,RESTAURANTS,Full-service,"Full-service restaurants/1,000 pop (% change), 2009-14",PCH_FSRPTH_09_14,CNTY10,% change
+Restaurant Availability and Expenditures,RESTAURANTS,Expenditures,"Expenditures per capita, fast food, 2007*",PC_FFRSALES07,CNTY10,Dollars
+Restaurant Availability and Expenditures,RESTAURANTS,Expenditures,"Expenditures per capita, fast food, 2012*",PC_FFRSALES12,CNTY10,Dollars
+Restaurant Availability and Expenditures,RESTAURANTS,Expenditures,"Expenditures per capita, restaurants, 2007*",PC_FSRSALES07,CNTY10,Dollars
+Restaurant Availability and Expenditures,RESTAURANTS,Expenditures,"Expenditures per capita, restaurants, 2012*",PC_FSRSALES12,CNTY10,Dollars
+Food Assistance,ASSISTANCE,SNAP,"SNAP redemptions/SNAP-authorized stores, 2012",REDEMP_SNAPS12,CNTY10,Dollars/store
+Food Assistance,ASSISTANCE,SNAP,"SNAP redemptions/SNAP-authorized stores, 2016",REDEMP_SNAPS16,CNTY10,Dollars/store
+Food Assistance,ASSISTANCE,SNAP,"SNAP redemptions/SNAP-authorized stores (% change), 2012-16",PCH_REDEMP_SNAPS_12_16,CNTY10,% change
+Food Assistance,ASSISTANCE,SNAP,"SNAP participants (% pop), 2012*",PCT_SNAP12,CNTY10,Percent
+Food Assistance,ASSISTANCE,SNAP,"SNAP participants (% pop), 2016*",PCT_SNAP16,CNTY10,Percent
+Food Assistance,ASSISTANCE,SNAP,"SNAP participants (change % pop), 2012-16*",PCH_SNAP_12_16,CNTY10,Percentage points
+Food Assistance,ASSISTANCE,SNAP,"SNAP benefits per capita, 2010",PC_SNAPBEN10,CNTY10,Dollars/capita
+Food Assistance,ASSISTANCE,SNAP,"SNAP benefits per capita, 2015",PC_SNAPBEN15,CNTY10,Dollars/capita
+Food Assistance,ASSISTANCE,SNAP,"SNAP benefits per capita (% change), 2010-15",PCH_PC_SNAPBEN_10_15,CNTY10,% change
+Food Assistance,ASSISTANCE,SNAP,"SNAP participants (% eligible pop), 2008*",SNAP_PART_RATE08,CNTY10,Percent
+Food Assistance,ASSISTANCE,SNAP,"SNAP participants (% eligible pop), 2013*",SNAP_PART_RATE13,CNTY10,Percent
+Food Assistance,ASSISTANCE,SNAP,"SNAP online application, 2009*",SNAP_OAPP09,CNTY10,Classification
+Food Assistance,ASSISTANCE,SNAP,"SNAP online application, 2016*",SNAP_OAPP16,CNTY10,Classification
+Food Assistance,ASSISTANCE,SNAP,"SNAP Combined Application Project , 2009*",SNAP_CAP09,CNTY10,Classification
+Food Assistance,ASSISTANCE,SNAP,"SNAP Combined Application Project , 2016*",SNAP_CAP16,CNTY10,Classification
+Food Assistance,ASSISTANCE,SNAP,"SNAP Broad-based Categorical Eligibility, 2009*",SNAP_BBCE09,CNTY10,Classification
+Food Assistance,ASSISTANCE,SNAP,"SNAP Broad-based Categorical Eligibility, 2016*",SNAP_BBCE16,CNTY10,Classification
+Food Assistance,ASSISTANCE,SNAP,"SNAP simplified reporting, 2009*",SNAP_REPORTSIMPLE09,CNTY10,Classification
+Food Assistance,ASSISTANCE,SNAP,"SNAP simplified reporting, 2016*",SNAP_REPORTSIMPLE16,CNTY10,Classification
+Food Assistance,ASSISTANCE,National School Lunch Program,"National School Lunch Program participants (% pop), 2009*",PCT_NSLP09,CNTY10,Percent
+Food Assistance,ASSISTANCE,National School Lunch Program,"National School Lunch Program participants (% pop), 2015*",PCT_NSLP15,CNTY10,Percent
+Food Assistance,ASSISTANCE,National School Lunch Program,"National School Lunch Program participants (change % pop), 2009-15*",PCH_NSLP_09_15,CNTY10,Percentage points
+Food Assistance,ASSISTANCE,National School Lunch Program,"Students eligible for free lunch (%), 2009",PCT_FREE_LUNCH09,CNTY10,Percent
+Food Assistance,ASSISTANCE,National School Lunch Program,"Students eligible for free lunch (%), 2014",PCT_FREE_LUNCH14,CNTY10,Percent
+Food Assistance,ASSISTANCE,National School Lunch Program,"Students eligible for reduced-price lunch (%), 2009",PCT_REDUCED_LUNCH09,CNTY10,Percent
+Food Assistance,ASSISTANCE,National School Lunch Program,"Students eligible for reduced-price lunch (%), 2014",PCT_REDUCED_LUNCH14,CNTY10,Percent
+Food Assistance,ASSISTANCE,School Breakfast Program,"School Breakfast Program participants (% pop), 2009*",PCT_SBP09,CNTY10,Percent
+Food Assistance,ASSISTANCE,School Breakfast Program,"School Breakfast Program participants (% pop), 2015*",PCT_SBP15,CNTY10,Percent
+Food Assistance,ASSISTANCE,School Breakfast Program,"School Breakfast Program participants (change % pop), 2009-15*",PCH_SBP_09_15,CNTY10,Percentage points
+Food Assistance,ASSISTANCE,Summer Food Service Program,"Summer Food Service Program participants (% pop), 2009*",PCT_SFSP09,CNTY10,Percent
+Food Assistance,ASSISTANCE,Summer Food Service Program,"Summer Food Service Program participants (% pop), 2015*",PCT_SFSP15,CNTY10,Percent
+Food Assistance,ASSISTANCE,Summer Food Service Program,"Summer Food Program participants (change % pop), 2009-15*",PCH_SFSP_09_15,CNTY10,Percentage points
+Food Assistance,ASSISTANCE,WIC,"WIC redemptions per capita, 2008",PC_WIC_REDEMP08,CNTY10,Dollars/capita
+Food Assistance,ASSISTANCE,WIC,"WIC redemptions per capita, 2012",PC_WIC_REDEMP12,CNTY10,Dollars/capita
+Food Assistance,ASSISTANCE,WIC,"WIC redemptions per capita (% change), 2008-12",PCH_PC_WIC_REDEMP_08_12,CNTY10,% change
+Food Assistance,ASSISTANCE,WIC,"WIC redemptions/WIC-authorized stores, 2008",REDEMP_WICS08,CNTY10,Dollars/store
+Food Assistance,ASSISTANCE,WIC,"WIC redemptions/WIC-authorized stores, 2012",REDEMP_WICS12,CNTY10,Dollars/store
+Food Assistance,ASSISTANCE,WIC,"WIC redemptions/WIC-authorized stores (% change), 2008-12",PCH_REDEMP_WICS_08_12,CNTY10,% change
+Food Assistance,ASSISTANCE,WIC,"WIC participants (% pop), 2009*",PCT_WIC09,CNTY10,Percent
+Food Assistance,ASSISTANCE,WIC,"WIC participants (% pop), 2015*",PCT_WIC15,CNTY10,Percent
+Food Assistance,ASSISTANCE,WIC,"WIC participants (change % pop), 2009-15*",PCH_WIC_09_15,CNTY10,Percentage points
+Food Assistance,ASSISTANCE,Child & Adult Care,"Child & Adult Care (% pop), 2009*",PCT_CACFP09,CNTY10,Percent
+Food Assistance,ASSISTANCE,Child & Adult Care,"Child & Adult Care (% pop), 2015*",PCT_CACFP15,CNTY10,Percent
+Food Assistance,ASSISTANCE,Child & Adult Care,"Child & Adult Care (change % pop), 2009-15*",PCH_CACFP_09_15,CNTY10,Percentage points
+Food Assistance,ASSISTANCE,FDPIR,"FDPIR Sites, 2012",FDPIR12,CNTY10,Count
+Food Insecurity,INSECURITY,State Food Insecurity,"Household food insecurity (%, three-year average), 2010-12*",FOODINSEC_10_12,CNTY10,Percent
+Food Insecurity,INSECURITY,State Food Insecurity,"Household food insecurity (%, three-year average), 2013-15*",FOODINSEC_13_15,CNTY10,Percent
+Food Insecurity,INSECURITY,State Food Insecurity,"Household food insecurity (change %),2010-12 to 2013-15*",CH_FOODINSEC_12_15,CNTY10,Percentage points
+Food Insecurity,INSECURITY,State Food Insecurity,"Household very low food security (%, three-year average), 2010-12*",VLFOODSEC_10_12,CNTY10,Percent
+Food Insecurity,INSECURITY,State Food Insecurity,"Household very low food security (%, three-year average), 2013-15*",VLFOODSEC_13_15,CNTY10,Percent
+Food Insecurity,INSECURITY,State Food Insecurity,"Household very low food security (change %),2010-12 to 2013-15*",CH_VLFOODSEC_12_15,CNTY10,Percentage points
+Food Insecurity,INSECURITY,State Food Insecurity,"Child food insecurity (% households, multiple-year average), 2001-07*",FOODINSEC_CHILD_01_07,CNTY10,Percent
+Food Insecurity,INSECURITY,State Food Insecurity,"Child food insecurity (% households, multiple-year average), 2003-11*",FOODINSEC_CHILD_03_11,CNTY10,Percent
+Food Prices and Taxes,PRICES_TAXES,Prices,"Price of low-fat milk/national average, 2010**",MILK_PRICE10,CNTY10,Ratio
+Food Prices and Taxes,PRICES_TAXES,Prices,"Price of sodas/national average, 2010**",SODA_PRICE10,CNTY10,Ratio
+Food Prices and Taxes,PRICES_TAXES,Prices,"Price of low-fat milk/price of sodas, 2010**",MILK_SODA_PRICE10,CNTY10,Ratio
+Food Prices and Taxes,PRICES_TAXES,Sales Tax,"Soda sales tax, retail stores, 2014*",SODATAX_STORES14,CNTY10,Percent
+Food Prices and Taxes,PRICES_TAXES,Sales Tax,"Soda sales tax, vending, 2014*",SODATAX_VENDM14,CNTY10,Percent
+Food Prices and Taxes,PRICES_TAXES,Sales Tax,"Chip & pretzel sales tax, retail stores, 2014*",CHIPSTAX_STORES14,CNTY10,Percent
+Food Prices and Taxes,PRICES_TAXES,Sales Tax,"Chip & pretzel sales tax, vending, 2014*",CHIPSTAX_VENDM14,CNTY10,Percent
+Food Prices and Taxes,PRICES_TAXES,Sales Tax,"General food sales tax, retail stores, 2014*",FOOD_TAX14,CNTY10,Percent
+Local Foods,LOCAL,Direct Sales,"Farms with direct sales, 2007",DIRSALES_FARMS07,CNTY10,Count
+Local Foods,LOCAL,Direct Sales,"Farms with direct sales, 2012",DIRSALES_FARMS12,CNTY10,Count
+Local Foods,LOCAL,Direct Sales,"Farms with direct sales (% change), 2007 - 12",PCH_DIRSALES_FARMS_07_12,CNTY10,% change
+Local Foods,LOCAL,Direct Sales,"Farms with direct sales (%), 2007",PCT_LOCLFARM07,CNTY10,Percent
+Local Foods,LOCAL,Direct Sales,"Farms with direct sales (%), 2012",PCT_LOCLFARM12,CNTY10,Percent
+Local Foods,LOCAL,Direct Sales,"Direct farm sales (%), 2007",PCT_LOCLSALE07,CNTY10,Percent
+Local Foods,LOCAL,Direct Sales,"Direct farm sales (%), 2012",PCT_LOCLSALE12,CNTY10,Percent
+Local Foods,LOCAL,Direct Sales,"Direct farm sales, 2007",DIRSALES07,CNTY10,"1,000 dollars"
+Local Foods,LOCAL,Direct Sales,"Direct farm sales, 2012",DIRSALES12,CNTY10,"1,000 dollars"
+Local Foods,LOCAL,Direct Sales,"Direct farm sales (% change), 2007 - 12",PCH_DIRSALES_07_12,CNTY10,% change
+Local Foods,LOCAL,Direct Sales,"Direct farm sales per capita, 2007",PC_DIRSALES07,CNTY10,Dollars
+Local Foods,LOCAL,Direct Sales,"Direct farm sales per capita, 2012",PC_DIRSALES12,CNTY10,Dollars
+Local Foods,LOCAL,Direct Sales,"Direct farm sales per capita (% change), 2007 - 12",PCH_PC_DIRSALES_07_12,CNTY10,% change
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets, 2009",FMRKT09,CNTY10,Count
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets, 2016",FMRKT16,CNTY10,Count
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets (% change), 2009-16",PCH_FMRKT_09_16,CNTY10,% change
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets/1,000 pop, 2009",FMRKTPTH09,CNTY10,"# per 1,000 pop"
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets/1,000 pop, 2016",FMRKTPTH16,CNTY10,"# per 1,000 pop"
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets/1,000 pop (% change), 2009-16",PCH_FMRKTPTH_09_16,CNTY10,% change
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report accepting SNAP, 2016",FMRKT_SNAP16,CNTY10,Count
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report accepting SNAP (%), 2016",PCT_FMRKT_SNAP16,CNTY10,Percent
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report accepting WIC, 2016",FMRKT_WIC16,CNTY10,Count
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report accepting WIC (%), 2016",PCT_FMRKT_WIC16,CNTY10,Percent
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report accepting WIC Cash, 2016",FMRKT_WICCASH16,CNTY10,Count
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report accepting WIC Cash (%), 2016",PCT_FMRKT_WICCASH16,CNTY10,Percent
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report accepting SFMNP, 2016",FMRKT_SFMNP16,CNTY10,Count
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report accepting SFMNP (%), 2016",PCT_FMRKT_SFMNP16,CNTY10,Percent
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report accepting credit cards, 2016",FMRKT_CREDIT16,CNTY10,Count
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report accepting credit cards (%), 2016",PCT_FMRKT_CREDIT16,CNTY10,Percent
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report selling fruit & vegetables, 2016",FMRKT_FRVEG16,CNTY10,Count
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report selling fruit & vegetables (%), 2016",PCT_FMRKT_FRVEG16,CNTY10,Percent
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report selling animal products, 2016",FMRKT_ANMLPROD16,CNTY10,Count
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report selling animal products (%), 2016",PCT_FMRKT_ANMLPROD16,CNTY10,Percent
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report selling baked/prepared food products, 2016",FMRKT_BAKED16,CNTY10,Count
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report selling baked/prepared food products (%), 2016",PCT_FMRKT_BAKED16,CNTY10,Percent
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report selling other food products, 2016",FMRKT_OTHERFOOD16,CNTY10,Count
+Local Foods,LOCAL,Farmers' Markets,"Farmers' markets that report selling other food products (%), 2016",PCT_FMRKT_OTHERFOOD16,CNTY10,Percent
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable farms, 2007",VEG_FARMS07,CNTY10,Count
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable farms, 2012",VEG_FARMS12,CNTY10,Count
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable farms (% change), 2007 - 12",PCH_VEG_FARMS_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable acres harvested, 2007",VEG_ACRES07,CNTY10,Acres
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable acres harvested, 2012",VEG_ACRES12,CNTY10,Acres
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable acres harvested (% change), 2007 - 12",PCH_VEG_ACRES_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable acres harvested/1,000 pop, 2007",VEG_ACRESPTH07,CNTY10,"Acres/1,000 pop"
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable acres harvested/1,000 pop, 2012",VEG_ACRESPTH12,CNTY10,"Acres/1,000 pop"
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable acres harvested/1,000 pop (% change), 2007 - 12",PCH_VEG_ACRESPTH_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Farms with vegetables harvested for fresh market, 2007",FRESHVEG_FARMS07,CNTY10,Count
+Local Foods,LOCAL,Farms & Crop Acreage,"Farms with vegetables harvested for fresh market, 2012",FRESHVEG_FARMS12,CNTY10,Count
+Local Foods,LOCAL,Farms & Crop Acreage,"Farms with vegetables harvested for fresh market (% change), 2007 - 12",PCH_FRESHVEG_FARMS_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable acres harvested for fresh market, 2007",FRESHVEG_ACRES07,CNTY10,Acres
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable acres harvested for fresh market, 2012",FRESHVEG_ACRES12,CNTY10,Acres
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable acres harvested for fresh market (% change), 2007 - 12",PCH_FRESHVEG_ACRES_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable acres harvested for fresh market/1,000 pop, 2007",FRESHVEG_ACRESPTH07,CNTY10,"Acres/1,000 pop"
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable acres harvested for fresh market/1,000 pop, 2012",FRESHVEG_ACRESPTH12,CNTY10,"Acres/1,000 pop"
+Local Foods,LOCAL,Farms & Crop Acreage,"Vegetable acres harvested for fresh market/1,000 pop (% change), 2007 - 12",PCH_FRESHVEG_ACRESPTH_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Orchard farms, 2007",ORCHARD_FARMS07,CNTY10,Count
+Local Foods,LOCAL,Farms & Crop Acreage,"Orchard farms, 2012",ORCHARD_FARMS12,CNTY10,Count
+Local Foods,LOCAL,Farms & Crop Acreage,"Orchard farms (% change), 2007 - 12",PCH_ORCHARD_FARMS_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Orchard acres, 2007",ORCHARD_ACRES07,CNTY10,Acres
+Local Foods,LOCAL,Farms & Crop Acreage,"Orchard acres, 2012",ORCHARD_ACRES12,CNTY10,Acres
+Local Foods,LOCAL,Farms & Crop Acreage,"Orchard acres (% change), 2007 - 12",PCH_ORCHARD_ACRES_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Orchard acres/1,000 pop, 2007",ORCHARD_ACRESPTH07,CNTY10,"Acres/1,000 pop"
+Local Foods,LOCAL,Farms & Crop Acreage,"Orchard acres/1,000 pop, 2012",ORCHARD_ACRESPTH12,CNTY10,"Acres/1,000 pop"
+Local Foods,LOCAL,Farms & Crop Acreage,"Orchard acres/1,000 pop (% change), 2007 - 12",PCH_ORCHARD_ACRESPTH_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Berry farms, 2007",BERRY_FARMS07,CNTY10,Count
+Local Foods,LOCAL,Farms & Crop Acreage,"Berry farms, 2012",BERRY_FARMS12,CNTY10,Count
+Local Foods,LOCAL,Farms & Crop Acreage,"Berry farms (% change), 2007 - 12",PCH_BERRY_FARMS_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Berry acres, 2007",BERRY_ACRES07,CNTY10,Acres
+Local Foods,LOCAL,Farms & Crop Acreage,"Berry acres, 2012",BERRY_ACRES12,CNTY10,Acres
+Local Foods,LOCAL,Farms & Crop Acreage,"Berry acres (% change), 2007 - 12",PCH_BERRY_ACRES_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Berry acres/1,000 pop, 2007",BERRY_ACRESPTH07,CNTY10,"Acres/1,000 pop"
+Local Foods,LOCAL,Farms & Crop Acreage,"Berry acres/1,000 pop, 2012",BERRY_ACRESPTH12,CNTY10,"Acres/1,000 pop"
+Local Foods,LOCAL,Farms & Crop Acreage,"Berry acres/1,000 pop (% change), 2007 - 12",PCH_BERRY_ACRESPTH_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Small slaughterhouse facilities, 2007",SLHOUSE07,CNTY10,Count
+Local Foods,LOCAL,Farms & Crop Acreage,"Small slaughterhouse facilities, 2012",SLHOUSE12,CNTY10,Count
+Local Foods,LOCAL,Farms & Crop Acreage,"Small slaughterhouse facilities (% change), 2007 - 12",PCH_SLHOUSE_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Greenhouse vegetable and fresh herb farms, 2007",GHVEG_FARMS07,CNTY10,Count
+Local Foods,LOCAL,Farms & Crop Acreage,"Greenhouse vegetable and fresh herb farms, 2012",GHVEG_FARMS12,CNTY10,Count
+Local Foods,LOCAL,Farms & Crop Acreage,"Greenhouse vegetable and fresh herb farms (% change), 2007 - 12",PCH_GHVEG_FARMS_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Greenhouse veg and fresh herb sq feet, 2007",GHVEG_SQFT07,CNTY10,Sq ft
+Local Foods,LOCAL,Farms & Crop Acreage,"Greenhouse veg and fresh herb sq feet, 2012",GHVEG_SQFT12,CNTY10,Sq ft
+Local Foods,LOCAL,Farms & Crop Acreage,"Greenhouse veg and fresh herb sq feet (% change), 2007 - 12",PCH_GHVEG_SQFT_07_12,CNTY10,% change
+Local Foods,LOCAL,Farms & Crop Acreage,"Greenhouse veg and fresh herb sq feet/1,000 pop, 2007",GHVEG_SQFTPTH07,CNTY10,"Sq ft/1,000 pop"
+Local Foods,LOCAL,Farms & Crop Acreage,"Greenhouse veg and fresh herb sq feet/1,000 pop, 2012",GHVEG_SQFTPTH12,CNTY10,"Sq ft/1,000 pop"
+Local Foods,LOCAL,Farms & Crop Acreage,"Greenhouse veg and fresh herb sq feet/1,000 pop (% change), 2007 - 12",PCH_GHVEG_SQFTPTH_07_12,CNTY10,% change
+Local Foods,LOCAL,Other Local Food Outlets,"Food hubs, 2016",FOODHUB16,CNTY10,Count
+Local Foods,LOCAL,Other Local Food Outlets,"CSA farms, 2007",CSA07,CNTY10,Count
+Local Foods,LOCAL,Other Local Food Outlets,"CSA farms, 2012",CSA12,CNTY10,Count
+Local Foods,LOCAL,Other Local Food Outlets,"CSA farms (% change), 2007 - 12",PCH_CSA_07_12,CNTY10,% change
+Local Foods,LOCAL,Other Local Food Outlets,"Agritourism operations, 2007",AGRITRSM_OPS07,CNTY10,Count
+Local Foods,LOCAL,Other Local Food Outlets,"Agritourism operations, 2012",AGRITRSM_OPS12,CNTY10,Count
+Local Foods,LOCAL,Other Local Food Outlets,"Agritourism operations (% change), 2007 - 12",PCH_AGRITRSM_OPS_07_12,CNTY10,% change
+Local Foods,LOCAL,Other Local Food Outlets,"Agritourism receipts, 2007",AGRITRSM_RCT07,CNTY10,Dollars
+Local Foods,LOCAL,Other Local Food Outlets,"Agritourism receipts, 2012",AGRITRSM_RCT12,CNTY10,Dollars
+Local Foods,LOCAL,Other Local Food Outlets,"Agritourism receipts (% change), 2007 - 12",PCH_AGRITRSM_RCT_07_12,CNTY10,% change
+Local Foods,LOCAL,Other Local Food Outlets,"Farm to school program, 2009",FARM_TO_SCHOOL09,CNTY10,Classification
+Local Foods,LOCAL,Other Local Food Outlets,"Farm to school program, 2013",FARM_TO_SCHOOL13,CNTY10,Classification
+Health and Physical Activity,HEALTH,Health,"Adult diabetes rate, 2008",PCT_DIABETES_ADULTS08,CNTY10,Percent
+Health and Physical Activity,HEALTH,Health,"Adult diabetes rate, 2013",PCT_DIABETES_ADULTS13,CNTY10,Percent
+Health and Physical Activity,HEALTH,Health,"Adult obesity rate, 2008",PCT_OBESE_ADULTS08,CNTY10,Percent
+Health and Physical Activity,HEALTH,Health,"Adult obesity rate, 2013",PCT_OBESE_ADULTS13,CNTY10,Percent
+Health and Physical Activity,HEALTH,Physical Activity,"High schoolers physically active (%), 2015*",PCT_HSPA15,CNTY10,Percent
+Health and Physical Activity,HEALTH,Physical Activity,"Recreation & fitness facilities, 2009",RECFAC09,CNTY10,Count
+Health and Physical Activity,HEALTH,Physical Activity,"Recreation & fitness facilities, 2014",RECFAC14,CNTY10,Count
+Health and Physical Activity,HEALTH,Physical Activity,"Recreation & fitness facilities (% change), 2009-14",PCH_RECFAC_09_14,CNTY10,% change
+Health and Physical Activity,HEALTH,Physical Activity,"Recreation & fitness facilities/1,000 pop, 2009",RECFACPTH09,CNTY10,"# per 1,000 pop"
+Health and Physical Activity,HEALTH,Physical Activity,"Recreation & fitness facilities/1,000 pop, 2014",RECFACPTH14,CNTY10,"# per 1,000 pop"
+Health and Physical Activity,HEALTH,Physical Activity,"Recreation & fitness facilities/1,000 pop (% change), 2009-14",PCH_RECFACPTH_09_14,CNTY10,% change
+Socioeconomic Characteristics,SOCIOECONOMIC,Race & Age,"% White, 2010",PCT_NHWHITE10,CNTY10,Percent
+Socioeconomic Characteristics,SOCIOECONOMIC,Race & Age,"% Black, 2010",PCT_NHBLACK10,CNTY10,Percent
+Socioeconomic Characteristics,SOCIOECONOMIC,Race & Age,"% Hispanic, 2010",PCT_HISP10,CNTY10,Percent
+Socioeconomic Characteristics,SOCIOECONOMIC,Race & Age,"% Asian, 2010",PCT_NHASIAN10,CNTY10,Percent
+Socioeconomic Characteristics,SOCIOECONOMIC,Race & Age,"% American Indian or Alaska Native, 2010",PCT_NHNA10,CNTY10,Percent
+Socioeconomic Characteristics,SOCIOECONOMIC,Race & Age,"% Hawaiian or Pacific Islander, 2010",PCT_NHPI10,CNTY10,Percent
+Socioeconomic Characteristics,SOCIOECONOMIC,Race & Age,"% Population 65 years or older, 2010",PCT_65OLDER10,CNTY10,Percent
+Socioeconomic Characteristics,SOCIOECONOMIC,Race & Age,"% Population under age 18, 2010",PCT_18YOUNGER10,CNTY10,Percent
+Socioeconomic Characteristics,SOCIOECONOMIC,Income Level,"Median household income, 2015",MEDHHINC15,CNTY10,Dollars
+Socioeconomic Characteristics,SOCIOECONOMIC,Income Level,"Poverty rate, 2015",POVRATE15,CNTY10,Percent
+Socioeconomic Characteristics,SOCIOECONOMIC,Income Level,"Persistent-poverty counties, 2010",PERPOV10,CNTY10,Legend
+Socioeconomic Characteristics,SOCIOECONOMIC,Income Level,"Child poverty rate, 2015",CHILDPOVRATE15,CNTY10,Percent
+Socioeconomic Characteristics,SOCIOECONOMIC,Income Level,"Persistent-child-poverty counties, 2010",PERCHLDPOV10,CNTY10,Legend
+Socioeconomic Characteristics,SOCIOECONOMIC,Other,"Metro/nonmetro counties, 2010",METRO13,CNTY10,Legend
+Socioeconomic Characteristics,SOCIOECONOMIC,Other,"Population-loss counties, 2010",POPLOSS10,CNTY10,Legend
