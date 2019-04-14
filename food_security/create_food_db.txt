@@ -1,0 +1,41 @@
+# checks to see if working database exists, if not creates it
+CREATE DATABASE IF NOT EXISTS food_security;
+
+# checks for a specified database
+SELECT SCHEMA_NAME
+FROM INFORMATION_SCHEMA.SCHEMATA
+WHERE SCHEMA_NAME = 'test_db';
+
+
+# creates access table
+CREATE TABLE access (
+	fips INT NOT NULL,
+	state VARCHAR(2) NOT NULL,
+	county VARCHAR(32) NOT NULL,
+	laccess_pop10 FLOAT(20) NOT NULL
+)
+
+# creates insecurity table
+CREATE TABLE insecurity (
+	fips INT NOT NULL,
+	state VARCHAR(2) NOT NULL,
+	county VARCHAR(32) NOT NULL,
+	food_insec_10_12 FLOAT(3,1) NOT NULL,
+	food_insec_13_15 FLOAT(3,1) NOT NULL,
+	ch_foodinsec_12_15 FLOAT(2,1) NOT NULL,
+	vlfoodsec_10_12 FLOAT(2,1) NOT NULL,
+	vlfoodsec_13_15 FLOAT(2,1) NOT NULL,
+	ch_vlfoodsec_12_15 FLOAT(2,1) NOT NULL,
+	foodinsec_child_01_07 FLOAT(2,1) NOT NULL,
+	foodinsec_child_03_11 FLOAT(2,1) NOT NULL,
+	PRIMARY KEY (fips)
+);
+
+# general csv import template
+
+LOAD DATA INFILE '~/Documents/git_projects/projects/food_security/data/processed/[].csv'
+INTO TABLE []
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;

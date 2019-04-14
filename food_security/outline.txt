@@ -11,10 +11,3 @@ Overview:
 	* Talk about why we can't use ML
 		-  Food insecurity is actually broken up by states, not counties. Therefore we only have 50 observations
 
-
-To do:
-
-- Download SQL onto laptop
-- Set up SQL server
-- seperate out .xls
-- Upload .csv to SQL server		
