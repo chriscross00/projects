@@ -12,8 +12,34 @@ CREATE TABLE access (
 	fips INT NOT NULL,
 	state VARCHAR(2) NOT NULL,
 	county VARCHAR(32) NOT NULL,
-	laccess_pop10 FLOAT(20) NOT NULL
+	laccess_pop10 FLOAT(20) NOT NULL,
+	laccess_pop15 FLOAT(20) NOT NULL,
+	pch_laccess_pop_10_15 FLOAT(20) NOT NULL,
+	pct_laccess_pop10 FLOAT(20) NOT NULL,
+	pct_laccess_pop15 FLOAT(20) NOT NULL,
+	laccess_lowi10 FLOAT(20) NOT NULL,
+	laccess_lowi15 FLOAT(20) NOT NULL,
+	pch_laccess_lowi_10_15 FLOAT(20) NOT NULL,
+	pct_laccess_lowi10 FLOAT(20) NOT NULL,
+	pct_laccess_lowi15 FLOAT(20) NOT NULL,
+	laccess_hhnv10 FLOAT(20) NOT NULL,
+	laccess_hhnv15 FLOAT(20) NOT NULL,
+	pch_laccess_hhnv_10_15 FLOAT(20) NOT NULL,
+	pct_laccess_hhnv10 FLOAT(20) NOT NULL,
+	pct_laccess_hhnv15 FLOAT(20) NOT NULL,
+	laccess_snap15 FLOAT(20) NOT NULL,
+	pct_laccess_snap15 FLOAT(20) NOT NULL,
+	laccess_child10 FLOAT(20) NOT NULL,
+	laccess_child15 FLOAT(20) NOT NULL,
+	laccess_child10_15 FLOAT(20) NOT NULL,
+	pct_laccess_child10 FLOAT(20) NOT NULL,
+	pct_laccess_child15 FLOAT(20) NOT NULL,
+	laccess_seniors10 FLOAT(20) NOT NULL,
+	laccess_seniors15 FLOAT(20) NOT NULL,
+	pch_laccess_seniors_10_15 FLOAT(20) NOT NULL,
+	
 )
+
 
 # creates insecurity table
 CREATE TABLE insecurity (
