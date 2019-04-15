@@ -6,6 +6,13 @@ SELECT SCHEMA_NAME
 FROM INFORMATION_SCHEMA.SCHEMATA
 WHERE SCHEMA_NAME = 'test_db';
 
+# tables created:
+# access
+# insecurity
+# socioeconomic
+# supp_county
+
+
 
 # creates access table
 CREATE TABLE access (
@@ -37,9 +44,56 @@ CREATE TABLE access (
 	laccess_seniors10 FLOAT(20) NOT NULL,
 	laccess_seniors15 FLOAT(20) NOT NULL,
 	pch_laccess_seniors_10_15 FLOAT(20) NOT NULL,
-	
-)
+	pct_laccess_seniors10 FLOAT(20) NOT NULL,
+	pct_laccess_seniors15 FLOAT(20) NOT NULL,
+	laccess_white15 FLOAT(20) NOT NULL,
+	pct_laccess_white15 FLOAT(20) NOT NULL,
+	laccess_black15 FLOAT(20) NOT NULL,
+	pct_laccess_black15 FLOAT(20) NOT NULL,
+	laccess_hisp15 FLOAT(20) NOT NULL,
+	pct_laccess_hisp15 FLOAT(20) NOT NULL,
+	laccess_nhasian15 FLOAT(20) NOT NULL,
+	pct_laccess_nhna15 FLOAT(20) NOT NULL,
+	laccess_nhna15 FLOAT(20) NOT NULL,
+	pct_laccess_nhna15 FLOAT(20) NOT NULL,
+	laccess_nhpi15 FLOAT(20) NOT NULL,
+	pct_laccess_nhpi15 FLOAT(20) NOT NULL,
+	laccess_multir15 FLOAT(20) NOT NULL,
+	pct_laccess_multir15 FLOAT(20) NOT NULL,
+	PRIMARY KEY (fips)
+);
 
+# creates assistance table
+CREATE TABLE assistance (
+	fips INT NOT NULL,
+	state VARCHAR(2) NOT NULL,
+	county VARCHAR(32) NOT NULL,
+	redemp_snaps12 FLOAT(10, 1) NOT NULL,
+	redemp_snaps16 FLOAT(10, 1) NOT NULL,
+	pch_redemp_snaps_12_16 FLOAT(10, 8) NOT NULL,
+	pct_snaps12 FLOAT(10, 8) NOT NULL,
+	pct_snaps16 FLOAT(10, 8) NOT NULL,
+	pch_snaps_12_16 FLOAT(10, 8) NOT NULL,
+	pc_snapben10 FLOAT(10, 8) NOT NULL,
+	pc_snapben15 FLOAT(10, 8) NOT NULL,
+	pch_pc_snapben_10_15 FLOAT(10, 8) NOT NULL,
+	snap_part_rate08 INT NOT NULL,
+	snap_part_rate13 FLOAT(10, 8),
+	snap_oapp09 INT,
+	snap_oapp16 INT,
+	snap_cap09 INT,
+	snap_cap16 INT,
+	snap_bbce09 INT,
+	snap_bbce16 INT,
+	snap_reportsimple09 INT,
+	snap_reportsimple16 INT,
+	pct_nslp09 FLOAT(10, 8),
+	pct_nslp15 FLOAT(10, 8),
+	pch_nslp_09_15 FLOAT(10, 8),
+	pct_free_lunch09 FLOAT(10, 8),
+	pct_free_lunch14 FLOAT(10, 8),
+	PRIMARY KEY (fips)
+);
 
 # creates insecurity table
 CREATE TABLE insecurity (
@@ -56,6 +110,46 @@ CREATE TABLE insecurity (
 	foodinsec_child_03_11 FLOAT(2,1) NOT NULL,
 	PRIMARY KEY (fips)
 );
+
+# creates socioeconomic table
+CREATE TABLE socioeconomic (
+	fips INT NOT NULL,
+	state VARCHAR(2) NOT NULL,
+	county VARCHAR(32) NOT NULL,
+	pct_nhwhite10 FLOAT(10, 8) NOT NULL,
+	pct_nhblack10 FLOAT(10, 8) NOT NULL,
+	pct_nhhisp10 FLOAT(10, 8) NOT NULL,
+	pct_nhasian10 FLOAT(10, 8) NOT NULL,
+	pct_nhna10 FLOAT(10, 8) NOT NULL,
+	pct_nhpi10 FLOAT(10, 8) NOT NULL,
+	pct_65older10 FLOAT(10, 8) NOT NULL,
+	pct_18younger10 FLOAT(10, 8) NOT NULL,
+	medhhhinc15 INT NOT NULL,
+	pov_rate15 FLOAT(3, 2) NOT NULL,
+	per_pov10 INT NOT NULL,
+	child_pov_rate15 FLOAT(3, 2) NOT NULL,
+	per_child_pov10 INT NOT NULL,
+	metro13 INT NOT NULL,
+	pop_loss10 INT NOT NULL,	
+	PRIMARY KEY (fips)
+);
+
+# creates supp_county table
+CREATE TABLE supp_county (
+	fips INT NOT NULL,
+	state VARCHAR(2) NOT NULL,
+	county VARCHAR(32) NOT NULL,
+	pop_census10 INT NOT NULL,
+	pop_est11 INT NOT NULL,
+	pop_est12 INT NOT NULL,
+	pop_est13 INT NOT NULL,
+	pop_est14 INT NOT NULL,
+	pop_est15 INT NOT NULL,
+	pop_est16 INT NOT NULL,
+	PRIMARY KEY (fips)
+);
+
+
 
 # general csv import template
 
