@@ -1,7 +1,7 @@
 Devereux Slough Time Series
 ================
 Christopher Chan
-23:01 16 April 2019
+23:07 16 April 2019
 
 Introduction
 ============
@@ -90,6 +90,12 @@ make_md <- function(input_name, output_name) {
 
 make_md('devereux_slough_time_series.md', 'Devereux Slough Time Series.md')
 ```
+
+    ## Warning in file.rename(from = here("notebooks", input_name), to =
+    ## here("reports", : cannot rename file '/home/ckc/Documents/git_projects/
+    ## projects/devereux_arima/notebooks/devereux_slough_time_series.md' to '/
+    ## home/ckc/Documents/git_projects/projects/devereux_arima/reports/Devereux
+    ## Slough Time Series.md', reason 'No such file or directory'
 
     ## [1] TRUE
 
@@ -247,8 +253,8 @@ arima_param <- function(ts){
   #
   best_fit <- list(model=Inf, aic=Inf, i=Inf, j=Inf)
   
-  for (i in 1:2){ #1:10 all data: 2
-    for (j in 1:1){ #1:5 all data: 1
+  for (i in 1:10){ #1:10 all data: 2
+    for (j in 1:5){ #1:5 all data: 1
       fit <- auto.arima(ts, seasonal=FALSE, xreg=fourier(ts, K=c(i,j)))
       if (fit$aic < best_fit$aic)
         best_fit <- list(model=fit, aicc=fit$aic, i=i, j=j)
@@ -273,15 +279,6 @@ autoplot(plotter)
 
 ![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
-``` r
-ploy <- forecast(arima_model$model, 
-                    xreg=fourier(lv_ts, K=c(2, 1), 
-                                 h=5000))
-autoplot(ploy)
-```
-
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-8-1.png)
-
 5 Validate model
 ================
 
@@ -297,15 +294,15 @@ The ACF plot shows significant spikes before 100, 200 and 300. Because our seaso
 checkresiduals(arima_model$model, lag=96)
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-8-1.png)
 
     ## 
     ##  Ljung-Box test
     ## 
-    ## data:  Residuals from Regression with ARIMA(1,0,1) errors
-    ## Q* = 154.75, df = 87, p-value = 1.075e-05
+    ## data:  Residuals from Regression with ARIMA(2,0,3) errors
+    ## Q* = 70.722, df = 67, p-value = 0.3545
     ## 
-    ## Model df: 9.   Total lags used: 96
+    ## Model df: 29.   Total lags used: 96
 
 6 Forecasting
 =============
@@ -325,7 +322,7 @@ Because these measurements were taken at the very end of the rainy season we wou
 autoplot(plotter)
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-10-1.png)
+![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-9-1.png)
 
 7 Conclusion
 ============
@@ -371,8 +368,8 @@ complete_arima_model <- arima_param(complete_ts)
 complete_pred <- forecast(complete_arima_model$model, 
                     xreg=fourier(lv_ts, K=c(complete_arima_model$i, 
                                             complete_arima_model$j), 
-                                 h=500))
+                                 h=5000))
 autoplot(complete_pred)
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-10-1.png)

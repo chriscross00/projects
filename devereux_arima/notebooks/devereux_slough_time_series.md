@@ -1,7 +1,7 @@
 Devereux Slough Time Series
 ================
 Christopher Chan
-23:07 16 April 2019
+23:55 16 April 2019
 
 Introduction
 ============
@@ -91,12 +91,6 @@ make_md <- function(input_name, output_name) {
 make_md('devereux_slough_time_series.md', 'Devereux Slough Time Series.md')
 ```
 
-    ## Warning in file.rename(from = here("notebooks", input_name), to =
-    ## here("reports", : cannot rename file '/home/ckc/Documents/git_projects/
-    ## projects/devereux_arima/notebooks/devereux_slough_time_series.md' to '/
-    ## home/ckc/Documents/git_projects/projects/devereux_arima/reports/Devereux
-    ## Slough Time Series.md', reason 'No such file or directory'
-
     ## [1] TRUE
 
 2 Normalizing the data
@@ -165,7 +159,7 @@ ggplot(lv_df, aes(date_time, level_m)) +
     ggtitle('Water level (m) over time')
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-3-1.png)
+![](devereux_slough_time_series_files/figure-markdown_github/ggplot_trend-1.png)
 
 This breaks down the data into it's individual components: seasonality, trend and the residuals, well irregular components using loess which gives the acronym STL. The seasonality seems to be daily and the amplitude does not seem to change, confirming a constant variance. This means we don't need to transform the amplitude, ie take the log. The trend is a relatively constant negative slope that occurs over the course of the dataset. The remainder, which are residuals from the seasonal plus trend fit, show no distinct pattern and are white noise. This means that all the data has been extracted from it and we have captured the entire picture.
 
@@ -177,7 +171,7 @@ decomp_ts <- ts(lv_df$level_m, frequency = 96) %>%
     plot(main='Decomposition of level_m')
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-4-1.png)
+![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-3-1.png)
 
 Because our decomposition plots show a negative trend we must make the time series stationary. This is done by taking the seasonal difference. The ACF and PACF before and after differencing are shown below. Because each day has 96 observations, our daily seasonal difference component is lag=96.A plot of the data after taking the seasonal difference shows that the trend is removed. Even after taking the seasonal difference there is significant autocorrelation with previous points. Now that the trend is removed from the dataset we can move on with our model.
 
@@ -185,13 +179,13 @@ Because our decomposition plots show a negative trend we must make the time seri
 ggtsdisplay(lv_df$level_m, main='ACF and PACF of level_m')
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-5-1.png)
+![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-4-1.png)
 
 ``` r
 ggtsdisplay(diff(lv_df$level_m, lag=96), main='ACF and PACF of diff(level_m)')
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-5-2.png)
+![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-4-2.png)
 
 A more mathematically rigorous analysis of stationarity is the Augmented Dickey Fuller (ADF) Test. Running the ADF test on our data with daily seasonality taken into account gives us a p-value of less than 0.01. Because our p-value &lt; 0.05 we can reject our *H*<sub>0</sub> that there is a unit root in our time series, and accept the *H*<sub>1</sub> that the time series is stationary.
 
@@ -253,8 +247,8 @@ arima_param <- function(ts){
   #
   best_fit <- list(model=Inf, aic=Inf, i=Inf, j=Inf)
   
-  for (i in 1:10){ #1:10 all data: 2
-    for (j in 1:5){ #1:5 all data: 1
+  for (i in 1:10){ #subset: 10, all data: 2
+    for (j in 1:5){ #subset:2, all data: 1
       fit <- auto.arima(ts, seasonal=FALSE, xreg=fourier(ts, K=c(i,j)))
       if (fit$aic < best_fit$aic)
         best_fit <- list(model=fit, aicc=fit$aic, i=i, j=j)
@@ -277,7 +271,7 @@ plotter <- forecast(arima_model$model,
 autoplot(plotter)
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-7-1.png)
+![](devereux_slough_time_series_files/figure-markdown_github/model-1.png)
 
 5 Validate model
 ================
@@ -294,7 +288,7 @@ The ACF plot shows significant spikes before 100, 200 and 300. Because our seaso
 checkresiduals(arima_model$model, lag=96)
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-8-1.png)
+![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-6-1.png)
 
     ## 
     ##  Ljung-Box test
@@ -307,12 +301,9 @@ checkresiduals(arima_model$model, lag=96)
 6 Forecasting
 =============
 
-Write more about why daily cycles occur
-=======================================
+The daily cycles are due to changes in air temperature and consequently evaporation. Increased air temperature cause heating of the water which causes some water molecules to evaporate, decreasing water level.
 
-The daily cycles are due to changes in air temperature and consequently evaporation. Increased air temperature cause heating of the water which causes some water moleculse to evaporate.
-
-Evaporation will peak during This process will If we graphed air temperature alongside water level we would expect to see that the two lines are highly correlate, with the water level cycles closely following the air temperature cycles.
+If we graphed air temperature alongside water level we would expect to see that the two lines are highly correlate, with the water level cycles closely following the air temperature cycles.
 
 Now that we have validate our model we can be assured of the accuracy of our predictions. Forecasting two days we can see the same daily seasonality that occurs in past days. We also see the continuation of the negative trend. The 95% confidence interval is actually not much larger than the 80% confidence interval.
 
@@ -322,7 +313,7 @@ Because these measurements were taken at the very end of the rainy season we wou
 autoplot(plotter)
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-9-1.png)
+![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 7 Conclusion
 ============
@@ -338,7 +329,7 @@ In addition to water level data we also have salinity, temperature and oxygen da
 8 Bonus
 =======
 
-Using the aggregated dataframe we produced from the Data Pipeline and Cleaning notebook we can rerun the entire analysis with 3 months of continuous data. The forecast we get are \[\]
+Using the aggregated dataframe we produced from the Data Pipeline and Cleaning notebook we can rerun the entire analysis with 3 months of continuous data. While the general trend of the forecast fits what we expect, the starting point is incorrect. We suspect this is due to the spikes seen around 1.075. In general, this methodology should be used to create monthly forecast, but further tuning would be required to allow the incorporation of more data.
 
 ``` r
 complete <- read_csv(here('data', 'processed', 'complete.csv'))
@@ -372,4 +363,4 @@ complete_pred <- forecast(complete_arima_model$model,
 autoplot(complete_pred)
 ```
 
-![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-10-1.png)
+![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-8-1.png)

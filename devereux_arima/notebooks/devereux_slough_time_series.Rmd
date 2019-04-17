@@ -202,7 +202,7 @@ annual seasonality, meaning that the water level will have a predictable cycle
 over the course of a year. We'll have to factor both the daily and annual 
 seasonality into our time series model.
 
-```{r, warning=FALSE}
+```{r ggplot_trend, warning=FALSE}
 ggplot(lv_df, aes(date_time, level_m)) +
     geom_line() +
     geom_smooth(method = 'loess', se = FALSE) +
@@ -332,8 +332,8 @@ arima_param <- function(ts){
   #
   best_fit <- list(model=Inf, aic=Inf, i=Inf, j=Inf)
   
-  for (i in 1:10){ #1:10 all data: 2
-    for (j in 1:5){ #1:5 all data: 1
+  for (i in 1:10){ #subset: 10, all data: 2
+    for (j in 1:5){ #subset:2, all data: 1
       fit <- auto.arima(ts, seasonal=FALSE, xreg=fourier(ts, K=c(i,j)))
       if (fit$aic < best_fit$aic)
         best_fit <- list(model=fit, aicc=fit$aic, i=i, j=j)
@@ -348,7 +348,7 @@ arima_param <- function(ts){
 Running the ARIMA parameter chooser function on our msts dataset. Plotting a
 forecast for two days gives us reasonable results. However, we have to validate 
 our model in order to trust our forecast.
-```{r}
+```{r model}
 arima_model <- arima_param(lv_ts)
 
 plotter <- forecast(arima_model$model, 
@@ -386,16 +386,13 @@ checkresiduals(arima_model$model, lag=96)
 ```
 
 # 6 Forecasting {#forecast}
-#Write more about why daily cycles occur
-
 The daily cycles are due to changes in air temperature and consequently
 evaporation. Increased air temperature cause heating of the water which causes
-some water moleculse to evaporate. 
+some water molecules to evaporate, decreasing water level.
 
-Evaporation will peak during This process will If we graphed air temperature 
-alongside water level we would expect to see that the two lines are highly
-correlate, with the water level cycles closely following the air temperature
-cycles.
+If we graphed air temperature alongside water level we would expect to see that
+the two lines are highly correlate, with the water level cycles closely 
+following the air temperature cycles.
 
 Now that we have validate our model we can be assured of the accuracy of our 
 predictions. Forecasting two days we can see the same daily seasonality that
@@ -434,10 +431,11 @@ models, providing a more complete picture of the annual lagoon cycles.
 
 # 8 Bonus
 Using the aggregated dataframe we produced from the Data Pipeline and Cleaning 
-notebook we can rerun the entire analysis with 3 months of continuous data. The
-forecast we get are []
-
-
+notebook we can rerun the entire analysis with 3 months of continuous data. 
+While the general trend of the forecast fits what we expect, the starting point 
+is incorrect. We suspect this is due to the spikes seen around 1.075. In general,
+this methodology should be used to create monthly forecast, but further tuning 
+would be required to allow the incorporation of more data.
 ```{r}
 complete <- read_csv(here('data', 'processed', 'complete.csv'))
 
@@ -454,4 +452,5 @@ complete_pred <- forecast(complete_arima_model$model,
                                  h=5000))
 autoplot(complete_pred)
 ```
+
 
