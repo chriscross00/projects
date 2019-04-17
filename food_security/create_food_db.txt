@@ -8,10 +8,15 @@ WHERE SCHEMA_NAME = 'test_db';
 
 # tables created:
 # access
+# assistance
+# health
 # insecurity
+# price_taxes
+# resturants
 # socioeconomic
+# stores
 # supp_county
-
+# variable_list
 
 
 # creates access table
@@ -92,6 +97,46 @@ CREATE TABLE assistance (
 	pch_nslp_09_15 FLOAT(10, 8),
 	pct_free_lunch09 FLOAT(10, 8),
 	pct_free_lunch14 FLOAT(10, 8),
+	pct_reduced_lunch09 FLOAT(10, 8),
+	pct_reduced_lunch14 FLOAT(10, 8),
+	pct_sbp09 FLOAT(10, 8),
+	pct_sbp15 FLOAT(10, 8),
+	pch_sbp_09_15 FLOAT(10, 8),
+	pct_sfsp09 FLOAT(10, 8),
+	pct_sfsp15 FLOAT(10, 8),
+	pch_sfsp_09_15 FLOAT(10, 8),
+	pc_wic_redemp08 FLOAT(10, 8),
+	pc_wic_redemp12 FLOAT(10, 8),
+	pch_pc_wic_redemp_08_12 FLOAT(10, 8),
+	redemp_wics08 FLOAT(10, 8),
+	redemp_wics12 FLOAT(10, 8),
+	pch_redemp_wics_08_12 FLOAT(10, 8),
+	pct_wic09 FLOAT(10, 8),
+	pct_wic15 FLOAT(10, 8),
+	pch_wic_09_15 FLOAT(10, 8),
+	pct_cacfp09 FLOAT(10, 8),
+	pct_cacfp15	FLOAT(10, 8),
+	pch_cacfp_09_15 FLOAT(10, 8),
+	fdpir12 FLOAT(10, 8),
+	PRIMARY KEY (fips)
+);
+
+# creates health table
+CREATE TABLE health (
+	fips TINYINT NOT NULL,
+	state VARCHAR(2) NOT NULL,
+	county VARCHAR(32) NOT NULL,
+	pct_diabetes_adults08 FLOAT(3, 1),
+	pct_diabetes_adults13 FLOAT(3, 1),
+	pct_obese_adults08 FLOAT(3, 1),
+	pct_obese_adults13 FLOAT(3, 1),
+	pct_hspa15 FLOAT(3, 1),
+	recfac09 TINYINT,
+	recfac14 TINYINT,
+	pch_recfac_09_14 FLOAT(3, 1),
+	recfacpth09 FLOAT(3, 1),
+	recfacpth14 FLOAT(3, 1),
+	pch_recfacpth_09_14 FLOAT(3, 1),
 	PRIMARY KEY (fips)
 );
 
@@ -108,6 +153,46 @@ CREATE TABLE insecurity (
 	ch_vlfoodsec_12_15 FLOAT(2,1) NOT NULL,
 	foodinsec_child_01_07 FLOAT(2,1) NOT NULL,
 	foodinsec_child_03_11 FLOAT(2,1) NOT NULL,
+	PRIMARY KEY (fips)
+);
+
+# creates price_taxes table
+CREATE TABLE price_taxes (
+	fips INT NOT NULL,
+	state VARCHAR(2) NOT NULL,
+	county VARCHAR(32) NOT NULL,
+	milk_price10 FLOAT(10, 8),
+	soda_price10 FLOAT(10, 8),
+	milk_soda_price10 FLOAT(10, 8),
+	sodatax_stores14 FLOAT(2, 1),
+	sodatax_vendm14 FLOAT(2, 1),
+	chipstax_stores14 FLOAT(2, 1),
+	chipstax_vendm14 FLOAT(2, 1),
+	food_tax14 FLOAT(2, 1),
+	PRIMARY KEY (fips)
+);
+
+# create resturants table
+CREATE TABLE resturants (
+	fips INT NOT NULL,
+	state VARCHAR(2) NOT NULL,
+	county VARCHAR(32) NOT NULL,
+	ffr09 TINYINT,
+	ffr14 TINYINT,
+	pch_ffr_09_14 FLOAT(10, 8),
+	ffrpth09 FLOAT(10, 8),
+	ffrpth14 FLOAT(10, 8),
+	pch_ffrpth_09_14 FLOAT(10, 8),
+	fsr09 FLOAT(10, 8),
+	fsr14 FLOAT(10, 8),
+	pch_fsr_09_14 FLOAT(10, 8),
+	fsrpth09 TINYINT,
+	fsrpth14 TINYINT,
+	pch_fsrpth_09_14 FLOAT(10, 8),
+	pc_ffrsales07 FLOAT(10, 8),
+	pc_ffrsales12 FLOAT(10, 8),
+	pc_fsrsales07 FLOAT(10, 8),
+	pc_fsrsales12 FLOAT(10, 8),
 	PRIMARY KEY (fips)
 );
 
@@ -134,6 +219,50 @@ CREATE TABLE socioeconomic (
 	PRIMARY KEY (fips)
 );
 
+# creates stores table
+CREATE TABLE stores (
+	fips INT NOT NULL,
+	state VARCHAR(2) NOT NULL,
+	county VARCHAR(32) NOT NULL,
+	groc09 TINYINT,
+	groc14 TINYINT,
+	pch_groc_09_14 FLOAT(10, 8),
+	grocpth09 FLOAT(10, 8),
+	grocpth14 FLOAT(10, 8),
+	pch_grocpth_09_14 FLOAT(10, 8),
+	superc09 TINYINT,
+	superc14 TINYINT,
+	pch_superc_09_14 TINYINT,
+	supercpth09 FLOAT(10, 8),
+	supercpth14 FLOAT(10, 8),
+	pch_supercpth_09_14 FLOAT(10, 8),
+	convs09	TINYINT,
+	convs14	TINYINT,
+	pch_convs_09_14 FLOAT(10, 8),
+	convspth09 FLOAT(10, 8),
+	convspth14 FLOAT(10, 8),
+	pch_convspth_09_14 FLOAT(10, 8),
+	specs09	TINYINT,
+	specs14	TINYINT,
+	pch_specs_09_14 FLOAT(10, 8),
+	specspth09 FLOAT(10, 8),
+	specspth14 FLOAT(10, 8),
+	pch_specspth_09_14 FLOAT(10, 8),
+	snaps12 FLOAT(10, 8),
+	snaps16 FLOAT(10, 8),
+	pch_snaps_12_16 FLOAT(10, 8),
+	snapspth12 FLOAT(10, 8),
+	snapspth16 FLOAT(10, 8),
+	pch_snapspth_12_16 FLOAT(10, 8),
+	wics08 TINYINT,
+	wics12 TINYINT,
+	pch_wics_08_12 FLOAT(10, 8),
+	wicspth08 FLOAT(10, 8),
+	wicspth12 FLOAT(10, 8),
+	pch_wicspth_08_12 FLOAT(10, 8),
+	PRIMARY KEY (fips)	
+);
+
 # creates supp_county table
 CREATE TABLE supp_county (
 	fips INT NOT NULL,
@@ -150,6 +279,17 @@ CREATE TABLE supp_county (
 );
 
 
+create variable_list table
+CREATE TABLE variable_list (
+	category_name VARCHAR(50),
+	category_code VARCHAR(20),
+	subcategory_name VARCHAR(25),
+	variable_name VARCHAR(60),
+	variable_code VARCHAR(25),
+	geography VARCHAR(20),
+	units VARCHAR(10),
+	PRIMARY KEY (variable_code)
+);
 
 # general csv import template
 
