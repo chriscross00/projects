@@ -10,7 +10,7 @@ Take aways:
 
 ### 1 The Pipeline
 We successfully created a data pipeline that recursively checks directories for appropriate data and automatically formats and cleans it. The current method of extracting data from the loggers into seperate directories can be continued, we have just built a pipeline around it.
-[screenshot of datapipline code)
+![](reports/figures/code_screenshot.png)
 
 ### 2 The Data
 The data captures daily and annual trends that, more importantly, fit what we would expect out of a system like Devereux Slough. Decomposition of the data shows very clear trends and uncorrelated residuals, a positive sign.
@@ -18,4 +18,4 @@ The data captures daily and annual trends that, more importantly, fit what we wo
 
 ### 3 The Model
 The model we created works well on a 2 weeks to a month's worth of data. It failed to perform when we incorporated 3 months worth of data into the model. Knowing these limits are useful as it informs us to how best to use this model.
-[]
+![](reports/devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-9-1.png)
