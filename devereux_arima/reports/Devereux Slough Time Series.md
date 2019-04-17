@@ -1,7 +1,7 @@
 Devereux Slough Time Series
 ================
 Christopher Chan
-20:47 02 April 2019
+23:01 16 April 2019
 
 Introduction
 ============
@@ -78,7 +78,8 @@ make_md <- function(input_name, output_name) {
   #   input_name: The name of the knitted md. Typically same as the Rmd title.
   #   output_name: A new name for the md in the reports dir.
   #
-  # Output: A new md in the reports dir. 
+  # Output: A new md in the reports dir.
+  #
   file.rename(from = here('notebooks', input_name), 
               to = here('reports', output_name))
   
@@ -87,7 +88,7 @@ make_md <- function(input_name, output_name) {
 }
 
 
-make_md('devereux_slough_time_series.md', 'devereux_slough_time_series.md')
+make_md('devereux_slough_time_series.md', 'Devereux Slough Time Series.md')
 ```
 
     ## [1] TRUE
@@ -98,26 +99,41 @@ make_md('devereux_slough_time_series.md', 'devereux_slough_time_series.md')
 Reading in a logger dataset that I've been using for testing.
 
 ``` r
-lv <- read_csv(here('data', 'processed', 'complete.csv'))
+lv <- read_csv(here('data', 'processed', '180301 Level Data.csv'))
 head(lv, n=5)
 ```
 
-    ## # A tibble: 5 x 9
-    ##   sample_period date_time surface_pressure air_temp1 salinity sal_temp2
-    ##           <dbl> <chr>                <dbl>     <dbl>    <dbl>     <dbl>
-    ## 1             1 02/12/18…             757.      15.9     17.7      15.4
-    ## 2             1 02/12/18…             757.      16.0     17.8      15.5
-    ## 3             1 02/12/18…             757.      16.1     17.9      15.7
-    ## 4             1 02/12/18…             757.      16.4     18.0      15.9
-    ## 5             1 02/12/18…             756.      17.4     18.1      16.1
-    ## # … with 3 more variables: depth_pressure <dbl>, depth_temp <dbl>,
-    ## #   level_m <dbl>
+    ## # A tibble: 5 x 5
+    ##   sample_number date_time      temperature_water sub_pressure level_m
+    ##           <dbl> <chr>                      <dbl>        <dbl>   <dbl>
+    ## 1             1 02/12/18 12:00              15.9         164.    2.19
+    ## 2             2 02/12/18 12:15              15.9         164.    2.19
+    ## 3             3 02/12/18 12:30              15.9         164.    2.19
+    ## 4             4 02/12/18 12:45              15.9         164.    2.19
+    ## 5             5 02/12/18 13:00              15.9         165.    2.20
 
 Changing the format of the date\_time column into a readible format by time series functions. We are using the zoo() over other time series functions, like the standard ts(), because it works well with irregular intervals.
 
 ``` r
-lv$date_time <- as.POSIXct(lv$date_time, format = '%m/%d/%y %H:%M')
-lv_df <- lv[c(2,9)]
+format_df <- function(df, str_var) {
+  # Subsets full dataframe to create a dataframe of just a time and variable.
+  # Output can be used for time series modelling.
+  #
+  # Args:
+  #   df(Dataframe): A cleaned dataframe with time and water quality parameters
+  #   str_var(string): The name of the variable column
+  #
+  # Returns:
+  #   var_df(Dataframe): Returns a dataframe of just time and the inputted 
+  #                      variable.
+  #
+  df$date_time <- as.POSIXct(df$date_time, format = '%m/%d/%y %H:%M')
+  var_df <- df[c('date_time',str_var)]
+  
+  return(var_df)
+}
+
+lv_df <- format_df(lv, 'level_m')
 
 cat('Absolute difference in water level over the period of', 
     as.character(min(lv_df$date_time)), 'and', 
@@ -125,7 +141,7 @@ cat('Absolute difference in water level over the period of',
     max(lv_df$level_m) - min(lv_df$level_m))
 ```
 
-    ## Absolute difference in water level over the period of 2018-02-12 01:00:00 and 2018-05-30 12:45:00 in meters: 0.8000717
+    ## Absolute difference in water level over the period of 2018-02-12 12:00:00 and 2018-03-01 09:15:00 in meters: 0.06599439
 
 3 EDA
 =====
@@ -182,7 +198,7 @@ cat('p-value from adf.test() of lv_df:', lv_adf$p.value,
     lv_diff_adf$p.value)
 ```
 
-    ## p-value from adf.test() of lv_df: 0.3689438 
+    ## p-value from adf.test() of lv_df: 0.36561 
     ## p-value from adf.test() of seasonally differenced lv_df: 0.01
 
 4 Create the model
@@ -286,8 +302,8 @@ checkresiduals(arima_model$model, lag=96)
     ## 
     ##  Ljung-Box test
     ## 
-    ## data:  Residuals from Regression with ARIMA(1,1,2) errors
-    ## Q* = 94.235, df = 87, p-value = 0.2796
+    ## data:  Residuals from Regression with ARIMA(1,0,1) errors
+    ## Q* = 154.75, df = 87, p-value = 1.075e-05
     ## 
     ## Model df: 9.   Total lags used: 96
 
@@ -325,10 +341,38 @@ In addition to water level data we also have salinity, temperature and oxygen da
 8 Bonus
 =======
 
-Using the aggregated dataframe we produced from the Data Pipeline and Cleaning notebook we can rerun the entire analysis with 3 months of data.
+Using the aggregated dataframe we produced from the Data Pipeline and Cleaning notebook we can rerun the entire analysis with 3 months of continuous data. The forecast we get are \[\]
 
-To do:
+``` r
+complete <- read_csv(here('data', 'processed', 'complete.csv'))
+```
 
--   Run analysis with complete.csv
--   Do light analysis
--
+    ## Parsed with column specification:
+    ## cols(
+    ##   sample_period = col_double(),
+    ##   date_time = col_character(),
+    ##   surface_pressure = col_double(),
+    ##   air_temp1 = col_double(),
+    ##   salinity = col_double(),
+    ##   sal_temp2 = col_double(),
+    ##   depth_pressure = col_double(),
+    ##   depth_temp = col_double(),
+    ##   level_m = col_double()
+    ## )
+
+``` r
+# Format data
+complete_ts <- format_df(complete, 'level_m')
+complete_ts <- msts(complete_ts$level_m, seasonal.periods=c(96,35064))
+
+# Create arima model
+complete_arima_model <- arima_param(complete_ts)
+
+complete_pred <- forecast(complete_arima_model$model, 
+                    xreg=fourier(lv_ts, K=c(complete_arima_model$i, 
+                                            complete_arima_model$j), 
+                                 h=500))
+autoplot(complete_pred)
+```
+
+![](devereux_slough_time_series_files/figure-markdown_github/unnamed-chunk-11-1.png)
