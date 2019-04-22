@@ -1,6 +1,4 @@
-This project uses made up data about a fictional chain of stores. We used pricing and location to 
-predict prices of items. A report and a Tableau dashboard were also created to summarize the 
-process and key findings.
+We used pricing and location to predict prices of items for a fictional chain of grocery stores. A report and a Tableau dashboard were also created to summarize the process and key findings.
 
 
 # Products 

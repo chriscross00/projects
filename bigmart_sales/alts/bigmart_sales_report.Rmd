@@ -36,7 +36,7 @@ Conclusions:
 - Item_MRP (price) is by far the strongest predictor of Item_Outlet_Sales (sales).
 - The next best predictors of sales are all related to the outlet. Outlet_Type (with major caveats), Outlet_Identifier, and Years_Open all predict sales reasonably well.
 - Fruits and Vegetables and Snack Foods have the highest sales at $5,552,846 and represent 30% of the total sales. Item_Types such as Breakfast and Seafood have the worst total sales and account for only 2% of our total profits.
-- The reasons why certain stores do better than others is beyond the scope of this dataset, I simply do not have the data to investigate. 
+- The reasons why certain stores do better than others is beyond the scope of this dataset. However, this is a strong potential next step. 
 
 A interactive dashboard of the key findings of this project can be found [here](https://public.tableau.com/profile/christopher.chan7070#!/vizhome/bigmat_sales/bigmart_sales).
 
