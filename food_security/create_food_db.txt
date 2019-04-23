@@ -142,17 +142,17 @@ CREATE TABLE health (
 
 # creates insecurity table
 CREATE TABLE insecurity (
-	fips INT NOT NULL,
-	state VARCHAR(2) NOT NULL,
-	county VARCHAR(32) NOT NULL,
-	food_insec_10_12 FLOAT(3,1) NOT NULL,
-	food_insec_13_15 FLOAT(3,1) NOT NULL,
-	ch_foodinsec_12_15 FLOAT(2,1) NOT NULL,
-	vlfoodsec_10_12 FLOAT(2,1) NOT NULL,
-	vlfoodsec_13_15 FLOAT(2,1) NOT NULL,
-	ch_vlfoodsec_12_15 FLOAT(2,1) NOT NULL,
-	foodinsec_child_01_07 FLOAT(2,1) NOT NULL,
-	foodinsec_child_03_11 FLOAT(2,1) NOT NULL,
+	fips TINYINT,
+	state VARCHAR(2),
+	county VARCHAR(32),
+	food_insec_10_12 FLOAT(3,1),
+	food_insec_13_15 FLOAT(3,1),
+	ch_foodinsec_12_15 FLOAT(2,1),
+	vlfoodsec_10_12 FLOAT(2,1),
+	vlfoodsec_13_15 FLOAT(2,1),
+	ch_vlfoodsec_12_15 FLOAT(2,1),
+	foodinsec_child_01_07 FLOAT(2,1),
+	foodinsec_child_03_11 FLOAT(2,1),
 	PRIMARY KEY (fips)
 );
 
