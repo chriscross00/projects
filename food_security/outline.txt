@@ -7,7 +7,9 @@ Overview:
 	* ANOVA
 	* Pearson correlation
 	* Regression
+	* Figure out which test to run
 - Discussion: 
 	* Talk about why we can't use ML
 		-  Food insecurity is actually broken up by states, not counties. Therefore we only have 50 observations
 
+https://www.ers.usda.gov/data-products/food-environment-atlas/data-access-and-documentation-downloads/
