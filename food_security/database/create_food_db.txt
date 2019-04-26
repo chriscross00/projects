@@ -16,6 +16,7 @@ WHERE SCHEMA_NAME = 'test_db';
 # socioeconomic
 # stores
 # supp_county
+# supp_state
 # variable_list
 
 
@@ -278,15 +279,59 @@ CREATE TABLE supp_county (
 	PRIMARY KEY (fips)
 );
 
+# creates supp_state table
+CREATE TABLE supp_state (
+	fips_state TINYINT NOT NULL,
+	state VARCHAR(25) NOT NULL,
+	wic_part_fy09 INT NOT NULL,
+	wic_part_fy11 INT NOT NULL,
+	wic_part_fy12 INT NOT NULL,
+	wic_part_fy13 INT NOT NULL,
+	wic_part_fy14 INT NOT NULL,
+	wic_part_fy15 INT NOT NULL,
+	nat_school_lunch_part_fy11 INT NOT NULL,
+	nat_school_lunch_part_fy12 INT NOT NULL,
+	nat_school_lunch_part_fy13 INT NOT NULL,
+	nat_school_lunch_part_fy14 INT NOT NULL,
+	nat_school_lunch_part_fy15 INT NOT NULL,
+	school_breakfast_part_fy09 INT NOT NULL,
+	school_breakfast_part_fy11 INT NOT NULL,
+	school_breakfast_part_fy12 INT NOT NULL,
+	school_breakfast_part_fy13 INT NOT NULL,
+	school_breakfast_part_fy14 INT NOT NULL,
+	school_breakfast_part_fy15 INT NOT NULL,
+	child_adult_care_part_fy09 INT NOT NULL,
+	child_adult_care_part_fy11 INT NOT NULL,
+	child_adult_care_part_fy12 INT NOT NULL,
+	child_adult_care_part_fy13 INT NOT NULL,
+	child_adult_care_part_fy14 INT NOT NULL,
+	child_adult_care_part_fy15 INT NOT NULL,
+	summer_food_part_fy09 INT NOT NULL,
+	summer_food_part_fy11 INT NOT NULL,
+	summer_food_part_fy12 INT NOT NULL,
+	summer_food_part_fy13 INT NOT NULL,
+	summer_food_part_fy14 INT NOT NULL,
+	summer_food_part_fy15 INT NOT NULL,
+	state_pop09 INT NOT NULL,
+	state_pop10 INT NOT NULL,
+	state_pop11 INT NOT NULL,
+	state_pop12	INT NOT NULL,
+	state_pop13 INT NOT NULL,
+	state_pop14 INT NOT NULL,
+	state_pop15 INT NOT NULL,
+	state_pop16 INT NOT NULL,
+	PRIMARY KEY (fips_state)
+)
+
 
 create variable_list table
 CREATE TABLE variable_list (
 	category_name VARCHAR(50),
-	category_code VARCHAR(20),
+	category_code VARCHAR(25),
 	subcategory_name VARCHAR(25),
 	variable_name VARCHAR(60),
 	variable_code VARCHAR(25),
-	geography VARCHAR(20),
+	geography VARCHAR(25),
 	units VARCHAR(10),
 	PRIMARY KEY (variable_code)
 );
