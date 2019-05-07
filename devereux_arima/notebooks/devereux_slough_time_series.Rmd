@@ -332,8 +332,8 @@ arima_param <- function(ts){
   #
   best_fit <- list(model=Inf, aic=Inf, i=Inf, j=Inf)
   
-  for (i in 1:10){ #subset: 10, all data: 2
-    for (j in 1:5){ #subset:2, all data: 1
+  for (i in 9:10){ #subset: 10, all data: 2
+    for (j in 1:2){ #subset:2, all data: 1
       fit <- auto.arima(ts, seasonal=FALSE, xreg=fourier(ts, K=c(i,j)))
       if (fit$aic < best_fit$aic)
         best_fit <- list(model=fit, aicc=fit$aic, i=i, j=j)
@@ -356,6 +356,12 @@ plotter <- forecast(arima_model$model,
                                  h=500))
 autoplot(plotter)
 ```
+
+```{r}
+accuracy(plotter)
+```
+RMSE within 0.075% of of mean of lv_ts 
+
 
 # 5 Validate model {#validate}
 checkresiduals() is a nice wrapper function that calls a number of test 
