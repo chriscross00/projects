@@ -23,13 +23,41 @@ list.files(path=here('data/interim'))
 
 
 ```{r}
-pred = read_csv(here('data', 'interim', '180314 Logger Data.csv'))
+pred = read_csv(here('data', 'processed', '180314 Level Data.csv'))
 
 
 head(pred)
 ```
 
-Run pipeline with 180314 dir
+
+```{r}
+format_df <- function(df, str_var) {
+  # Subsets full dataframe to create a dataframe of just a time and variable.
+  # Output can be used for time series modelling.
+  #
+  # Args:
+  #   df(Dataframe): A cleaned dataframe with time and water quality parameters
+  #   str_var(string): The name of the variable column
+  #
+  # Returns:
+  #   var_df(Dataframe): Returns a dataframe of just time and the inputted 
+  #                      variable.
+  #
+  df$date_time <- as.POSIXct(df$date_time, format = '%m/%d/%y %H:%M')
+  var_df <- df[c('date_time',str_var)]
+  
+  return(var_df)
+}
+
+
+lv_pred <- format_df(pred, 'level_m')
+```
+
+
+
+
+
+
 
 Find out how to get predicted results
 RMSE of predict and actual
