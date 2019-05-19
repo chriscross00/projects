@@ -1,4 +1,13 @@
-# EDA functions 
+import matplotlib.pyplot as plt
+import scipy.stats as stats
+import seaborn as sns
+
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import MinMaxScaler
+
+# EDA functions
 
 # Stats functions
 def test_normality(df, feat_col):
