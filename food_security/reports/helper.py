@@ -8,7 +8,22 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
 
 # EDA functions
-
+def str_to_int(df, start_col, end_col):
+    """Converts column to int in place.
+    
+    Args:
+        df: the dataframe to convert
+        start_col(int): the first column to convert
+        end_col(int): the last column to convert
+    """
+    for i in range(start_col, end_col):
+        if df.iloc[:, i].dtype == np.int64:
+            pass
+        else:
+            df.iloc[:, i] = df.iloc[:, i].str.replace(',', '')
+            df.iloc[:, i] = pd.to_numeric(df.iloc[:, i])
+			
+			
 # Stats functions
 def test_normality(df, feat_col):
     
