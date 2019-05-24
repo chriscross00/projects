@@ -11,8 +11,8 @@ A collection of self-driven data projects.
 ### [BigMart Sales Prediction](https://github.com/chriscross00/projects/blob/master/bigmart_sales/bigmart_sales_report.md)
 - Used a random forest model in R to predict sales of products based on location and pricing data.
 
-### [Tableau](https://public.tableau.com/profile/christopher.chan7070#!/)
-- A collection of Tableau visualizations.
-
 ### [Food Security](https://github.com/chriscross00/projects/tree/master/food_security)
 - Work in progress.
+
+### [Tableau](https://public.tableau.com/profile/christopher.chan7070#!/)
+- A collection of Tableau visualizations.
