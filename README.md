@@ -9,7 +9,7 @@ A collection of self-driven data projects.
 - A interactive Plotly map in with Python visualizing push carts and food trucks locations in San Francisco.
 
 ### [BigMart Sales Prediction](https://github.com/chriscross00/projects/blob/master/bigmart_sales/bigmart_sales_report.md)
-- Used a random forest model in R to predict sales of products based on location and pricing data.
+- A random forest model in R to predict sales of products based on location and pricing data.
 
 ### [Food Security](https://github.com/chriscross00/projects/tree/master/food_security)
 - Work in progress.
