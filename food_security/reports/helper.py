@@ -1,11 +1,16 @@
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 import scipy.stats as stats
 import seaborn as sns
+import statsmodels.api as sm
 
 from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import MinMaxScaler
+from statsmodels.stats.outliers_influence import variance_inflation_factor
 
 # EDA functions
 def str_to_int(df, start_col, end_col):
@@ -73,6 +78,32 @@ def scale_feat(X, y):
     
     return X, y
 
+def feature_processing(df, feat_col, target):
+    """Seperates dataframe into features and target as well as training and testing data
+    
+    Args:
+        df(df): Contains both features and target
+        feat_col(list): A list of feature names
+        target(str): The name of the target column
+    
+    Returns:
+        X_train(arr): A Numpy array of training features
+        X_test(arr): A Numpy array of testing features
+        y_train(arr): A Numpy array of training the target
+        y_test(arr): A Numpy array of testing the target
+    """
+    # Separating features and target
+    reg_feat = df.loc[:, feat_col]
+    reg_target = df[target].values.reshape(-1, 1)
+    
+    # Feature scaling
+    reg_feat, reg_target = scale_feat(reg_feat, reg_target)
+    
+    # lm data preprocessing
+    X_train, X_test, y_train, y_test = train_test_split(reg_feat, reg_target, test_size=0.2, random_state=50)
+    
+    return X_train, X_test, y_train, y_test
+	
 def create_lm(df, feat_col, target):
     """Creates a linear model from a dataframe and performs model validation. 
     Steps:
@@ -91,15 +122,8 @@ def create_lm(df, feat_col, target):
         r_sqr(float): A goodness of fit for the model
         mse(float): The MSE of predicted and actual target values
     """
-    # Sepearting features and target
-    reg_feat = df.loc[:, feat_col]
-    reg_target = df[target].values.reshape(-1, 1)
-    
-    # Feature scaling
-    reg_feat, reg_target = scale_feat(reg_feat, reg_target)
-    
     # lm data preprocessing
-    X_train, X_test, y_train, y_test = train_test_split(reg_feat, reg_target, test_size=0.2, random_state=50)
+    X_train, X_test, y_train, y_test = feature_processing(df, feat_col, target)
     
     
     lm = LinearRegression().fit(X_train, y_train)
@@ -113,3 +137,41 @@ def create_lm(df, feat_col, target):
          '\nMean squared error = ', mse)
     
     return lm, r_sqr, mse
+	
+def lm_details(df, feat_col, target):
+    """Cleans the features and runs a statsmodels OLS. For getting more information out of the regression than
+    SKLearn provides.
+    
+    Args:
+        df(df): Contains both features and target
+        feat_col(list): A list of feature names
+        target(str): The name of the target column
+        
+    Returns:
+        sm_fitted_model: A fit instance
+        X_train(Arr):A Numpy array of training features"""
+    X_train, X_dummy, y_train, y_dummy = feature_processing(df, feat_col, target)
+    
+    df_sm_ready = sm.add_constant(X_train)
+    sm_general_model = sm.OLS(y_train, df_sm_ready)
+    sm_fitted_model = sm_general_model.fit()
+    
+    print(sm_fitted_model.summary())
+    return sm_fitted_model, X_train
+	
+def vif_multicollinearity(df):
+    """VIF on a set of features.
+    
+    Args:
+        df(df): Only contains features
+    
+    Returns:
+        output_df(df): VIF in a column. Row number is the feature number corresponding to sm.OLS.summary()
+    """
+    reg_feat = sm.add_constant(df)
+    output_df = pd.DataFrame()
+    
+    #output_df['feature'] = reg_feat.columns
+    output_df['vif'] = [variance_inflation_factor(reg_feat.values, col) for col in range(reg_feat.shape[1])]
+    
+    return output_df
