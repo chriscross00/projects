@@ -129,7 +129,7 @@ def create_lm(df, feat_col, target):
     lm = LinearRegression().fit(X_train, y_train)
     
     lm_pred = lm.predict(X_test)
-    r_sqr = lm.score(X_test, y_test)
+    r_sqr = lm.score(X_train, y_train)
     mse = mean_squared_error(y_test, lm_pred)
     
     print('Model Validation',
