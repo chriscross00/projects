@@ -15,6 +15,7 @@ Overview:
 
 https://www.ers.usda.gov/data-products/food-environment-atlas/data-access-and-documentation-downloads/
 
+../etc/mysql/my.cnf
 
 Report outline
 SQL
