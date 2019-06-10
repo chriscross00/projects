@@ -24,7 +24,11 @@ Stats
 MySQL to do:
 - Read options file documentation
 	* https://dev.mysql.com/doc/refman/8.0/en/option-files.html
+- Read Server system variables documentation
+	* https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html
 - Multiple config files?
 	* https://support.rackspace.com/how-to/configuring-mysql-server-on-ubuntu/
 - Set configuration path in MySQLWorkbench
 	* https://stackoverflow.com/questions/39822702/location-of-mysql-configuration-file-ie-my-cnf-not-specified
+- Load data documentations
+	* https://dev.mysql.com/doc/refman/8.0/en/load-data.html
