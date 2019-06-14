@@ -34,3 +34,6 @@ MySQL to do:
 	* https://stackoverflow.com/questions/39822702/location-of-mysql-configuration-file-ie-my-cnf-not-specified
 - Load data documentations
 	* https://dev.mysql.com/doc/refman/8.0/en/load-data.html
+
+- Error in uploading csv
+	* https://superuser.com/questions/1354368/mysql-error-in-loading-csv-file-data-into-table
