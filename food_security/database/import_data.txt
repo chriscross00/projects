@@ -1,0 +1,6 @@
+LOAD DATA INFILE '/home/ckc/Documents/git_projects/projects/food_security/data/interim/'
+INTO TABLE [table_name]
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
