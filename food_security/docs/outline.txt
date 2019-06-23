@@ -33,3 +33,9 @@ MySQL to do:
 	* https://www.youtube.com/watch?v=TTgdCltgkIU
 - Error in uploading csv
 	* https://superuser.com/questions/1354368/mysql-error-in-loading-csv-file-data-into-table
+
+
+Problems & solutions with upload:
+- ERROR 29 & OS errno 13 (https://superuser.com/questions/1354368/mysql-error-in-loading-csv-file-data-into-table):
+	* local_infile = 0, set local_infile = 1 in mysqld.cnf
+	* User lacks FILE privilege
