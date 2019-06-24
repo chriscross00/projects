@@ -34,4 +34,6 @@ MySQL to do:
 - Error in uploading csv
 	* https://superuser.com/questions/1354368/mysql-error-in-loading-csv-file-data-into-table
 
-
+Links to read:
+https://www.oreilly.com/library/view/mysql-reference-manual/0596002653/ch04s02.html
+https://www.oreilly.com/library/view/mysql-reference-manual/0596002653/ch01.html
