@@ -1,6 +1,5 @@
 # All errors encountered while configuring mysql server
 
-
 1. Problems & solutions with upload:
 - ERROR 29 & OS errno 13 (https://superuser.com/questions/1354368/mysql-error-in-$
 	* local_infile = 0
