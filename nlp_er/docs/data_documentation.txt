@@ -20,3 +20,7 @@ MedDRA = Medical Dictionary for Regulatory Activities = medical terminology used
 		- 33 = Last character position + 1 (zero index)
 		- CCC = Appearance in the text
 - Text = raw text
+
+# Article
+https://www.sciencedirect.com/science/article/pii/S1532046415000532
+https://aclweb.org/anthology/U17-1009
