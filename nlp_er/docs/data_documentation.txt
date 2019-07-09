@@ -1,0 +1,22 @@
+MedDRA = Medical Dictionary for Regulatory Activities = medical terminology used by pharmaceutical industry during regularity process
+	* Uses numbers to refer to terms
+	* A1 111 22 33 AAA
+		- 111 = MedDRA ID number
+		- 22 = First character position (zero index)
+		- 33 = Last character position + 1 (zero index)
+		- AAA = Appearance in the text
+- Original = Notes by annotators
+	* A1  AAA  11 22  BBB
+		- AAA = Entity type
+		- 11 = First character position (zero index)
+		- 22 = Last character position + 1 (zero index)
+		- BBB = Appearance in the text		
+- SCT = SNOMED CT (Systematized Nomenclature of Medicine - Clinical Terms) = Standardized multilingual vocabulary of clinical terminology
+	* Uses numbers to refer to terms
+	* A1 111 | BBB | 22 33 CCC
+		- 111 = SCT ID number
+		- BBB = SCT terminology
+		- 22 = First character position (zero index)
+		- 33 = Last character position + 1 (zero index)
+		- CCC = Appearance in the text
+- Text = raw text
