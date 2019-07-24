@@ -11,10 +11,14 @@ Requirements:
 
 
 #### Detailed:
-- er.py
+- er.py: Runs ER analysis and outputs.
+	* Main
 	* 
-- lib.py
-
+- data_check.py: Searches for data w/ correct extension. Cleans and formats data.
+	* Main
+	* 
+- lib.py: helper functions
+	* 
 
 Secondary goal:
 1. Pull data from web only when needed. Looked up terms with API.
