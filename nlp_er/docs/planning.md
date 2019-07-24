@@ -10,5 +10,11 @@ Requirements:
 4. Implement standard SE practices.
 
 
+#### Detailed:
+- er.py
+	* 
+- lib.py
+
+
 Secondary goal:
 1. Pull data from web only when needed. Looked up terms with API.
