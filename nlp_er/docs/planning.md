@@ -16,7 +16,11 @@ Requirements:
 	* 
 - data_check.py: Searches for data w/ correct extension. Cleans and formats data.
 	* Main
-	* 
+	* search_for_data:
+		> Checks for data dir. If missing, create.
+		> Checks for files ending in '.txt'
+		> Reads in each file.
+	* clean_data
 - lib.py: helper functions
 	* 
 
