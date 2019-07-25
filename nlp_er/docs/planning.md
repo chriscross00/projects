@@ -8,6 +8,7 @@ Requirements:
 2. Reduce file size.
 3. Allow running from terminal.
 4. Implement standard SE practices.
+5. Implement options for serialization.
 
 
 #### Detailed:
@@ -22,7 +23,7 @@ Requirements:
 		> Reads in each file.
 	* clean_data
 - lib.py: helper functions
-	* 
+	* serialize_model
 
 Secondary goal:
 1. Pull data from web only when needed. Looked up terms with API.
