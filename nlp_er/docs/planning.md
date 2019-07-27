@@ -14,16 +14,16 @@ Requirements:
 #### Detailed:
 - er.py: Runs ER analysis and outputs.
 	* Main
-	* 
 - data_check.py: Searches for data w/ correct extension. Cleans and formats data.
 	* Main
+	* search_for_data_dir:
+		- Checks for data dir. If missing, create.
 	* search_for_data:
-		> Checks for data dir. If missing, create.
-		> Checks for files ending in '.txt'
-		> Reads in each file.
+		- Checks for files ending in '.txt'
+		- Reads in each file.
 	* clean_data
 - lib.py: helper functions
 	* serialize_model
 
 Secondary goal:
-1. Pull data from web only when needed. Looked up terms with API.
+1. Pull data from web only when needed. Look up terms with API.
