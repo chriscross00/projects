@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="97312625-635c-4195-b1b0-4232785665d4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/bin/data_check.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bin/lib.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/planning.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/planning.md" afterDir="false" />
-    </list>
+    <list default="true" id="97312625-635c-4195-b1b0-4232785665d4" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,8 +25,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bin/data_check.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
-              <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+            <state relative-caret-position="96">
+              <caret line="4" column="11" lean-forward="true" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -122,6 +118,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="ToolWindowPython Console.ShowToolbar" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -204,7 +201,7 @@
       <window_info anchor="right" id="Ant Build" order="3" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="4" weight="0.25" />
       <window_info anchor="right" id="Python Console" order="5" weight="0.40625" />
-      <window_info active="true" anchor="right" id="Run" order="6" visible="true" weight="0.47265625" />
+      <window_info anchor="right" id="Run" order="6" weight="0.47265625" />
       <window_info anchor="right" id="Terminal" order="7" weight="0.4674479" />
     </layout>
   </component>
@@ -238,8 +235,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/bin/data_check.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="2" />
+        <state relative-caret-position="96">
+          <caret line="4" column="11" lean-forward="true" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="11" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
