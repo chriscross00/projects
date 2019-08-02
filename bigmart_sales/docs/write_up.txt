@@ -1,0 +1,3 @@
+To add:
+
+- Because this is a 1 off analysis the file structure is satisfactory. Data science best practices would calls for a wrapper around the project, like Docker or PackRat.

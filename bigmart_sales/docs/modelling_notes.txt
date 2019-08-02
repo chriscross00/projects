@@ -1,0 +1,2 @@
+-Need to split the Training data into training and testing set.
+-Remember to clean the test data.
