@@ -245,8 +245,57 @@ $(document).ready(function () {
 
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGVzdF9mdW5jIDwtIGZ1bmN0aW9uKHRyYWluX2V4cCl7XG4gIG91dCA8LSB0cnlDYXRjaChcbiAgICB7XG4gICAgICBtZXNzYWdlKCdUaGlzIGlzIHRoZSBmdW5jdGlvbicpXG4gICAgICB0cmFpbiA8LSByZWFkLmNzdih0cmFpbl9leHApXG4gICAgfSxcbiAgICBlcnJvciA9IGZ1bmN0aW9uKGNvbmQpIHtcbiAgICAgIG1lc3NhZ2UoJ1BsZWFzZSBkb3dubG9hZCBmcm9tIHh5eicpXG4gICAgICBtZXNzYWdlKGNvbmQpXG4gICAgfSxcbiAgICBmaW5hbGx5ID0ge1xuICAgICAgbWVzc2FnZSgndGhpcyBpcyB0aGUgbGFzdCBwYXJ0IG9mIHRoZSB0cnljYXRjaCcpXG4gICAgfVxuICAgIClcbiAgcmV0dXJuKG91dClcbn1cbmBgYCJ9 -->
+<pre class="r"><code>test_func &lt;- function(train_exp){
+  out &lt;- tryCatch(
+    {
+      message('This is the function')
+      train &lt;- read.csv(train_exp)
+    },
+    error = function(cond) {
+      message('Please download from xyz')
+      message(cond)
+    },
+    finally = {
+      message('this is the last part of the trycatch')
+    }
+    )
+  return(out)
+}</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudGVzdF9mdW5jKCdkYXRhL3Jhdy9UcmFpbi5jc3YnKVxuXG5gYGAifQ== -->
+<pre class="r"><code>test_func('data/raw/Train.csv')
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiVGhpcyBpcyB0aGUgZnVuY3Rpb25cbmNhbm5vdCBvcGVuIGZpbGUgJ2RhdGEvcmF3L1RyYWluLmNzdic6IE5vIHN1Y2ggZmlsZSBvciBkaXJlY3RvcnlQbGVhc2UgZG93bmxvYWQgZnJvbSB4eXpcbmNhbm5vdCBvcGVuIHRoZSBjb25uZWN0aW9udGhpcyBpcyB0aGUgbGFzdCBwYXJ0IG9mIHRoZSB0cnljYXRjaFxuIn0= -->
+<pre><code>This is the function
+cannot open file 'data/raw/Train.csv': No such file or directoryPlease download from xyz
+cannot open the connectionthis is the last part of the trycatch</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTlVMTFxuIn0= -->
+<pre><code>NULL</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2V0d2QoKVxuXG5gYGAifQ== -->
+<pre class="r"><code>getwd()
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiL2hvbWUvY2tjL0RvY3VtZW50cy9naXRfcHJvamVjdHMvcHJvamVjdHMvYmlnbWFydF9zYWxlcy9kb2NzXCJcbiJ9 -->
+<pre><code>[1] &quot;/home/ckc/Documents/git_projects/projects/bigmart_sales/docs&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CnRlc3RfZnVuYyA8LSBmdW5jdGlvbih0cmFpbl9leHApewogIG91dCA8LSB0cnlDYXRjaCgKICAgIHsKICAgICAgbWVzc2FnZSgnVGhpcyBpcyB0aGUgZnVuY3Rpb24nKQogICAgICB0cmFpbiA8LSByZWFkLmNzdih0cmFpbl9leHApCiAgICB9LAogICAgZXJyb3IgPSBmdW5jdGlvbihjb25kKSB7CiAgICAgIG1lc3NhZ2UoJ1BsZWFzZSBkb3dubG9hZCBmcm9tIHh5eicpCiAgICAgIG1lc3NhZ2UoY29uZCkKICAgICAgcmV0dXJuKE5BKQogICAgfSwKICAgIGZpbmFsbHkgPSB7CiAgICAgIG1lc3NhZ2UoJ3RoaXMgaXMgdGhlIGxhc3QgcGFydCBvZiB0aGUgdHJ5Y2F0Y2gnKQogICAgfQogICAgKQogIHJldHVybihvdXQpCn0KYGBgCgpgYGB7cn0KdGVzdF9mdW5jKCdkYXRhL3Jhdy9UcmFpbi5jc3YnKQpgYGAKCmBgYHtyfQpnZXR3ZCgpCmBgYAoK</div>
 
 
 
