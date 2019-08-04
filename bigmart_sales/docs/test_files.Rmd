@@ -5,10 +5,11 @@ output: html_notebook
 
 ```{r}
 test_func <- function(train_exp){
-  out <- tryCatch(
+  tryCatch(
     {
-      message('This is the function')
       train <- read.csv(train_exp)
+      message('This is the function')
+      return(train)
     },
     error = function(cond) {
       message('Please download from xyz')
@@ -19,15 +20,14 @@ test_func <- function(train_exp){
       message('this is the last part of the trycatch')
     }
     )
-  return(out)
 }
 ```
 
 ```{r}
-test_func('data/raw/Train.csv')
+what <- test_func('../data/raw/Train.csv')
 ```
 
 ```{r}
-getwd()
+head(what)
 ```
 
