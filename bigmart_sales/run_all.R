@@ -1,3 +1,6 @@
+# read
+# https://stackoverflow.com/questions/36699272/why-is-message-a-better-choice-than-print-in-r-for-writing-a-package/36700294
+
 library(tidyverse)
 
 source('R/import.R')
