@@ -7,8 +7,8 @@ output: html_notebook
 test_func <- function(train_exp){
   tryCatch(
     {
-      train <- read.csv(train_exp)
       message('This is the function')
+      train <- read.csv(train_exp)
       return(train)
     },
     error = function(cond) {
@@ -24,7 +24,7 @@ test_func <- function(train_exp){
 ```
 
 ```{r}
-what <- test_func('../data/raw/Train.csv')
+what <- test_func('data/raw/Train.csv')
 ```
 
 ```{r}
