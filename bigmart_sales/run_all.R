@@ -11,6 +11,4 @@ work <- import_data()
 train <- work$train
 test <- work$test
 
-train_clean <- clean_data(train)
-head(train)
-head(train_clean)
+train_clean <- clean_data(train, 'data/interim/train_clean.csv')

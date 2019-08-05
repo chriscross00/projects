@@ -1,3 +1,10 @@
 To add:
 
-- Because this is a 1 off analysis the file structure is satisfactory. Data science best practices would calls for a wrapper around the project, like Docker or PackRat.
+- Because this is a 1 off analysis the file structure is satisfactory. 
+Data science best practices would calls for a wrapper around the project, like
+Docker or PackRat.
+- Because I'm building a random forest model I don't need to one-hot encode the
+dataset. This helps explain the poor preformance of the linear regression model,
+as the dataset is not built for this type of model. Additionally, R's
+randomForest library does automatically converts categorical variables to dummy
+variables.

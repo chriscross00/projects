@@ -1,4 +1,7 @@
-clean_data <- function(data){
+source('./util.R')
+
+
+clean_data <- function(data, path) {
   # This pipeline modifies columns in the dataframe from left to right
   
   data <- data %>%
@@ -26,10 +29,13 @@ clean_data <- function(data){
                                    Outlet_Location_Type == 'Tier 3', 'Medium'))
   data <- data[, c(1,2,3,4,5,6,7,14,8,10,11,12,13)]
   
+  save_to_csv(data, path)
+  
   return(data)
 }
 
 
-impute_mean <- function(grouped_var){
+impute_mean <- function(grouped_var) {
   replace(grouped_var, is.na(grouped_var), mean(grouped_var, na.rm=T))
 }
+

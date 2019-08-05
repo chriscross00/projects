@@ -1,2 +1,7 @@
--Need to split the Training data into training and testing set.
--Remember to clean the test data.
+- Need to split the Training data into training and testing set.
+- Remember to clean the test data.
+
+Validation scheme:
+- K-fold cv
+Metrics:
+- Accuracy: RMSE
