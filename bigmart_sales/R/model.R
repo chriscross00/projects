@@ -3,6 +3,9 @@
 # 2. Make model
 # 3. Validate model
 
+library(randomForest)
+
+
 create_train_test_split <- function(data, size = 0.7) {
   set.seed(50)
   
@@ -15,3 +18,11 @@ create_train_test_split <- function(data, size = 0.7) {
 }
 
 
+optimal_rf <- function(train) {
+  set.seed(50)
+  
+  bestmtry <- tuneRF(train[, 1:13], train[, 14])
+  
+  message(bestmtry)
+  return(bestmtry)
+}
