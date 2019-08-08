@@ -6,9 +6,13 @@ library(tidyverse)
 source('R/import.R')
 source('R/clean_data.R')
 
-work <- import_data()
+main <- function() {
+  work <- import_data()
+  
+  train <- work$train
+  test <- work$test
+  
+  train_clean <- clean_data(train, 'data/interim/train_clean.csv')
+}
 
-train <- work$train
-test <- work$test
-
-train_clean <- clean_data(train, 'data/interim/train_clean.csv')
+main()

@@ -2,6 +2,6 @@
 - Remember to clean the test data.
 
 Validation scheme:
-- K-fold cv
+- RF internals
 Metrics:
 - Accuracy: RMSE
