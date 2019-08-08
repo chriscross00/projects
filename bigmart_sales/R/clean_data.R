@@ -1,6 +1,6 @@
 # https://stackoverflow.com/questions/12048436/r-sourcing-files-using-a-relative-path?noredirect=1&lq=1
 
-source('./util.R')
+source('R/util.R')
 
 
 clean_data <- function(data, path) {
