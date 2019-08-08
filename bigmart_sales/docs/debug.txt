@@ -1,3 +1,1 @@
 To do:
-1. run_all() fails to run clean_data. Think it's due to util.save_to_csv and 
-source(). Find out source() pathing. 
