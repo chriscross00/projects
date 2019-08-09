@@ -14,6 +14,7 @@ create_train_test_split <- function(data, size = 0.7) {
   test <- data[-train_ind, ]
   train_test_data <- list(train=train, test=test)
   
+  message('Splitting ')
   return(train_test_data)
 }
 
