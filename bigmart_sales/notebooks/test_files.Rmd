@@ -1,0 +1,13 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+work <- read.csv('../data/interim/train_clean.csv')
+```
+
+```{r}
+dim(work)
+```
+

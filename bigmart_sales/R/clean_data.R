@@ -1,6 +1,3 @@
-# https://stackoverflow.com/questions/12048436/r-sourcing-files-using-a-relative-path?noredirect=1&lq=1
-# https://stackoverflow.com/questions/2284446/organizing-r-source-code
-
 source('R/util.R', chdir=T)
 
 

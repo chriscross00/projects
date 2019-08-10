@@ -1,5 +1,4 @@
 To do:
 1. tuneRF error
-Error: Positive column indexes in `[` must match number of columns:
-* `.data` has 13 columns
-* Position 1 equals 14
+ Error in randomForest.default(x, y, mtry = mtryStart, ntree = ntreeTry,  : 
+  length of response must be the same as predictors 
