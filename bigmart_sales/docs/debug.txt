@@ -1,4 +1,7 @@
 To do:
-1. tuneRF error
+1. tuneRF error. tuneRF is not converting response vector to regression.
  Error in randomForest.default(x, y, mtry = mtryStart, ntree = ntreeTry,  : 
   length of response must be the same as predictors 
+
+Possible solutions:
+Test included data (regression) and see what the response variable datatype is.

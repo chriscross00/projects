@@ -12,9 +12,9 @@ df <- iris
 
 ```{r}
 # dataframe
-train <- df[, 1:4]
+train_ir <- df[, 1:4]
 # object, not a vector
-test <- df[, 5]
+test_ir <- df[, 5]
 ```
 
 ```{r}

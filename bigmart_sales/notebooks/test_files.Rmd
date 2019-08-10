@@ -4,6 +4,7 @@ output: html_notebook
 ---
 
 ```{r}
+library(randomForest)
 work <- read.csv('../data/interim/train_clean.csv')
 ```
 
@@ -16,6 +17,14 @@ test <- work[, 13]
 
 
 ```{r}
-is.data.frame(train)
+params <- tuneRF(train, as.numeric(test))
+```
+
+```{r}
+model <- randomForest(train, test)
+```
+
+```{r}
+head(test)
 ```
 
