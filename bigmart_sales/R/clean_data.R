@@ -27,7 +27,7 @@ clean_data <- function(data, path) {
                                    Outlet_Location_Type == 'Tier 2', 'Small')) %>%
     mutate(Outlet_Size = replace(Outlet_Size, Outlet_Size == '' & 
                                    Outlet_Location_Type == 'Tier 3', 'Medium'))
-  data <- data[, c(1,2,3,4,5,6,7,14,8,10,11,12,13)]
+  data <- data[, c(2,1,3,4,5,6,7,14,8,10,11,12,13)]
   
   save_to_csv(data, path)
   

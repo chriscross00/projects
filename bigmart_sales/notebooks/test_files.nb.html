@@ -240,21 +240,26 @@ summary {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxudHJhaW4gPC0gd29ya1ssIDE6MTJdXG50ZXN0IDwtIHdvcmtbLCAxM11cbmBgYFxuYGBgIn0= -->
-<p><code>r</code>r train &lt;- work[, 1:12] test &lt;- work[, 13]</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBkYXRhZnJhbWVcbnRyYWluIDwtIHdvcmtbLCAyOjEyXVxuIyB2ZWN0b3JcbnRlc3QgPC0gd29ya1ssIDEzXVxuYGBgIn0= -->
+<pre class="r"><code># dataframe
+train &lt;- work[, 2:12]
+# vector
+test &lt;- work[, 13]</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYGBgclxucGFyYW1zIDwtIHR1bmVSRih0cmFpbiwgYXMubnVtZXJpYyh0ZXN0KSlcblxuYGBgXG5gYGAifQ== -->
-<p><code>r</code>r params &lt;- tuneRF(train, as.numeric(test))</p>
-<pre><code></code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucGFyYW1zIDwtIHR1bmVSRih0cmFpbiwgdGVzdClcblxuYGBgIn0= -->
+<pre class="r"><code>params &lt;- tuneRF(train, test)
+</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiRXJyb3IgaW4gcmFuZG9tRm9yZXN0LmRlZmF1bHQoeCwgeSwgbXRyeSA9IG10cnlTdGFydCwgbnRyZWUgPSBudHJlZVRyeSwgIDogXG4gIENhbiBub3QgaGFuZGxlIGNhdGVnb3JpY2FsIHByZWRpY3RvcnMgd2l0aCBtb3JlIHRoYW4gNTMgY2F0ZWdvcmllcy5cbiJ9 -->
-<pre><code>Error in randomForest.default(x, y, mtry = mtryStart, ntree = ntreeTry,  : 
-  Can not handle categorical predictors with more than 53 categories.</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoibXRyeSA9IDMgIE9PQiBlcnJvciA9IDEyNjMwNDEgXG5TZWFyY2hpbmcgbGVmdCAuLi5cbm10cnkgPSAyIFx0T09CIGVycm9yID0gMTI4OTgwMCBcbi0wLjAyMTE4NTc5IDAuMDUgXG5TZWFyY2hpbmcgcmlnaHQgLi4uXG4ifQ== -->
+<pre><code>mtry = 3  OOB error = 1263041 
+Searching left ...
+mtry = 2    OOB error = 1289800 
+-0.02118579 0.05 
+Searching right ...</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -283,7 +288,7 @@ summary {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CmxpYnJhcnkocmFuZG9tRm9yZXN0KQp3b3JrIDwtIHJlYWQuY3N2KCcuLi9kYXRhL2ludGVyaW0vdHJhaW5fY2xlYW4uY3N2JykKYGBgCgpgYGB7cn0KIyBkYXRhZnJhbWUKdHJhaW4gPC0gd29ya1ssIDE6MTJdCiMgdmVjdG9yCnRlc3QgPC0gd29ya1ssIDEzXQpgYGAKCgpgYGB7cn0KcGFyYW1zIDwtIHR1bmVSRih0cmFpbiwgdGVzdApgYGAKCmBgYHtyfQptb2RlbCA8LSByYW5kb21Gb3Jlc3QodHJhaW4sIHRlc3QpCmBgYAoKYGBge3J9CmhlYWQodGVzdCkKYGBgCgo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiUiBOb3RlYm9vayIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKYGBge3J9CmxpYnJhcnkocmFuZG9tRm9yZXN0KQp3b3JrIDwtIHJlYWQuY3N2KCcuLi9kYXRhL2ludGVyaW0vdHJhaW5fY2xlYW4uY3N2JykKYGBgCgpgYGB7cn0KIyBkYXRhZnJhbWUKdHJhaW4gPC0gd29ya1ssIDI6MTJdCiMgdmVjdG9yCnRlc3QgPC0gd29ya1ssIDEzXQpgYGAKCgpgYGB7cn0KcGFyYW1zIDwtIHR1bmVSRih0cmFpbiwgdGVzdCkKYGBgCgpgYGB7cn0KbW9kZWwgPC0gcmFuZG9tRm9yZXN0KHRyYWluLCB0ZXN0KQpgYGAKCmBgYHtyfQpoZWFkKHRlc3QpCmBgYAoK</div>
 
 
 

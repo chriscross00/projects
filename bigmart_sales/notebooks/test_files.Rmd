@@ -10,14 +10,14 @@ work <- read.csv('../data/interim/train_clean.csv')
 
 ```{r}
 # dataframe
-train <- work[, 1:12]
+train <- work[, 2:12]
 # vector
 test <- work[, 13]
 ```
 
 
 ```{r}
-params <- tuneRF(train, test
+params <- tuneRF(train, test)
 ```
 
 ```{r}

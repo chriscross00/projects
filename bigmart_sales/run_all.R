@@ -20,7 +20,6 @@ main <- function() {
   train_split <- train_test_data$train
   test_split <- train_test_data$test
 
-  is.data.frame(train_split)
   # optimal_rf(train_split)
 }
 
