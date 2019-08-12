@@ -7,18 +7,18 @@ library(randomForest)
 ```
 
 ```{r}
-df <- iris
+df <- mtcars
 ```
 
 ```{r}
 # dataframe
-train_ir <- df[, 1:4]
-# object, not a vector
-test_ir <- df[, 5]
+train_ir <- df[, 2:11]
+# vector
+test_ir <- df[, 1]
 ```
 
 ```{r}
-model <- tuneRF(train, test)
+model <- tuneRF(train_ir, test_ir)
 ```
 
 ```{r}

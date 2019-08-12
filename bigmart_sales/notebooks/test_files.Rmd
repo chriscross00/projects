@@ -17,7 +17,7 @@ test <- work[, 13]
 
 
 ```{r}
-params <- tuneRF(train, as.numeric(test))
+params <- tuneRF(train, test
 ```
 
 ```{r}
