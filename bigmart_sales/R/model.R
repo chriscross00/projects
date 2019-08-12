@@ -20,10 +20,9 @@ create_train_test_split <- function(data, size = 0.7) {
 
 
 optimal_rf <- function(train) {
-  set.seed(50)
   
-  all_mtry <- tuneRF(train[, 1:12], train[, 13])
-  best_mtry <- arrayInd(which.min(all_mtry[, 2]), dim(all_try))
+  all_mtry <- tuneRF(train[, 2:12], train[, 13], ntreeTry = 1)
+  best_mtry <- arrayInd(which.min(all_mtry[, 2]), dim(all_mtry))
   
   message(best_mtry)
   print('please work')

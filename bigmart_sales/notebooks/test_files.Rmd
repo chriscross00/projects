@@ -5,19 +5,25 @@ output: html_notebook
 
 ```{r}
 library(randomForest)
+source('../R/model.R')
 work <- read.csv('../data/interim/train_clean.csv')
 ```
 
 ```{r}
-# dataframe
-train <- work[, 2:12]
-# vector
-test <- work[, 13]
+work <- create_train_test_split(work)
+
+train_nb <- work$train
+test_nb <- work$test
+```
+
+```{r}
+hmm <- optimal_rf(train_nb)
 ```
 
 
+Works
 ```{r}
-params <- tuneRF(train, test)
+params <- tuneRF(train_nb[, 2:12], train_nb[, 13], ntreeTry = 1)
 ```
 
 ```{r}
