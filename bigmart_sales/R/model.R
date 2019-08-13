@@ -28,3 +28,10 @@ optimal_rf <- function(train) {
   print('please work')
   return(best_mtry)
 }
+
+
+model_rf <- function(df) {
+  randomForest()
+  return()
+}
+
