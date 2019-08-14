@@ -25,22 +25,22 @@ item_vis <- function(df) {
 
 
 sales_vis <- function(df) {
-  ggplot(df, aes(Item_Visibility, Item_Outlet_Sales, color = Item_Category)) + 
+  sales_vis <- ggplot(df, aes(Item_Visibility, Item_Outlet_Sales, color = Item_Category)) + 
     geom_point(size = 0.75) +
     xlab('Item visibility') +
     ylab('Sales') + 
     ggtitle('Item sales vs visibility labeled by category')
 
-  save_to_png(sale_vis, 'fig/sale_vis')
+  save_to_png(sale_vis, 'fig/sale_vis.png')
 }
 
 
 sales_dist <- function(df) {
-  ggplot(data, aes(Item_Outlet_Sales)) + 
+  sales_dist <- ggplot(df, aes(Item_Outlet_Sales)) + 
     geom_density(fill='#56B4E9') +
     ggtitle('Distribution of the sales')
   
-  save_to_png(sales_dist, 'fig/sales_dist')
+  save_to_png(sales_dist, 'fig/sales_dist.png')
 }
 
 

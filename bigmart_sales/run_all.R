@@ -16,14 +16,12 @@ main <- function() {
   
   train_clean <- clean_data(train, 'data/interim/train_clean.csv')
   
-  eda(train_clean)
-  
-  # train_test_data <- create_train_test_split(train_clean)
-  # 
-  # train_split <- train_test_data$train
-  # test_split <- train_test_data$test
-  # 
-  # a_test <- optimal_rf(train_split)
+  train_test_data <- create_train_test_split(train_clean)
+
+  train_split <- train_test_data$train
+  test_split <- train_test_data$test
+
+  a_test <- optimal_rf(train_split)
 }
 
 main()

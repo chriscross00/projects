@@ -3,8 +3,3 @@ To do:
   length of response must be the same as predictors 
   
 Only present in run_all.R can't recreate in nb
-
-
-2. Error: Unknown graphics device ''
-
-ggsave not clearing workspace? read attached link in eda.R to fix
