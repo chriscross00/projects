@@ -21,11 +21,11 @@ create_train_test_split <- function(data, size = 0.7) {
 
 optimal_rf <- function(train) {
   
-  all_mtry <- tuneRF(train[, 2:12], train[, 13], ntreeTry = 5)
+  message('Finding optimal hyperparameters...')
+  all_mtry <- tuneRF(train[, 2:12], train[, 13], ntreeTry = 1)
   best_mtry <- arrayInd(which.min(all_mtry[, 2]), dim(all_mtry))
   
   message(best_mtry)
-  print('please work')
   return(best_mtry)
 }
 
