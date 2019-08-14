@@ -21,9 +21,7 @@ main <- function() {
   train_split <- train_test_data$train
   test_split <- train_test_data$test
   
-  print(is.data.frame(train_split))
-  print(train_split)
-  #a_test <- optimal_rf(train_split)
+  a_test <- optimal_rf(train_split)
 }
 
 main()

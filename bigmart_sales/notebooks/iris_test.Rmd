@@ -23,7 +23,7 @@ test_car <- df[, 1]
 ```
 
 ```{r}
-model <- tuneRF(df_tb[, 2:11], df_tb[,1], ntreeTry = 1)
+model <- tuneRF(df_tb[, 2:11], df_tb[,1], ntreeTry = 5)
 ```
 
 ```{r}

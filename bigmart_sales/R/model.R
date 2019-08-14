@@ -10,8 +10,8 @@ create_train_test_split <- function(data, size = 0.7) {
   set.seed(50)
   
   train_ind <- sample(nrow(data), size = floor(size*nrow(data)))
-  train <- data[train_ind, ]
-  test <- data[-train_ind, ]
+  train <- as.data.frame(data[train_ind, ])
+  test <- as.data.frame(data[-train_ind, ])
   train_test_data <- list(train=train, test=test)
   
   message('Splitting ')
@@ -21,7 +21,7 @@ create_train_test_split <- function(data, size = 0.7) {
 
 optimal_rf <- function(train) {
   
-  all_mtry <- tuneRF(train[, 2:12], train[, 13], ntreeTry = 1)
+  all_mtry <- tuneRF(train[, 2:12], train[, 13], ntreeTry = 5)
   best_mtry <- arrayInd(which.min(all_mtry[, 2]), dim(all_mtry))
   
   message(best_mtry)
