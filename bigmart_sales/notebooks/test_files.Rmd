@@ -5,6 +5,7 @@ output: html_notebook
 
 ```{r}
 library(randomForest)
+library(tidyverse)
 source('../R/model.R')
 work <- read_csv('../data/interim/train_clean.csv')
 ```
