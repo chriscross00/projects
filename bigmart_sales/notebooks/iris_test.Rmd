@@ -25,14 +25,14 @@ model <- tuneRF(df[, 2:11], df[,1], ntreeTry = 5)
 ```{r}
 arrayInd(which.min(model[,2]), dim(model))
 ```
-
-
 ```{r}
-test
+output_text <- c('This is a test of your systems')
 ```
 
+
 ```{r}
 
+writeLines(c(output_text, model), 'other_file.txt')
 ```
 
 

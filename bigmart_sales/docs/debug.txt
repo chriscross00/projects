@@ -1,7 +1,1 @@
 To do:
-1.  Error in randomForest.default(x, y, mtry = mtryStart, ntree = ntreeTry,  : 
-  length of response must be the same as predictors 
-  
-Only present in run_all.R can't recreate in nb
-Has to do with the fact that train_split is a tibble, and tibbles aren't properly
-parsed in tuneRF. DataFrames still work, convert to df

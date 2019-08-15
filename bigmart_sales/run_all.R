@@ -20,9 +20,6 @@ main <- function() {
   
   train_split <- train_test_data$train
   test_split <- train_test_data$test
-  
-  best_mtry <- optimal_rf(train_split)
-  print(best_mtry)
 }
 
 main()

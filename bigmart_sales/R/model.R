@@ -1,8 +1,3 @@
-# Steps
-# 1. Split data 70-30
-# 2. Make model
-# 3. Validate model
-
 library(randomForest)
 
 
@@ -22,10 +17,13 @@ create_train_test_split <- function(data, size = 0.7) {
 optimal_rf <- function(train) {
   
   message('Finding optimal hyperparameters...')
-  all_mtry <- tuneRF(train[, 2:12], train[, 13], ntreeTry = 1)
-  best_mtry <- arrayInd(which.min(all_mtry[, 2]), dim(all_mtry))
+  all_mtry <- tuneRF(train[, 2:12], train[, 13], ntreeTry = 250, stepFactor = 0.5)
+  best_mtry <- all_mtry[which.min(all_mtry[, 2])]
   
-  message(best_mtry)
+  writeLines(c('tuneRF raw output (mtry | OOBError)', all_mtry),
+             'docs/tuneRF_output.txt')
+  
+  message('Optimal parameter number is: ', best_mtry)
   return(best_mtry)
 }
 
