@@ -1,14 +1,26 @@
 # read
-# https://stackoverflow.com/questions/36699272/why-is-message-a-better-choice-than-print-in-r-for-writing-a-package/36700294
+# https://stackoverflow.com/questions/13733552/logger-configuration-to-log-to-file-and-print-to-stdout
+# figure out why variables aren't being logged
 
 library(tidyverse)
+library(logging)
 
 source('R/import.R')
 source('R/clean_data.R')
 source('R/eda.R')
 source('R/model.R')
 
+configure_logging <- function() {
+  basicConfig()
+  
+  addHandler(writeToFile, file = 'docs/bigmart.log', level = 'INFO')
+  loginfo('Initializing logger')
+}
+
+
 main <- function() {
+  configure_logging()
+  
   work <- import_data()
   
   train <- work$train

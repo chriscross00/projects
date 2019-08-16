@@ -4,34 +4,17 @@ output: html_notebook
 ---
 
 ```{r}
-library(randomForest)
-library(tidyverse)
-source('../R/model.R')
-work <- read_csv('../data/interim/train_clean.csv')
+library(logging)
 ```
 
 ```{r}
-work <- create_train_test_split(work)
-
-train_nb <- as.data.frame(work$train)
-test_nb <- as.data.frame(work$test)
+basicConfig()
+addHandler(writeToFile, file = 'some_file.log', level = 'INFO')
 ```
 
 ```{r}
-hmm <- optimal_rf(train_nb)
+abc <- function() {
+  print('maybe logging')
+  loginfo('does this work')
+}
 ```
-
-
-Works
-```{r}
-params <- tuneRF(train_nb[, 2:12], train_nb[, 13], ntreeTry = 1)
-```
-
-```{r}
-model <- randomForest(train, test)
-```
-
-```{r}
-head(test)
-```
-
