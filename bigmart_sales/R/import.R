@@ -1,9 +1,9 @@
 import_data <- function() {
   
-  train_exp <- 'data/raw/Train.csv'
-  loginfo('Attemping import from ', train_exp)
+  train_exp <- 'raw/Train.csv'
+  loginfo('Attemping import from %s', train_exp)
   test_exp <- 'data/raw/Test.csv'
-  loginfo('Attemping import from ', test_exp)
+  loginfo('Attemping import from %s', test_exp)
   tryCatch(
     {
       train <- read.csv(train_exp)

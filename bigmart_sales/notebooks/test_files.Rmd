@@ -4,12 +4,13 @@ output: html_notebook
 ---
 
 ```{r}
-library(logging)
+source('../R/model.R')
+df <- read.csv('../data/interim/train_clean.csv')
 ```
 
 ```{r}
-basicConfig()
-addHandler(writeToFile, file = 'some_file.log', level = 'INFO')
+param <- optimal_rf(df)
+
 ```
 
 ```{r}

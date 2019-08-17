@@ -13,7 +13,7 @@ source('R/model.R')
 configure_logging <- function() {
   basicConfig()
   
-  addHandler(writeToFile, file = 'docs/bigmart.log', level = 'INFO')
+  addHandler(writeToFile, file = 'log/bigmart.log', level = 'INFO')
   loginfo('Initializing logger')
 }
 

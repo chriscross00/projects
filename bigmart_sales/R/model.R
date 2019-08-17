@@ -4,12 +4,13 @@ library(randomForest)
 create_train_test_split <- function(data, size = 0.7) {
   set.seed(50)
   
+  message('Splitting')
+  logdebug('Splitting the df')
   train_ind <- sample(nrow(data), size = floor(size*nrow(data)))
   train <- as.data.frame(data[train_ind, ])
   test <- as.data.frame(data[-train_ind, ])
   train_test_data <- list(train=train, test=test)
   
-  message('Splitting ')
   return(train_test_data)
 }
 
@@ -28,8 +29,8 @@ optimal_rf <- function(train) {
 }
 
 
-model_rf <- function(df) {
-  randomForest()
+model_rf <- function(df, mtry) {
+  rf_model <- randomForest(df[, 2:12], df[, 13], )
   return()
 }
 

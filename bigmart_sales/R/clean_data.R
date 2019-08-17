@@ -1,8 +1,9 @@
-source('R/util.R', chdir=T)
+source('R/util.R')
 
 
 clean_data <- function(data, path) {
   # This pipeline modifies columns in the dataframe from left to right
+  loginfo('Cleaning the df')
   
   data <- data %>%
     separate(Item_Identifier, c('Item_Category', 'Item_Identifier'), sep=2)
@@ -34,7 +35,7 @@ clean_data <- function(data, path) {
   return(data)
 }
 
-
+# This reduces SD, may want to change
 impute_mean <- function(grouped_var) {
   replace(grouped_var, is.na(grouped_var), mean(grouped_var, na.rm=T))
 }
