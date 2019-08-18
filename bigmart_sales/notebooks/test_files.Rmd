@@ -9,13 +9,15 @@ df <- read.csv('../data/interim/train_clean.csv')
 ```
 
 ```{r}
-param <- optimal_rf(df)
-
+model <- model_rf(df)
 ```
 
 ```{r}
-abc <- function() {
-  print('maybe logging')
-  loginfo('does this work')
-}
+names(model)
 ```
+
+```{r}
+pred <- predict(model, newdata = )
+
+```
+
