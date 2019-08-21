@@ -1,2 +1,3 @@
 To do:
 1.  Error in formula.default(model) : invalid formula
+run predict_rf in rmd
