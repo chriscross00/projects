@@ -34,7 +34,10 @@ main <- function() {
   test_split <- train_test_data$test
   
   sales_model <- model_rf(train_split)
+  print(sales_model)
   
+  a_test <- predict_rf(test_split, sales_model)
+  print(a_test)
 }
 
 main()

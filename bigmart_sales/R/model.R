@@ -1,5 +1,5 @@
 library(randomForest)
-
+library(modelr)
 
 create_train_test_split <- function(data, size = 0.7) {
   set.seed(50)
@@ -32,7 +32,7 @@ optimal_rf <- function(train) {
 model_rf <- function(train) {
   
   message('Creating a random forest model...')
-  rf_model <- randomForest(train[, 2:12], train[, 13], mtry = 3)
+  rf_model <- randomForest(train[, 2:12], train[, 13], mtry = 3, ntree=5)
   
   return(rf_model)
 }
