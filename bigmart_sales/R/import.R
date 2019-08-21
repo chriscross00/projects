@@ -1,6 +1,6 @@
 import_data <- function() {
   
-  train_exp <- 'raw/Train.csv'
+  train_exp <- 'data/raw/Train.csv'
   loginfo('Attemping import from %s', train_exp)
   test_exp <- 'data/raw/Test.csv'
   loginfo('Attemping import from %s', test_exp)

@@ -33,6 +33,7 @@ main <- function() {
   train_split <- train_test_data$train
   test_split <- train_test_data$test
   
+  sales_model <- model_rf(train_split)
   
 }
 
