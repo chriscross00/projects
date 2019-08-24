@@ -1,0 +1,32 @@
+---
+title: "Untitled"
+author: "Christopher Chan"
+date: "August 24, 2019"
+output: html_document
+---
+
+```{r}
+source('model.R')
+df <- read.csv('../data/interim/train_clean.csv')
+```
+
+
+```{r}
+nb_df <- create_train_test_split(df)
+
+nb_train <- nb_df$train
+nb_test <- nb_df$test
+```
+
+
+```{r}
+test_model <- model_rf(nb_train)
+```
+
+```{r}
+pred <- predict_rf(nb_test, test_model)
+
+
+dim(pred)
+```
+

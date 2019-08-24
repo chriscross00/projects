@@ -5,7 +5,7 @@ create_train_test_split <- function(data, size = 0.7) {
   set.seed(50)
   
   message('Splitting')
-  logdebug('Splitting the df')
+#  logdebug('Splitting the df')
   train_ind <- sample(nrow(data), size = floor(size*nrow(data)))
   train <- as.data.frame(data[train_ind, ])
   test <- as.data.frame(data[-train_ind, ])
@@ -40,11 +40,11 @@ model_rf <- function(train) {
 
 predict_rf <- function(test, model) {
   
-  loginfo('Predicting values')
+#  loginfo('Predicting values')
   
   pred <- predict(model, newdata = test[, 2:12])
-  score <- mse(pred, test[, 13])
+#  score <- mse(pred, test[, 13])
   
-  return(score)
+  return(pred)
 }
 
