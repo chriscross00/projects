@@ -6,7 +6,10 @@ output: html_document
 ---
 
 ```{r}
+library(MLmetrics)
 source('model.R')
+
+
 df <- read.csv('../data/interim/train_clean.csv')
 ```
 
@@ -32,6 +35,8 @@ head(pred)
 ```
 
 ```{r}
-a <- mse(pred)
+a <- MSE(pred, nb_test[,13])
+
+a
 ```
 
