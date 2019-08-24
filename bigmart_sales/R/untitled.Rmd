@@ -23,10 +23,15 @@ nb_test <- nb_df$test
 test_model <- model_rf(nb_train)
 ```
 
+
 ```{r}
 pred <- predict_rf(nb_test, test_model)
 
 
-dim(pred)
+head(pred)
+```
+
+```{r}
+a <- mse(pred)
 ```
 
