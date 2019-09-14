@@ -1,6 +1,8 @@
 # read
 # https://stackoverflow.com/questions/13733552/logger-configuration-to-log-to-file-and-print-to-stdout
 # figure out why variables aren't being logged
+# to do
+# Finish model validation, graph results
 
 library(tidyverse)
 library(logging)
