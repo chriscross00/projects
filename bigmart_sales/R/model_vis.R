@@ -1,3 +1,5 @@
+# rewrite this chunk. use built in $importance
+
 create_feat_imp_df <- function(model){
   feat_imp <- model %>%
     importance(type=1) %>%
