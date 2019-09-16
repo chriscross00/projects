@@ -7,8 +7,10 @@ output: html_document
 
 ```{r}
 library(MLmetrics)
+library(tidyverse)
+library(logging)
 source('model.R')
-
+source('model_vis.R')
 
 df <- read.csv('../data/interim/train_clean.csv')
 ```
@@ -24,6 +26,14 @@ nb_test <- nb_df$test
 
 ```{r}
 test_model <- model_rf(nb_train)
+```
+
+```{r}
+test_model %>% importance(type=1) %>% is_tibble()
+```
+
+```{r}
+why <- create_feat_imp_df(test_model)
 ```
 
 

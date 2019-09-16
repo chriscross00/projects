@@ -7,7 +7,7 @@ create_train_test_split <- function(data, size = 0.7) {
   set.seed(50)
   
   message('Splitting')
-  logdebug('Splitting the df')
+  #logdebug('Splitting the df')
   train_ind <- sample(nrow(data), size = floor(size*nrow(data)))
   train <- as.data.frame(data[train_ind, ])
   test <- as.data.frame(data[-train_ind, ])
