@@ -34,7 +34,7 @@ optimal_rf <- function(train) {
 model_rf <- function(train) {
   
   message('Creating a random forest model...')
-  rf_model <- randomForest(train[, 2:12], train[, 13], mtry = 3, ntree=5)
+  rf_model <- randomForest(train[, 2:12], train[, 13], mtry = 3, ntree=5, importance=T)
   
   return(rf_model)
 }

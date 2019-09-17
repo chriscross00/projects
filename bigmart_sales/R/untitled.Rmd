@@ -27,9 +27,18 @@ nb_test <- nb_df$test
 ```{r}
 test_model <- model_rf(nb_train)
 ```
+```{r}
+test_model$importance
+```
 
 ```{r}
 test_model %>% importance(type=1) %>% is_tibble()
+```
+```{r}
+test <- function(model){
+  imp <- model$importance
+  
+}
 ```
 
 ```{r}
