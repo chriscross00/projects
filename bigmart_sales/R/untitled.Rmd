@@ -33,7 +33,7 @@ test_model %>% importance(type=1) %>% is_tibble()
 ```
 
 ```{r}
-why <- create_feat_imp_df(test_model)
+why <- 
 ```
 
 

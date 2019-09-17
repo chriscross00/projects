@@ -12,6 +12,10 @@ create_feat_imp_df <- function(model){
 }
 
 
+test <- function(model){
+  
+}
+
 # ggplot(feat_imp, aes(Feature, relative_imp)) +
 #   geom_bar(stat='identity', fill='#56B4E9') +
 #   coord_flip() +
