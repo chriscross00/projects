@@ -1,0 +1,6 @@
+* Find data
+* Create a model
+    > Determine model
+    > Research
+* Create a API
+* Deploy API
